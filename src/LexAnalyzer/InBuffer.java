@@ -15,6 +15,7 @@ public class InBuffer {
         int i = inString.indexOf('\n'); 
         line = inString.substring(0, i +1); 
         inString = inString.substring(i+1);
+        lineIndex = 0;
     }
 
     public String getInString()
