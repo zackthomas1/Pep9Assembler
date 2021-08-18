@@ -1,6 +1,6 @@
-package Tokens;
+package LexAnalyzer.Tokens;
 
-import LexAnalyzer.Util;
+import Utility.Util;
 
 public class THex extends AToken {
 

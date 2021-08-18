@@ -1,13 +1,13 @@
-import LexAnalyzer.InBuffer;
 import LexAnalyzer.Tokenizer;
-import Tokens.AToken;
-import Tokens.TEmpty;
-import Tokens.TInvalid;
+import LexAnalyzer.Tokens.AToken;
+import LexAnalyzer.Tokens.TEmpty;
+import LexAnalyzer.Tokens.TInvalid;
+import Utility.InBuffer;
 
 public class App {
     public static void main(String[] args) throws Exception {
 
-        InBuffer inBuffer = new InBuffer("alpha .beta \n   b7 0x23ab ,Sfx \n   ,i , cat \n -32768 65535"); 
+        InBuffer inBuffer = new InBuffer("LDWX 0x00D, i"); 
         Tokenizer t = new Tokenizer(inBuffer); 
         AToken aToken; 
 

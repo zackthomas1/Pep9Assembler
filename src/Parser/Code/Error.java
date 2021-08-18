@@ -1,4 +1,4 @@
-package Code;
+package Parser.Code;
 public class Error extends ACode {
     
     private final String errorMessage; 

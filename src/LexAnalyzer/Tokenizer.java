@@ -1,12 +1,14 @@
 package LexAnalyzer;
-import Tokens.AToken;
-import Tokens.TAddr;
-import Tokens.TDot;
-import Tokens.TEmpty;
-import Tokens.THex;
-import Tokens.TIdentifier;
-import Tokens.TInteger;
-import Tokens.TInvalid;
+import LexAnalyzer.Tokens.AToken;
+import LexAnalyzer.Tokens.TAddr;
+import LexAnalyzer.Tokens.TDot;
+import LexAnalyzer.Tokens.TEmpty;
+import LexAnalyzer.Tokens.THex;
+import LexAnalyzer.Tokens.TIdentifier;
+import LexAnalyzer.Tokens.TInteger;
+import LexAnalyzer.Tokens.TInvalid;
+import Utility.InBuffer;
+import Utility.Util;
 
 public class Tokenizer {
     private final InBuffer b; 
@@ -53,7 +55,7 @@ public class Tokenizer {
                     }else if (nextChar == '\n'){
                         state = LexState.LS_STOP; 
                     }else if (nextChar != ' '){
-                        aToken = new TInvalid("LS_START: Invalid character.");
+                        aToken = new TInvalid("LS_START: Invalid first character.");
                     }
                     break;
                 case LS_INT1: 

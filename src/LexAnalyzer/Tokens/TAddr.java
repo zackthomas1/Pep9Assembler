@@ -1,4 +1,4 @@
-package Tokens;
+package LexAnalyzer.Tokens;
 
 public class TAddr extends AToken {
     

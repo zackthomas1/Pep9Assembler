@@ -1,4 +1,4 @@
-package LexAnalyzer;
+package Utility;
 public class Util {
     
 

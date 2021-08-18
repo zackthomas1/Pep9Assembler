@@ -1,4 +1,4 @@
-package Code;
+package Parser.Code;
 
 public class EmptyInstr extends ACode {
     // For an empty source line

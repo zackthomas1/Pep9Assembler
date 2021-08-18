@@ -1,4 +1,4 @@
-package Tokens;
+package LexAnalyzer.Tokens;
 
 public class TEmpty extends AToken {
     

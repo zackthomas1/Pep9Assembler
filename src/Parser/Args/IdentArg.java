@@ -1,4 +1,4 @@
-package Args;
+package Parser.Args;
 
 public class IdentArg extends AArg  
 {  

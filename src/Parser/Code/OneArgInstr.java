@@ -1,6 +1,8 @@
-package Code;
+package Parser.Code;
 
-import Args.AArg;
+import Parser.Maps;
+import Parser.Mnemon;
+import Parser.Args.AArg;
 
 public class OneArgInstr extends ACode {
     private final Mnemon mnemonic; 

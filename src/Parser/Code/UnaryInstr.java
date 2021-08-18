@@ -1,4 +1,7 @@
-package Code;
+package Parser.Code;
+
+import Parser.Maps;
+import Parser.Mnemon;
 
 public class UnaryInstr extends ACode {
     

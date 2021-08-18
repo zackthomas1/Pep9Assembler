@@ -1,16 +1,16 @@
-package Tokens;
+package LexAnalyzer.Tokens;
 public class TInvalid extends AToken {
     
     private String errorMessage;
     
     public TInvalid()
     {
-        errorMessage = "";
+        errorMessage = "Tokenizier Error: ";
     }
 
     public TInvalid(String errmsg)
     {
-        errorMessage = errmsg; 
+        errorMessage = errorMessage + errmsg; 
     }
 
     public String getErrorMessage()

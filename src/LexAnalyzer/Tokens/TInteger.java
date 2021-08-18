@@ -1,4 +1,4 @@
-package Tokens;
+package LexAnalyzer.Tokens;
 public class TInteger extends AToken {
     
     private int intValue; 
