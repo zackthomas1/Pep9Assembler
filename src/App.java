@@ -1,9 +1,9 @@
-import LexAnalyzer.Tokenizer;
-import LexAnalyzer.Tokens.AToken;
-import LexAnalyzer.Tokens.TEmpty;
-import LexAnalyzer.Tokens.TInvalid;
-import Parser.Translator;
-import Utility.InBuffer;
+import main.utility.InBuffer;
+import main.lexanalyzer.Tokenizer;
+import main.lexanalyzer.tokens.AToken;
+import main.lexanalyzer.tokens.TEmpty;
+import main.lexanalyzer.tokens.TInvalid;
+import main.parser.Translator;
 
 public class App {
 
