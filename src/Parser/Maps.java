@@ -11,34 +11,51 @@ public class Maps {
 
     static{
         unaryMnemonTable = new HashMap<>();
-        unaryMnemonTable.put("ret", Mnemon.M_RET);
+        unaryMnemonTable.put("asla", Mnemon.M_ASLA);
+        unaryMnemonTable.put("asra", Mnemon.M_ASRA);
         unaryMnemonTable.put("stop", Mnemon.M_STOP);
+
+        unaryMnemonTable.put("block", Mnemon.M_BLOCK);  //dot commands
         unaryMnemonTable.put("end", Mnemon.M_END); 
 
         nonunaryMnemonTable = new HashMap<>();
+        nonunaryMnemonTable.put("br", Mnemon.M_BR);     // single-argument
+        nonunaryMnemonTable.put("brlt", Mnemon.M_BRLT);
+        nonunaryMnemonTable.put("breq", Mnemon.M_BREQ);
+        nonunaryMnemonTable.put("brle", Mnemon.M_BRLE);
+        nonunaryMnemonTable.put("call", Mnemon.M_CALL);
+        
+        nonunaryMnemonTable.put("cpwa", Mnemon.M_CPWA); // double-argument
+        nonunaryMnemonTable.put("deci", Mnemon.M_DECI);
+        nonunaryMnemonTable.put("deco", Mnemon.M_DECO);
+        nonunaryMnemonTable.put("adda", Mnemon.M_ADDA);
+        nonunaryMnemonTable.put("suba", Mnemon.M_SUBA);
+        nonunaryMnemonTable.put("stwa", Mnemon.M_STWA);
         nonunaryMnemonTable.put("ldwa", Mnemon.M_LDWA); 
-        nonunaryMnemonTable.put("neg", Mnemon.M_NEG); 
-        nonunaryMnemonTable.put("abs", Mnemon.M_ABS); 
-        nonunaryMnemonTable.put("add", Mnemon.M_ADD); 
-        nonunaryMnemonTable.put("sub", Mnemon.M_SUB); 
-        nonunaryMnemonTable.put("mul", Mnemon.M_MUL); 
-        nonunaryMnemonTable.put("div", Mnemon.M_DIV); 
-        nonunaryMnemonTable.put("set", Mnemon.M_SET); 
+
 
         mnemonStringTable = new EnumMap<>(Mnemon.class);
-        // Non-Unary
-        mnemonStringTable.put(Mnemon.M_LDWA, "ldwa");
-        mnemonStringTable.put(Mnemon.M_NEG, "neg");
-        mnemonStringTable.put(Mnemon.M_ABS, "abs");
-        mnemonStringTable.put(Mnemon.M_ADD, "add");
-        mnemonStringTable.put(Mnemon.M_SUB, "sub");
-        mnemonStringTable.put(Mnemon.M_MUL, "mul");
-        mnemonStringTable.put(Mnemon.M_DIV, "div");
-        mnemonStringTable.put(Mnemon.M_SET, "set");
         // Unary
-        mnemonStringTable.put(Mnemon.M_RET, "ret"); 
+        mnemonStringTable.put(Mnemon.M_ASLA, "asla");   
+        mnemonStringTable.put(Mnemon.M_ASRA, "asra");
         mnemonStringTable.put(Mnemon.M_STOP, "stop");
+        
+        mnemonStringTable.put(Mnemon.M_BLOCK, "block"); // dot commans
         mnemonStringTable.put(Mnemon.M_END, "end");
+        // Non-Unary
+        mnemonStringTable.put(Mnemon.M_BR, "br");       // single-argument
+        mnemonStringTable.put(Mnemon.M_BRLT, "brlt");
+        mnemonStringTable.put(Mnemon.M_BREQ, "breq");
+        mnemonStringTable.put(Mnemon.M_BRLE, "brle");
+        mnemonStringTable.put(Mnemon.M_CALL, "call");
+
+        mnemonStringTable.put(Mnemon.M_CPWA, "cpwa");   // double-argument
+        mnemonStringTable.put(Mnemon.M_DECI, "deci");
+        mnemonStringTable.put(Mnemon.M_DECO, "deco");
+        mnemonStringTable.put(Mnemon.M_ADDA, "adda");
+        mnemonStringTable.put(Mnemon.M_SUBA, "suba");
+        mnemonStringTable.put(Mnemon.M_STWA, "stwa");
+        mnemonStringTable.put(Mnemon.M_LDWA, "ldwa");   
     }
 
 }

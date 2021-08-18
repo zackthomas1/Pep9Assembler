@@ -1,21 +1,15 @@
 package LexAnalyzer.Tokens;
 
-public class TAddr extends AToken {
+public class TAddr extends TIdentifier {
     
-    private String address; 
-
     public TAddr(StringBuffer addrss)
     {
-        address = new String(addrss);
+        stringValue = new String(addrss);
     }
 
+    @Override
     public String getDescribtion()
     {
-        return String.format("Address: %s", address);
-    }
-
-    public String getAddress()
-    {
-        return address;
+        return String.format("Address: %s", stringValue);
     }
 }

@@ -18,10 +18,16 @@ public class OneArgInstr extends ACode {
     {
         switch(mnemonic)
         {
-            case M_ABS:
-                return String.format("%s <- |%s|\n", aArg.generateCode(), aArg.generateCode());
-            case M_NEG: 
-                return String.format("%s <- -%s\n", aArg.generateCode(), aArg.generateCode());
+            case M_BR:
+                return String.format("br %s\n", aArg.generateCode(), aArg.generateCode());
+            case M_BRLT:
+                return String.format("brlt %s\n", aArg.generateCode(), aArg.generateCode());
+            case M_BREQ:
+                return String.format("breq %s\n", aArg.generateCode(), aArg.generateCode());
+            case M_BRLE:
+                return String.format("brle %s\n", aArg.generateCode(), aArg.generateCode());             
+            case M_CALL: 
+                return String.format("call %s\n", aArg.generateCode(), aArg.generateCode());
             default: 
                 return ""; // Should not occur
         }

@@ -1,23 +1,16 @@
 package LexAnalyzer.Tokens;
 
-public class TDot extends AToken {
+public class TDot extends TIdentifier {
     
-    private String dotCommand;
-
     public TDot(StringBuffer dotCmmd)
     {
-        dotCommand = new String(dotCmmd); 
+        stringValue = new String(dotCmmd); 
     }
     
+    @Override
     public String getDescribtion()
     {
-        return String.format("Dot Command: %s", dotCommand);
+        return String.format("Dot Command: %s", stringValue);
     }
-
-    public String getDotCommand()
-    {
-        return dotCommand;
-    }
-
 
 }

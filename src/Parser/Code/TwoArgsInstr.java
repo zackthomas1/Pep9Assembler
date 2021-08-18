@@ -22,25 +22,20 @@ public class TwoArgsInstr extends ACode {
     {
         switch(mnemonic)
         {
-            case M_SET: 
-                return String.format("%s <- %s\n", firstArg.generateCode(), 
-                        secondArg.generateCode());
-            case M_ADD: 
-                return String.format("%s <- %s + %s\n", firstArg.generateCode(), 
-                        firstArg.generateCode(),
-                        secondArg.generateCode());
-            case M_SUB: 
-                return String.format("%s <- %s - %s\n", firstArg.generateCode(), 
-                        firstArg.generateCode(),
-                        secondArg.generateCode());
-            case M_MUL: 
-            return String.format("%s <- %s * %s\n", firstArg.generateCode(), 
-                    firstArg.generateCode(),
-                    secondArg.generateCode());
-            case M_DIV: 
-            return String.format("%s <- %s / %s\n", firstArg.generateCode(), 
-                firstArg.generateCode(),
-                secondArg.generateCode());
+            case M_CPWA: 
+                return String.format("Accumulator <- %s Addressing: %s\n", firstArg.generateCode(), secondArg.generateCode());
+            case M_DECI: 
+                return String.format("Accumulator <- %s Addressing: %s\n", firstArg.generateCode(), secondArg.generateCode());
+            case M_DECO: 
+                return String.format("Accumulator <- %s Addressing: %s\n", firstArg.generateCode(), secondArg.generateCode());
+            case M_ADDA: 
+                return String.format("Accumulator <- %s Addressing: %s\n", firstArg.generateCode(), secondArg.generateCode());
+            case M_SUBA: 
+                return String.format("Accumulator <- %s Addressing: %s\n", firstArg.generateCode(), secondArg.generateCode());
+            case M_STWA: 
+                return String.format("Accumulator <- %s Addressing: %s\n", firstArg.generateCode(), secondArg.generateCode());
+            case M_LDWA: 
+                return String.format("Accumulator <- %s Addressing: %s\n", firstArg.generateCode(), secondArg.generateCode());
             default: 
                 return ""; // should not occur.
         }

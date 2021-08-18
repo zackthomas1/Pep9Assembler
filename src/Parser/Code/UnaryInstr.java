@@ -16,8 +16,14 @@ public class UnaryInstr extends ACode {
     {
         switch(mnemonic)
         {
+            case M_ASLA: 
+                return "asla\n";
+            case M_ASRA: 
+                return "asra\n";
             case M_STOP:
                 return "stop\n"; 
+            case M_BLOCK:
+                return "block\n";
             case M_END: 
                 return "";
             default: 

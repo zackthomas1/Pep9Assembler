@@ -2,8 +2,13 @@ package LexAnalyzer.Tokens;
 
 public class TIdentifier extends AToken {
 
-    private final String stringValue; 
+    protected String stringValue; 
 
+    public TIdentifier()
+    {
+        stringValue = "";
+    }
+    
     public TIdentifier(StringBuffer stringBuffer)
     {
         stringValue = new String(stringBuffer); 
