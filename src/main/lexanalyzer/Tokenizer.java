@@ -115,7 +115,7 @@ public class Tokenizer {
                 case LS_HEX1: 
                     if (Util.isHexdigit(nextChar)){
                         localStringValue.append(nextChar);
-                        localIntValue = (localIntValue * 16) + Util.charToHexDigit(nextChar);
+                        localIntValue = (localIntValue * 16) + Util.hexCharToInt(nextChar);
                         state = LexState.LS_HEX2;
                     }else{
                         aToken = new TInvalid("LS_HEX1: '0x' must be followed by valid hexadecimal character 1-9 and a-f.");
@@ -124,7 +124,7 @@ public class Tokenizer {
                 case LS_HEX2: 
                     if(Util.isHexdigit(nextChar)){
                         localStringValue.append(nextChar);
-                        localIntValue = (localIntValue * 16) + Util.charToHexDigit(nextChar);
+                        localIntValue = (localIntValue * 16) + Util.hexCharToInt(nextChar);
                         if (localIntValue > 65535){
                             aToken = new TInvalid("LS_HEX2: Hex value exceeded max value of FFFF(hex)/65535(dec)");
                         }
@@ -154,6 +154,7 @@ public class Tokenizer {
                         aToken = new TAddr(localStringValue);
                         state = LexState.LS_STOP;
                     }
+                    break;
                 default: 
                     break;
             }

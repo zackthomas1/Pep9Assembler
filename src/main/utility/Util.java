@@ -17,7 +17,7 @@ public class Util {
         return (('a' <= ch) && (ch <= 'f') || ('A' <= ch) && (ch <= 'F') || isDigit(ch));
     }
 
-    public static int charToHexDigit(char ch){
+    public static int hexCharToInt(char ch){
 
         final int LOWERCASETINT = 96;  // subtract value from lower case character for integer
 
@@ -31,19 +31,28 @@ public class Util {
         }
     }
 
-    public static char hexDigitToChar(int i)
+    public static char intToHexChar(int i)
     {
         switch(i)
         {
             case 0:
+                // fall through
             case 1:
+                // fall through
             case 2:
+                // fall through
             case 3:
+                // fall through
             case 4:
+                // fall through
             case 5:
+                // fall through
             case 6:
+                // fall through
             case 7:
+                // fall through
             case 8:
+                // fall through
             case 9: 
                 return (char)(i + '0');
             case 10:
@@ -63,26 +72,34 @@ public class Util {
         }
     }
 
-    public static int hexStrToDecimal(String h)
+    public static int hexStrToInt(String h)
     {
         int hexValue = 0;
 
-        for(int i = h.length() - 1; i <= 0 ; --i)
+        int hexPlace = 0;
+        for(int i = h.length() - 1; i >= 0 ; --i)
         {
-            int hexDigit = charToHexDigit(h.charAt(i));
-            hexValue = (hexValue * 16) + hexDigit;
+            int hexDigit = hexCharToInt(h.charAt(i));
+            hexValue = (hexDigit * (int)Math.pow(16, hexPlace)) + hexValue;
+            hexPlace++;
         }
 
         return hexValue;
     }
 
-    public static String decimalToHexStr(int i)
+    public static String intToHexStr(int i)
     {
         StringBuffer hexcode = new StringBuffer("");
 
+        if (i == 0)
+        {
+            hexcode.append('0');
+            return hexcode.toString();
+        }
+        
         while(i > 0)
         {
-            hexcode.append(hexDigitToChar(i % 16));
+            hexcode.append(intToHexChar(i % 16));
             i = i / 16;
         }
 

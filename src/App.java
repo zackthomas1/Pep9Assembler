@@ -1,4 +1,5 @@
 import main.utility.InBuffer;
+import main.utility.Util;
 import main.lexanalyzer.Tokenizer;
 import main.lexanalyzer.tokens.AToken;
 import main.lexanalyzer.tokens.TEmpty;
@@ -30,8 +31,26 @@ public class App {
         tr.translate();
     }
 
+    public static void test_03()
+    {    
+        int i = Util.hexStrToInt("05");
+        System.out.println(i);
+    }
+
+    public static void test_04()
+    {
+        InBuffer inBuffer = new InBuffer(",i"); 
+        Tokenizer t = new Tokenizer(inBuffer); 
+        
+        inBuffer.getLine(); 
+        AToken aToken = t.getToken(); 
+        
+        System.out.println(aToken.getDescribtion());
+
+    }
+
 
     public static void main(String[] args) throws Exception {
-        test_02();
+        test_04();
     }
 }

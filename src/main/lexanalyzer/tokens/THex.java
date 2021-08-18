@@ -10,12 +10,12 @@ public class THex extends AToken {
     public THex(int i)
     {
         hexIntValue = i; 
-        hexSymbol = Util.decimalToHexStr(i);
+        hexSymbol = Util.intToHexStr(i);
     }
 
     public THex(String h)
     {
-        hexIntValue = Util.hexStrToDecimal(h);
+        hexIntValue = Util.hexStrToInt(h);
         hexSymbol = h;
     }
     
