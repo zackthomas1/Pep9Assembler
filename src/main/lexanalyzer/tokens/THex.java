@@ -24,7 +24,7 @@ public class THex extends AToken {
         return String.format("Hexadecimal: %d", hexIntValue);
     }
 
-    public int getHexIntValue()
+    public int getIntValue()
     {
         return hexIntValue; 
     }

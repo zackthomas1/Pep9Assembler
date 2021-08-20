@@ -81,11 +81,13 @@ public class UtilTest {
     @Test
     public void intToHexStrTest()
     {
-        assertEquals("0", Util.intToHexStr(0));
-        assertEquals("5", Util.intToHexStr(5));
-        assertEquals("9", Util.intToHexStr(9));
-        assertEquals("A", Util.intToHexStr(10));
-        assertEquals("F", Util.intToHexStr(15));
+        assertEquals("00", Util.intToHexStr(0));
+        assertEquals("05", Util.intToHexStr(5));
+        assertEquals("09", Util.intToHexStr(9));
+        assertEquals("0A", Util.intToHexStr(10));
+        assertEquals("0F", Util.intToHexStr(15));
+        assertEquals("A5C2", Util.intToHexStr(42434));
+        assertEquals("05C2", Util.intToHexStr(1474));
 
     }
 

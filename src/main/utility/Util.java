@@ -91,9 +91,10 @@ public class Util {
     {
         StringBuffer hexcode = new StringBuffer("");
 
+        //
         if (i == 0)
         {
-            hexcode.append('0');
+            hexcode.append("00");
             return hexcode.toString();
         }
         
@@ -101,6 +102,11 @@ public class Util {
         {
             hexcode.append(intToHexChar(i % 16));
             i = i / 16;
+        }
+
+        if (hexcode.length() % 2 == 1)
+        {
+            hexcode.append('0');
         }
 
         hexcode.reverse();

@@ -10,7 +10,7 @@ public class TInvalid extends AToken {
 
     public TInvalid(String errmsg)
     {
-        errorMessage = errorMessage + errmsg; 
+        errorMessage = errmsg; 
     }
 
     public String getErrorMessage()

@@ -9,7 +9,7 @@ public class IntArg extends AArg {
         intValue = i;
     }
 
-    public String generateCode()
+    public String generateListing()
     {
         return String.format("%d", intValue);
     } 

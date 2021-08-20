@@ -26,7 +26,7 @@ public class App {
 
     public static void test_02()
     {    
-        InBuffer inBuffer = new InBuffer("LDWA 0x00D, i \n STWA -15, d\n .END");
+        InBuffer inBuffer = new InBuffer(".block 4 \n LDWA 0x00D, i \n STWA -5, d\n .End");
         Translator tr = new Translator(inBuffer); 
         tr.translate();
     }
@@ -51,6 +51,6 @@ public class App {
 
 
     public static void main(String[] args) throws Exception {
-        test_04();
+        test_02();
     }
 }

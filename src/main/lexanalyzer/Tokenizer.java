@@ -84,7 +84,7 @@ public class Tokenizer {
                         localIntValue = nextChar - '0';
                         state = LexState.LS_INT2; 
                     }else{
-                        aToken = new TInvalid("LS_SIGN: sign character musted be followed by numerical to form valid integer.");
+                        aToken = new TInvalid("LS_SIGN: sign character must be followed by numerical to form valid integer.");
                     }
                     break; 
                 case LS_IDENT:

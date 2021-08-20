@@ -17,15 +17,15 @@ public class UnaryInstr extends ACode {
         switch(mnemonic)
         {
             case M_ASLA: 
-                return "asla\n";
+                return "0A\n";
             case M_ASRA: 
-                return "asra\n";
+                return "0C\n";
             case M_STOP:
-                return "stop\n"; 
+                return "00\n"; 
             case M_BLOCK:
-                return "block\n";
+                return "00\n";
             case M_END: 
-                return "";
+                return "zz";
             default: 
                 return "";  //Should not occur.
         }

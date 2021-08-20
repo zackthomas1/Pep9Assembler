@@ -12,13 +12,13 @@ import main.lexanalyzer.tokens.TIdentifier;
 import main.lexanalyzer.tokens.TInteger;
 import main.lexanalyzer.tokens.TInvalid;
 import main.parser.args.AArg;
+import main.parser.args.HexArg;
 import main.parser.args.IdentArg;
 import main.parser.args.IntArg;
 import main.parser.codes.ACode;
 import main.parser.codes.EmptyInstr;
 import main.parser.codes.Error;
-import main.parser.codes.OneArgInstr;
-import main.parser.codes.TwoArgsInstr;
+import main.parser.codes.NonUnaryInstr;
 import main.parser.codes.UnaryInstr;
 
 public class Translator {
@@ -37,8 +37,8 @@ public class Translator {
     {
         boolean terminate = false; 
         Mnemon localMnemon = Mnemon.M_END; // useless initialization
-        AArg localFirstArg = new IntArg(0); 
-        AArg localSecondArg; 
+        AArg localOperandArg = new IntArg(0); 
+        AddrMode localAddrArg; 
         AToken aToken; 
         aCode = new EmptyInstr(); 
         ParseState state = ParseState.PS_START; 
@@ -56,11 +56,16 @@ public class Translator {
                         if(Maps.unaryMnemonTable.containsKey(identStr.toLowerCase())){
                             localMnemon = Maps.unaryMnemonTable.get(identStr.toLowerCase());
                             state = ParseState.PS_UNARY;
-                        } else if (Maps.nonunaryMnemonTable.containsKey(identStr.toLowerCase())){
+                        } else if (Maps.dotCmdMnemonTable.containsKey(identStr.toLowerCase())){
+                            localMnemon = Maps.dotCmdMnemonTable.get(identStr.toLowerCase());
+                            terminate = localMnemon == Mnemon.M_END;
+                            state = ParseState.PS_DOT1; 
+                        } 
+                        else if (Maps.nonunaryMnemonTable.containsKey(identStr.toLowerCase())){
                             localMnemon = Maps.nonunaryMnemonTable.get(identStr.toLowerCase());
                             state = ParseState.PS_FUNCTION; 
                         } else{
-                            aCode = new Error("Line must begin with function identifier");
+                            aCode = new Error("Invalid operation mnemonic.");
                         }
                     }else if (aToken instanceof TEmpty){
                         aCode = new EmptyInstr();
@@ -81,29 +86,36 @@ public class Translator {
                     // }
                     if (aToken instanceof TInteger){
                         TInteger localTInteger = (TInteger) aToken;
-                        localFirstArg = new IntArg(localTInteger.getIntValue());
+                        localOperandArg = new IntArg(localTInteger.getIntValue());
                         state = ParseState.PS_NON_UNARY1; 
                     }else if (aToken instanceof THex){
                         THex localTHex = (THex) aToken;
-                        localFirstArg = new IntArg(localTHex.getHexIntValue());
+                        localOperandArg = new IntArg(localTHex.getIntValue());
                         state = ParseState.PS_NON_UNARY1; 
+                    }else if (aToken instanceof TEmpty){
+                        state = ParseState.PS_FINISH;
                     }
                     else if (aToken instanceof TInvalid){
                         TInvalid invalidToken = (TInvalid) aToken; 
                         aCode = new Error(invalidToken.getErrorMessage());
-                    }
-                    else{ 
+                    }else{ 
                         aCode = new Error("Operand invalid. Must be integer, hexadecimal, or identifier.");
                     }
                     break; 
                 case PS_NON_UNARY1:
                     if (aToken instanceof TAddr){
-                        TAddr localTIdentifier = (TAddr) aToken;
-                        localSecondArg = new IdentArg(localTIdentifier.getStringValue()); 
-                        aCode = new TwoArgsInstr(localMnemon, localFirstArg, localSecondArg);
-                        state = ParseState.PS_NON_UNARY2;
+                        TAddr localTAddr = (TAddr) aToken;
+                        if (Maps.addressModeTable.containsKey(localTAddr.getStringValue()))
+                        {
+                            localAddrArg = Maps.addressModeTable.get(localTAddr.getStringValue()); 
+                            aCode = new NonUnaryInstr(localMnemon, localOperandArg, localAddrArg);
+                            state = ParseState.PS_NON_UNARY2;
+                        }else
+                        {
+                            aCode = new Error("Invalid addressing mode.");
+                        }
                     }else if (aToken instanceof TEmpty){
-                        aCode = new OneArgInstr(localMnemon, localFirstArg);
+                        aCode = new NonUnaryInstr(localMnemon, localOperandArg);
                         state = ParseState.PS_FINISH;
                     }
                     else{ 
@@ -115,6 +127,30 @@ public class Translator {
                         state = ParseState.PS_FINISH;
                     }else{
                         aCode = new Error("Invalid character/s folllowing addressing mode.");
+                    }
+                    break;
+                case PS_DOT1: 
+                    if (aToken instanceof TInteger) {
+                        TInteger localTInteger = (TInteger) aToken;
+                        localOperandArg = new IntArg(localTInteger.getIntValue());
+                        state = ParseState.PS_DOT2; 
+                    } else if (aToken instanceof THex) {
+                        THex localTHex = (THex) aToken;
+                        localOperandArg = new HexArg(localTHex.getIntValue());
+                        state = ParseState.PS_DOT2; 
+                    } else if (aToken instanceof TEmpty){
+                        aCode = new UnaryInstr(localMnemon);
+                        state = ParseState.PS_FINISH;
+                    } else {
+                        aCode = new Error("Invalid operand specifier following dot command. Must be interger or hexadecimal.");
+                    }
+                    break; 
+                case PS_DOT2: 
+                    if (aToken instanceof TEmpty){
+                        aCode = new NonUnaryInstr(localMnemon, localOperandArg);
+                        state = ParseState.PS_FINISH;
+                    }else{ 
+                        aCode = new Error("Invalid character/s following dot command.");
                     }
                     break;
                 case PS_UNARY: 

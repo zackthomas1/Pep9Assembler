@@ -9,7 +9,7 @@ public class IdentArg extends AArg
         identValue = str;
     }
 
-    public String generateCode()
+    public String generateListing()
     {
         return identValue;
     } 
