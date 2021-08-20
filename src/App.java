@@ -26,7 +26,7 @@ public class App {
 
     public static void test_02()
     {    
-        InBuffer inBuffer = new InBuffer(".block 4 \n LDWA 0x00D, i \n STWA -5, d\n .End");
+        InBuffer inBuffer = new InBuffer("STWA 0xA5, i \n ASRA \n Stop \n .End");
         Translator tr = new Translator(inBuffer); 
         tr.translate();
     }

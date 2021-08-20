@@ -13,7 +13,6 @@ import main.lexanalyzer.tokens.TInteger;
 import main.lexanalyzer.tokens.TInvalid;
 import main.parser.args.AArg;
 import main.parser.args.HexArg;
-import main.parser.args.IdentArg;
 import main.parser.args.IntArg;
 import main.parser.codes.ACode;
 import main.parser.codes.EmptyInstr;
@@ -26,10 +25,12 @@ public class Translator {
     private final InBuffer b; 
     private Tokenizer t; 
     private ACode aCode; 
+    private ArrayList<ACode> codeTable;
 
     public Translator(InBuffer inBuffer)
     {
         b = inBuffer; 
+        codeTable = new ArrayList<>(); 
     }
 
     // Sets aCode and returns boolean true if end statement is processed 
@@ -108,8 +109,14 @@ public class Translator {
                         if (Maps.addressModeTable.containsKey(localTAddr.getStringValue()))
                         {
                             localAddrArg = Maps.addressModeTable.get(localTAddr.getStringValue()); 
-                            aCode = new NonUnaryInstr(localMnemon, localOperandArg, localAddrArg);
-                            state = ParseState.PS_NON_UNARY2;
+                            if (Maps.MnemonValidAddresses.get(localMnemon).contains(localAddrArg))
+                            {
+                                aCode = new NonUnaryInstr(localMnemon, localOperandArg, localAddrArg);
+                                state = ParseState.PS_NON_UNARY2;    
+                            }else{
+                                aCode = new Error(String.format("'%s' is an invalid addressing mode for '%s' operation.", 
+                                    Maps.addressModeStringTable.get(localAddrArg), Maps.mnemonStringTable.get(localMnemon)));
+                            }
                         }else
                         {
                             aCode = new Error("Invalid addressing mode.");
@@ -173,11 +180,12 @@ public class Translator {
 
     public void translate()
     {
-        ArrayList<ACode> codeTable = new ArrayList<>(); 
         int numErrors = 0; 
         t = new Tokenizer(b); 
         boolean terminateWithEnd = false; 
+      
         b.getLine();
+
         while (b.inputRemains() && !terminateWithEnd){
             terminateWithEnd = parseLine();
             codeTable.add(aCode);
@@ -196,28 +204,53 @@ public class Translator {
 
         // final output
         if (numErrors == 0){      
-            //  object code output  
-            System.out.println("Object code:");
-            for (int i = 0; i < codeTable.size(); i++){
-                System.out.printf("%s", codeTable.get(i).generateCode());
-            }
-        
-            //  program listing output
+            System.out.println("\nObject code:");
+            System.out.println(generateProgramCode());
             System.out.println("\nProgram listing:");
-            for(int i = 0; i < codeTable.size(); i++){
-                System.out.printf("%s", codeTable.get(i).generateListing());
-            }
-
+            System.out.println(generateProgramListing());
         }else{ 
-            //  error message output
-            System.out.printf("%d errors were detected. \n", numErrors); 
-            for(int i = 0; i < codeTable.size(); i++){
-                if (codeTable.get(i) instanceof Error)
-                {
-                    System.out.printf("%s", codeTable.get(i).generateListing());
-                }            
-            }
+            System.out.println(generateProgramErrorMessages());
         }
     }
 
+    public String generateProgramCode()
+    {   
+        StringBuffer buf = new StringBuffer();
+
+        //  object code output  
+        for (int i = 0; i < codeTable.size(); i++){
+            buf.append(String.format("%s", codeTable.get(i).generateCode()));
+        }
+
+        return buf.toString();
+    }
+
+    public String generateProgramListing()
+    {
+        StringBuffer buf = new StringBuffer();
+
+        //  program listing output
+        for(int i = 0; i < codeTable.size(); i++){
+            buf.append(String.format("%s", codeTable.get(i).generateListing()));
+        }
+
+        return buf.toString();
+    }
+
+    public String generateProgramErrorMessages()
+    {
+        StringBuffer buf = new StringBuffer();
+
+        //  error message output
+        int numErrors = 0;
+        for(int i = 0; i < codeTable.size(); i++){
+            if (codeTable.get(i) instanceof Error){
+                buf.append(String.format("%s", codeTable.get(i).generateListing()));
+                ++numErrors;
+            }  
+        }
+        buf.append(String.format("%d errors were detected. \n", numErrors));
+        
+        return buf.toString();
+    }
 }

@@ -30,6 +30,8 @@ public class NonUnaryInstr extends ACode{
         String hexCode;
         switch(mnemonic)
         {
+            case M_BLOCK:
+                hexCode = "00\n";
             case M_BR:      // Operand Specifier
                 hexCode = " ";
             case M_BRLT:
