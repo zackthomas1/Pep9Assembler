@@ -11,14 +11,11 @@ public class Maps {
     public static final Map<String, Mnemon> unaryMnemonTable; 
     public static final Map<String, Mnemon> dotCmdMnemonTable;
     public static final Map<String, Mnemon> nonunaryMnemonTable; 
-
     public static final Map<String, AddrMode> addressModeTable;
+    public static final Map<Mnemon, List<AddrMode> > MnemonValidAddresses; 
 
     public static final Map<Mnemon, String> mnemonStringTable; 
     public static final Map<AddrMode, String> addressModeStringTable; 
-
-    public static final Map<Mnemon, List<AddrMode> > MnemonValidAddresses; 
-
 
     static{
 

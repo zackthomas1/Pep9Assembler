@@ -23,8 +23,4 @@ public class HexArg extends AArg {
     {
         return String.format("0x%s", hexCode); 
     }
-
-
-
-
 }

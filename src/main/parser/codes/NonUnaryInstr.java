@@ -15,7 +15,7 @@ public class NonUnaryInstr extends ACode{
     {
         mnemonic = mn; 
         operandSpecifier = os; 
-        address = AddrMode.AM_UNSET; 
+        address = AddrMode.AM_NONE; 
     }
 
     public NonUnaryInstr (Mnemon mn, AArg os, AddrMode addr)
@@ -65,7 +65,7 @@ public class NonUnaryInstr extends ACode{
 
     public String generateListing()
     {
-        if (address == AddrMode.AM_UNSET)
+        if (address == AddrMode.AM_NONE)
         {
             return String.format("%s %s\n", Maps.mnemonStringTable.get(mnemonic), operandSpecifier.generateListing());
 

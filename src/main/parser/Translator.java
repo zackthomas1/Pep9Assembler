@@ -137,6 +137,22 @@ public class Translator {
                     }
                     break;
                 case PS_DOT1: 
+                    // special case for .BLOCK operation
+                    if (localMnemon == Mnemon.M_BLOCK)
+                    {
+                        if (aToken instanceof TInteger) {
+                            TInteger localTInteger = (TInteger) aToken;
+                            if (localTInteger.getIntValue() > 0 )
+                            {
+                                localOperandArg = new IntArg(localTInteger.getIntValue());
+                                state = ParseState.PS_DOT2;
+                            } else{ 
+                                aCode = new Error("Invalid operand. Integer following '.BLOCK' must be positive.");
+                            }
+                        }else{ 
+                            aCode = new Error("Invalid operand. '.BLOCK' must be followed by integer.");
+                        }
+                    }
                     if (aToken instanceof TInteger) {
                         TInteger localTInteger = (TInteger) aToken;
                         localOperandArg = new IntArg(localTInteger.getIntValue());
