@@ -7,21 +7,21 @@ public class HexArg extends AArg {
     private final int hexValue; 
     private final String hexCode; 
 
-    public HexArg(int hexValue)
+    public HexArg(int hv)
     {
-        this.hexValue = hexValue;
-        hexCode = Util.intToHexStr(hexValue);
+        hexValue = hv;
+        hexCode = Util.intToHexStr(hv);
     }
 
-    public HexArg(String hexCode)
+    public HexArg(String hc)
     {
-        hexValue = Util.hexStrToInt(hexCode);
-        this.hexCode = hexCode;
+        hexValue = Util.hexStrToInt(hc);
+        hexCode = hc;
     }
 
     public String generateListing()
     {
-        return String.format("%d", hexValue); 
+        return String.format("0x%s", hexCode); 
     }
 
 

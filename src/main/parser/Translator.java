@@ -91,7 +91,7 @@ public class Translator {
                         state = ParseState.PS_NON_UNARY1; 
                     }else if (aToken instanceof THex){
                         THex localTHex = (THex) aToken;
-                        localOperandArg = new IntArg(localTHex.getIntValue());
+                        localOperandArg = new HexArg(localTHex.getIntValue());
                         state = ParseState.PS_NON_UNARY1; 
                     }else if (aToken instanceof TEmpty){
                         state = ParseState.PS_FINISH;
