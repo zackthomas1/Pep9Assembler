@@ -2,10 +2,12 @@ package main.parser.codes;
 public class Error extends ACode {
     
     private final String errorMessage; 
+    private final int errorLine;
 
-    public Error(String errMessage)
+    public Error(String errMessage, int line)
     {
         errorMessage = errMessage;
+        errorLine = line;
     }
 
     public String generateCode()
@@ -15,7 +17,7 @@ public class Error extends ACode {
 
     public String generateListing()
     {
-        return "ERROR: " + errorMessage + "\n"; 
+        return "ERROR "  + "line " + errorLine  + ": " + errorMessage + "\n"; 
     } 
 
 

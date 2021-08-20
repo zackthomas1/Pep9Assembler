@@ -27,10 +27,13 @@ public class Translator {
     private ACode aCode; 
     private ArrayList<ACode> codeTable;
 
+    private int currentline;
+
     public Translator(InBuffer inBuffer)
     {
         b = inBuffer; 
         codeTable = new ArrayList<>(); 
+        currentline = 0;
     }
 
     // Sets aCode and returns boolean true if end statement is processed 
@@ -43,6 +46,7 @@ public class Translator {
         AToken aToken; 
         aCode = new EmptyInstr(); 
         ParseState state = ParseState.PS_START; 
+        ++currentline;
 
         do{
             aToken = t.getToken();
@@ -66,17 +70,17 @@ public class Translator {
                             localMnemon = Maps.nonunaryMnemonTable.get(identStr.toLowerCase());
                             state = ParseState.PS_FUNCTION; 
                         } else{
-                            aCode = new Error("Invalid operation mnemonic.");
+                            aCode = new Error("Invalid operation mnemonic.", currentline);
                         }
                     }else if (aToken instanceof TEmpty){
                         aCode = new EmptyInstr();
                         state = ParseState.PS_FINISH;
                     } else if (aToken instanceof TInvalid){
                         TInvalid invalidToken = (TInvalid) aToken; 
-                        aCode = new Error(invalidToken.getErrorMessage());
+                        aCode = new Error(invalidToken.getErrorMessage(), currentline);
                     }
                     else { 
-                        aCode = new Error("Line must begin with function identifier");
+                        aCode = new Error("Line must begin with function identifier", currentline);
                     }
                     break;
                 case PS_FUNCTION: 
@@ -98,9 +102,9 @@ public class Translator {
                     }
                     else if (aToken instanceof TInvalid){
                         TInvalid invalidToken = (TInvalid) aToken; 
-                        aCode = new Error(invalidToken.getErrorMessage());
+                        aCode = new Error(invalidToken.getErrorMessage(), currentline);
                     }else{ 
-                        aCode = new Error("Operand invalid. Must be integer, hexadecimal, or identifier.");
+                        aCode = new Error("Operand invalid. Must be integer, hexadecimal, or identifier.", currentline);
                     }
                     break; 
                 case PS_NON_UNARY1:
@@ -115,31 +119,30 @@ public class Translator {
                                 state = ParseState.PS_NON_UNARY2;    
                             }else{
                                 aCode = new Error(String.format("'%s' is an invalid addressing mode for '%s' operation.", 
-                                    Maps.addressModeStringTable.get(localAddrArg), Maps.mnemonStringTable.get(localMnemon)));
+                                    Maps.addressModeStringTable.get(localAddrArg), Maps.mnemonStringTable.get(localMnemon)), currentline);
                             }
                         }else
                         {
-                            aCode = new Error("Invalid addressing mode.");
+                            aCode = new Error("Invalid addressing mode.", currentline);
                         }
                     }else if (aToken instanceof TEmpty){
                         aCode = new NonUnaryInstr(localMnemon, localOperandArg);
                         state = ParseState.PS_FINISH;
                     }
                     else{ 
-                        aCode = new Error("Invalid addressing mode following first arugment."); 
+                        aCode = new Error("Invalid addressing mode following first arugment.", currentline); 
                     }
                     break;       
                 case PS_NON_UNARY2: 
                     if (aToken instanceof TEmpty){
                         state = ParseState.PS_FINISH;
                     }else{
-                        aCode = new Error("Invalid character/s folllowing addressing mode.");
+                        aCode = new Error("Invalid character/s folllowing addressing mode.", currentline);
                     }
                     break;
                 case PS_DOT1: 
                     // special case for .BLOCK operation
-                    if (localMnemon == Mnemon.M_BLOCK)
-                    {
+                    if (localMnemon == Mnemon.M_BLOCK){
                         if (aToken instanceof TInteger) {
                             TInteger localTInteger = (TInteger) aToken;
                             if (localTInteger.getIntValue() > 0 )
@@ -147,12 +150,13 @@ public class Translator {
                                 localOperandArg = new IntArg(localTInteger.getIntValue());
                                 state = ParseState.PS_DOT2;
                             } else{ 
-                                aCode = new Error("Invalid operand. Integer following '.BLOCK' must be positive.");
+                                aCode = new Error("Invalid operand. Integer following '.BLOCK' must be positive.", currentline);
                             }
                         }else{ 
-                            aCode = new Error("Invalid operand. '.BLOCK' must be followed by integer.");
+                            aCode = new Error("Invalid operand. '.BLOCK' must be followed by integer.", currentline);
                         }
                     }
+
                     if (aToken instanceof TInteger) {
                         TInteger localTInteger = (TInteger) aToken;
                         localOperandArg = new IntArg(localTInteger.getIntValue());
@@ -165,7 +169,7 @@ public class Translator {
                         aCode = new UnaryInstr(localMnemon);
                         state = ParseState.PS_FINISH;
                     } else {
-                        aCode = new Error("Invalid operand specifier following dot command. Must be interger or hexadecimal.");
+                        aCode = new Error("Invalid operand specifier following dot command. Must be interger or hexadecimal.", currentline);
                     }
                     break; 
                 case PS_DOT2: 
@@ -173,7 +177,7 @@ public class Translator {
                         aCode = new NonUnaryInstr(localMnemon, localOperandArg);
                         state = ParseState.PS_FINISH;
                     }else{ 
-                        aCode = new Error("Invalid character/s following dot command.");
+                        aCode = new Error("Invalid character/s following dot command.", currentline);
                     }
                     break;
                 case PS_UNARY: 
@@ -182,7 +186,7 @@ public class Translator {
                         terminate = localMnemon == Mnemon.M_END;
                         state = ParseState.PS_FINISH;
                     }else{
-                        aCode = new Error("Invalid argument following unary instruction. Unary instructions take no arguments/s.");
+                        aCode = new Error("Invalid argument following unary instruction. Unary instructions take no arguments/s.", currentline);
                     }
                     break;
                 default:
@@ -213,7 +217,7 @@ public class Translator {
         
         // Generate error if input program does not end with ".END" command
         if(!terminateWithEnd){
-            aCode = new Error("Missing \"end\" sentinel"); 
+            aCode = new Error("Missing \"end\" sentinel", currentline); 
             codeTable.add(aCode); 
             numErrors++;
         }
