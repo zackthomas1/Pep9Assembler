@@ -4,8 +4,6 @@ import main.parser.AddrMode;
 import main.parser.Maps;
 import main.parser.Mnemon;
 import main.parser.args.AArg;
-import main.parser.args.HexArg;
-import main.parser.args.IntArg;
 import main.utility.Util;
 
 public class NonUnaryInstr extends ACode{
@@ -35,9 +33,6 @@ public class NonUnaryInstr extends ACode{
 
         switch(mnemonic)
         {
-            case M_BLOCK:
-                hexCode = "00";
-                break;
             case M_BR:      // Operand Specifier
                 hexCode = "12";
                 break;
@@ -53,7 +48,10 @@ public class NonUnaryInstr extends ACode{
             case M_CALL: 
                 hexCode = "24";
                 break;
-            case M_CPWA:    // Operand Specifier and Addressing Mode
+            case M_ADDA:    // Operand Specifier and Addressing Mode
+                hexCode = "60";
+                break;
+            case M_CPWA:    
                 hexCode = "A0";
                 break;
             case M_DECI: 
@@ -62,17 +60,14 @@ public class NonUnaryInstr extends ACode{
             case M_DECO: 
                 hexCode = "38";
                 break;
-            case M_ADDA: 
-                hexCode = "60";
+            case M_LDWA: 
+                hexCode = "C0";
                 break;
             case M_SUBA: 
                 hexCode = "70";
                 break;
             case M_STWA: 
                 hexCode = "E1";
-                break;
-            case M_LDWA: 
-                hexCode = "C0";
                 break;
             default:        // Should not occur
                 hexCode = " ";
@@ -83,15 +78,7 @@ public class NonUnaryInstr extends ACode{
         // add addressing mode 
         hexCode = Util.intToHexStr(Util.hexStrToInt(hexCode) + Maps.MnemonValidAddresses.get(mnemonic).indexOf(address));
 
-
         // add operand specifier
-        // if (operandSpecifier instanceof IntArg){
-        //     IntArg integerArg = (IntArg) operandSpecifier;
-        //     hexCode += Util.intToHexStr(integerArg.getIntValue());
-        // }else if (operandSpecifier instanceof HexArg){
-        //     HexArg hexArg = (HexArg) operandSpecifier;
-        //     hexCode += hexArg.getHexStr();
-        // }
         hexCode += " " + Util.formatOperandSpecifier(operandSpecifier) + '\n';
 
         return hexCode;

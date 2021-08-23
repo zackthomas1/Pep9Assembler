@@ -15,6 +15,7 @@ import main.parser.args.AArg;
 import main.parser.args.HexArg;
 import main.parser.args.IntArg;
 import main.parser.codes.ACode;
+import main.parser.codes.Const;
 import main.parser.codes.DotCommandInstr;
 import main.parser.codes.EmptyInstr;
 import main.parser.codes.Error;
@@ -93,7 +94,7 @@ public class Translator {
                     if (aToken instanceof TInteger){
                         TInteger localTInteger = (TInteger) aToken;
 
-                        if(localTInteger.getIntValue() < -32768 || localTInteger.getIntValue() > 65535){
+                        if(localTInteger.getIntValue() < Const.TWOBYTEMIN || localTInteger.getIntValue() > Const.TWOBYTEMAX){
                             aCode = new Error("Integer value outside of valid range. Integer must be between -32768 and 65535.", currentline);
                         }else{
                             localOperandArg = new IntArg(localTInteger.getIntValue());
@@ -102,7 +103,7 @@ public class Translator {
                     }else if (aToken instanceof THex){
                         THex localTHex = (THex) aToken;
 
-                        if(localTHex.getIntValue() <-32768 || localTHex.getIntValue() > 65535){
+                        if(localTHex.getIntValue() < Const.TWOBYTEMIN || localTHex.getIntValue() > Const.TWOBYTEMAX){
                             aCode = new Error("Hex value outside of valid range. Hex must be between 0x0000(hex) 0(dec) and 0xFFFF(hex) 65535(dec).", currentline);
                         }else{
                             localOperandArg = new HexArg(localTHex.getIntValue());
@@ -156,7 +157,7 @@ public class Translator {
                     if (aToken instanceof TInteger) {
                         TInteger localTInteger = (TInteger) aToken;
                         
-                        if(localTInteger.getIntValue() < -32768 || localTInteger.getIntValue() > 65535){
+                        if(localTInteger.getIntValue() < Const.TWOBYTEMIN || localTInteger.getIntValue() > Const.TWOBYTEMAX){
                             aCode = new Error("Integer value outside of valid range. Integer must be between -32768 and 65535.", currentline);
                         }else{
                             localOperandArg = new IntArg(localTInteger.getIntValue());
@@ -165,7 +166,7 @@ public class Translator {
                     } else if (aToken instanceof THex) {
                         THex localTHex = (THex) aToken;
                         
-                        if(localTHex.getIntValue() <-32768 || localTHex.getIntValue() > 65535){
+                        if(localTHex.getIntValue() < Const.TWOBYTEMIN || localTHex.getIntValue() > Const.TWOBYTEMAX){
                             aCode = new Error("Hex value outside of valid range. Hex must be between 0x0000(hex) 0(dec) and 0xFFFF(hex) 65535(dec).", currentline);
                         }else{
                             localOperandArg = new HexArg(localTHex.getIntValue());

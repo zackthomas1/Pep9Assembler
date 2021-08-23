@@ -46,11 +46,24 @@ public class App {
         AToken aToken = t.getToken(); 
         
         System.out.println(aToken.getDescribtion());
+    }
 
+    public static void test_05()
+    {    
+        InBuffer inBuffer = new InBuffer("BR 0x007, i \n .BLOCK 4 \n deci 0x2   ,d \n LDWA   +2, d \n AdDa -5,   i \n STWA    0x0004, d \n       DECO   0x04, d \n Stop \n .End");
+        Translator tr = new Translator(inBuffer); 
+        tr.translate();
+    }
+
+    public static void test_06()
+    {    
+        InBuffer inBuffer = new InBuffer(" AdDa -5, i \n Stop \n .End");
+        Translator tr = new Translator(inBuffer); 
+        tr.translate();
     }
 
 
     public static void main(String[] args) throws Exception {
-        test_02();
+        test_05();
     }
 }

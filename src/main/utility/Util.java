@@ -3,6 +3,7 @@ package main.utility;
 import main.parser.args.AArg;
 import main.parser.args.HexArg;
 import main.parser.args.IntArg;
+import main.parser.codes.Const;
 
 public class Util {
     
@@ -130,6 +131,12 @@ public class Util {
             operandValue = hexArg.getHexValue();
         }else{
             operandValue = 0;
+        }
+
+        // signed values
+        if (operandValue < 0)
+        {
+            operandValue = Const.TWOBYTEMAX - (-1 * (operandValue + 1));
         }
         
         String leftbyte = intToHexStr(operandValue / 256);

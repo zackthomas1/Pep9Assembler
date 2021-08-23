@@ -38,7 +38,7 @@ public class DotCommandInstr extends ACode {
 
                 }else if (operandSpecifier instanceof HexArg){
                     HexArg hexArg = (HexArg) operandSpecifier;
-                    hexCode = "00".repeat(hexArg.getHexValue());
+                    hexCode = "00 ".repeat(hexArg.getHexValue());
                 }
                 hexCode += "\n";
                 break;
