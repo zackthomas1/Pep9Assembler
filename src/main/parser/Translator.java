@@ -15,6 +15,7 @@ import main.parser.args.AArg;
 import main.parser.args.HexArg;
 import main.parser.args.IntArg;
 import main.parser.codes.ACode;
+import main.parser.codes.DotCommandInstr;
 import main.parser.codes.EmptyInstr;
 import main.parser.codes.Error;
 import main.parser.codes.NonUnaryInstr;
@@ -91,12 +92,22 @@ public class Translator {
                     // }
                     if (aToken instanceof TInteger){
                         TInteger localTInteger = (TInteger) aToken;
-                        localOperandArg = new IntArg(localTInteger.getIntValue());
-                        state = ParseState.PS_NON_UNARY1; 
+
+                        if(localTInteger.getIntValue() < -32768 || localTInteger.getIntValue() > 65535){
+                            aCode = new Error("Integer value outside of valid range. Integer must be between -32768 and 65535.", currentline);
+                        }else{
+                            localOperandArg = new IntArg(localTInteger.getIntValue());
+                            state = ParseState.PS_NON_UNARY1; 
+                        }
                     }else if (aToken instanceof THex){
                         THex localTHex = (THex) aToken;
-                        localOperandArg = new HexArg(localTHex.getIntValue());
-                        state = ParseState.PS_NON_UNARY1; 
+
+                        if(localTHex.getIntValue() <-32768 || localTHex.getIntValue() > 65535){
+                            aCode = new Error("Hex value outside of valid range. Hex must be between 0x0000(hex) 0(dec) and 0xFFFF(hex) 65535(dec).", currentline);
+                        }else{
+                            localOperandArg = new HexArg(localTHex.getIntValue());
+                            state = ParseState.PS_NON_UNARY1; 
+                        }
                     }else if (aToken instanceof TEmpty){
                         state = ParseState.PS_FINISH;
                     }
@@ -104,7 +115,7 @@ public class Translator {
                         TInvalid invalidToken = (TInvalid) aToken; 
                         aCode = new Error(invalidToken.getErrorMessage(), currentline);
                     }else{ 
-                        aCode = new Error("Operand invalid. Must be integer, hexadecimal, or identifier.", currentline);
+                        aCode = new Error("Operand invalid. Must be integer, hexadecimal, or symbol.", currentline);
                     }
                     break; 
                 case PS_NON_UNARY1:
@@ -113,6 +124,7 @@ public class Translator {
                         if (Maps.addressModeTable.containsKey(localTAddr.getStringValue()))
                         {
                             localAddrArg = Maps.addressModeTable.get(localTAddr.getStringValue()); 
+                            
                             if (Maps.MnemonValidAddresses.get(localMnemon).contains(localAddrArg))
                             {
                                 aCode = new NonUnaryInstr(localMnemon, localOperandArg, localAddrArg);
@@ -141,32 +153,26 @@ public class Translator {
                     }
                     break;
                 case PS_DOT1: 
-                    // special case for .BLOCK operation
-                    if (localMnemon == Mnemon.M_BLOCK){
-                        if (aToken instanceof TInteger) {
-                            TInteger localTInteger = (TInteger) aToken;
-                            if (localTInteger.getIntValue() > 0 )
-                            {
-                                localOperandArg = new IntArg(localTInteger.getIntValue());
-                                state = ParseState.PS_DOT2;
-                            } else{ 
-                                aCode = new Error("Invalid operand. Integer following '.BLOCK' must be positive.", currentline);
-                            }
-                        }else{ 
-                            aCode = new Error("Invalid operand. '.BLOCK' must be followed by integer.", currentline);
-                        }
-                    }
-
                     if (aToken instanceof TInteger) {
                         TInteger localTInteger = (TInteger) aToken;
-                        localOperandArg = new IntArg(localTInteger.getIntValue());
-                        state = ParseState.PS_DOT2; 
+                        
+                        if(localTInteger.getIntValue() < -32768 || localTInteger.getIntValue() > 65535){
+                            aCode = new Error("Integer value outside of valid range. Integer must be between -32768 and 65535.", currentline);
+                        }else{
+                            localOperandArg = new IntArg(localTInteger.getIntValue());
+                            state = ParseState.PS_DOT2; 
+                        }
                     } else if (aToken instanceof THex) {
                         THex localTHex = (THex) aToken;
-                        localOperandArg = new HexArg(localTHex.getIntValue());
-                        state = ParseState.PS_DOT2; 
+                        
+                        if(localTHex.getIntValue() <-32768 || localTHex.getIntValue() > 65535){
+                            aCode = new Error("Hex value outside of valid range. Hex must be between 0x0000(hex) 0(dec) and 0xFFFF(hex) 65535(dec).", currentline);
+                        }else{
+                            localOperandArg = new HexArg(localTHex.getIntValue());
+                            state = ParseState.PS_DOT2; 
+                        }
                     } else if (aToken instanceof TEmpty){
-                        aCode = new UnaryInstr(localMnemon);
+                        aCode = new DotCommandInstr(localMnemon);
                         state = ParseState.PS_FINISH;
                     } else {
                         aCode = new Error("Invalid operand specifier following dot command. Must be interger or hexadecimal.", currentline);
@@ -174,7 +180,7 @@ public class Translator {
                     break; 
                 case PS_DOT2: 
                     if (aToken instanceof TEmpty){
-                        aCode = new NonUnaryInstr(localMnemon, localOperandArg);
+                        aCode = new DotCommandInstr(localMnemon, localOperandArg);
                         state = ParseState.PS_FINISH;
                     }else{ 
                         aCode = new Error("Invalid character/s following dot command.", currentline);

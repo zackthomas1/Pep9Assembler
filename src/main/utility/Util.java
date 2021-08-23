@@ -1,4 +1,9 @@
 package main.utility;
+
+import main.parser.args.AArg;
+import main.parser.args.HexArg;
+import main.parser.args.IntArg;
+
 public class Util {
     
 
@@ -111,6 +116,25 @@ public class Util {
 
         hexcode.reverse();
         return hexcode.toString();
+    }
+
+    public static String formatOperandSpecifier(AArg os)
+    {
+        int operandValue; 
         
+        if (os instanceof IntArg){
+            IntArg integerArg = (IntArg) os;
+            operandValue = integerArg.getIntValue();
+        }else if(os instanceof HexArg){
+            HexArg hexArg = (HexArg) os;
+            operandValue = hexArg.getHexValue();
+        }else{
+            operandValue = 0;
+        }
+        
+        String leftbyte = intToHexStr(operandValue / 256);
+        String rightbyte = intToHexStr(operandValue % 256);
+
+        return leftbyte + " " + rightbyte;
     }
 }

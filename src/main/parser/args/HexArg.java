@@ -5,22 +5,32 @@ import main.utility.Util;
 public class HexArg extends AArg {
 
     private final int hexValue; 
-    private final String hexCode; 
+    private final String hexStr; 
 
     public HexArg(int hv)
     {
         hexValue = hv;
-        hexCode = Util.intToHexStr(hv);
+        hexStr = Util.intToHexStr(hv);
     }
 
-    public HexArg(String hc)
+    public HexArg(String hstr)
     {
-        hexValue = Util.hexStrToInt(hc);
-        hexCode = hc;
+        hexValue = Util.hexStrToInt(hstr);
+        hexStr = hstr;
+    }
+
+    public int getHexValue()
+    {
+        return hexValue; 
+    }
+
+    public String getHexStr()
+    {
+        return hexStr;
     }
 
     public String generateListing()
     {
-        return String.format("0x%s", hexCode); 
+        return String.format("0x%s", hexStr); 
     }
 }

@@ -19,6 +19,4 @@ public class Error extends ACode {
     {
         return "ERROR "  + "line " + errorLine  + ": " + errorMessage + "\n"; 
     } 
-
-
 }

@@ -9,6 +9,11 @@ public class IntArg extends AArg {
         intValue = i;
     }
 
+    public int getIntValue()
+    {
+        return intValue;
+    }
+
     public String generateListing()
     {
         return String.format("%d", intValue);

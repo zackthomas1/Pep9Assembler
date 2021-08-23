@@ -22,8 +22,6 @@ public class UnaryInstr extends ACode {
                 return "0C\n";
             case M_STOP:
                 return "00\n"; 
-            case M_END: 
-                return "zz\n";
             default: 
                 return "";  //Should not occur.
         }

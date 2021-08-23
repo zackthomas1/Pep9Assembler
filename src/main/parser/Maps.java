@@ -56,16 +56,17 @@ public class Maps {
         addressModeTable.put("sx",  AddrMode.AM_SX);   // Stack-indexed 
         addressModeTable.put("sfx", AddrMode.AM_SFX);  // Stack-deferred indexed 
 
-
-        //
+        // mneomic strings
         mnemonStringTable = new EnumMap<>(Mnemon.class);
         // Unary
         mnemonStringTable.put(Mnemon.M_ASLA, "asla");   
         mnemonStringTable.put(Mnemon.M_ASRA, "asra");
         mnemonStringTable.put(Mnemon.M_STOP, "stop");
         
-        mnemonStringTable.put(Mnemon.M_BLOCK, ".block");    // dot commans
+        // Dot Commands
+        mnemonStringTable.put(Mnemon.M_BLOCK, ".block");  
         mnemonStringTable.put(Mnemon.M_END,   ".end");
+
         // Non-Unary
         mnemonStringTable.put(Mnemon.M_BR,   "br");         // single-argument
         mnemonStringTable.put(Mnemon.M_BRLT, "brlt");
@@ -81,7 +82,7 @@ public class Maps {
         mnemonStringTable.put(Mnemon.M_SUBA, "suba");
         mnemonStringTable.put(Mnemon.M_STWA, "stwa");
         
-        //
+        // Addressing Modes
         addressModeStringTable = new EnumMap<>(AddrMode.class); 
         addressModeStringTable.put(AddrMode.AM_I,   "i");   
         addressModeStringTable.put(AddrMode.AM_D,   "d");   
@@ -92,8 +93,7 @@ public class Maps {
         addressModeStringTable.put(AddrMode.AM_SX,  "sx");   
         addressModeStringTable.put(AddrMode.AM_SFX, "sfx");   
 
-
-        //
+        // 
         MnemonValidAddresses = new HashMap<>();
         // single-argument
         MnemonValidAddresses.put(Mnemon.M_BR, 

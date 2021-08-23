@@ -4,6 +4,9 @@ import main.parser.AddrMode;
 import main.parser.Maps;
 import main.parser.Mnemon;
 import main.parser.args.AArg;
+import main.parser.args.HexArg;
+import main.parser.args.IntArg;
+import main.utility.Util;
 
 public class NonUnaryInstr extends ACode{
 
@@ -15,7 +18,7 @@ public class NonUnaryInstr extends ACode{
     {
         mnemonic = mn; 
         operandSpecifier = os; 
-        address = AddrMode.AM_NONE; 
+        address = AddrMode.AM_I; 
     }
 
     public NonUnaryInstr (Mnemon mn, AArg os, AddrMode addr)
@@ -24,48 +27,80 @@ public class NonUnaryInstr extends ACode{
         operandSpecifier = os; 
         address =  addr;
     }
-
+    @Override
     public String generateCode()
     {
+
         String hexCode;
+
         switch(mnemonic)
         {
             case M_BLOCK:
-                hexCode = "00\n";
+                hexCode = "00";
+                break;
             case M_BR:      // Operand Specifier
-                hexCode = " ";
+                hexCode = "12";
+                break;
             case M_BRLT:
-                hexCode = " ";
+                hexCode = "16";
+                break;
             case M_BREQ:
-                hexCode = " ";
+                hexCode = "18";
+                break;
             case M_BRLE:
-                hexCode = " ";
+                hexCode = "14";
+                break;
             case M_CALL: 
-                hexCode = " ";
+                hexCode = "24";
+                break;
             case M_CPWA:    // Operand Specifier and Addressing Mode
-                hexCode = " ";
+                hexCode = "A0";
+                break;
             case M_DECI: 
-                hexCode = " ";
+                hexCode = "31";
+                break;
             case M_DECO: 
-                hexCode = " ";
+                hexCode = "38";
+                break;
             case M_ADDA: 
                 hexCode = "60";
+                break;
             case M_SUBA: 
                 hexCode = "70";
+                break;
             case M_STWA: 
-                hexCode = "E0";
+                hexCode = "E1";
+                break;
             case M_LDWA: 
                 hexCode = "C0";
+                break;
             default:        // Should not occur
                 hexCode = " ";
+                break;
+
         }
+
+        // add addressing mode 
+        hexCode = Util.intToHexStr(Util.hexStrToInt(hexCode) + Maps.MnemonValidAddresses.get(mnemonic).indexOf(address));
+
+
+        // add operand specifier
+        // if (operandSpecifier instanceof IntArg){
+        //     IntArg integerArg = (IntArg) operandSpecifier;
+        //     hexCode += Util.intToHexStr(integerArg.getIntValue());
+        // }else if (operandSpecifier instanceof HexArg){
+        //     HexArg hexArg = (HexArg) operandSpecifier;
+        //     hexCode += hexArg.getHexStr();
+        // }
+        hexCode += " " + Util.formatOperandSpecifier(operandSpecifier) + '\n';
 
         return hexCode;
     }
 
+    @Override
     public String generateListing()
     {
-        if (address == AddrMode.AM_NONE)
+        if (address == AddrMode.AM_I && Maps.MnemonValidAddresses.get(mnemonic).size() == 2)
         {
             return String.format("%s %s\n", Maps.mnemonStringTable.get(mnemonic), operandSpecifier.generateListing());
 
