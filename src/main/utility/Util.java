@@ -119,29 +119,52 @@ public class Util {
         return hexcode.toString();
     }
 
-    public static String formatOperandSpecifier(AArg os)
+    public static String formatWord(AArg os)
     {
         int operandValue; 
         
         if (os instanceof IntArg){
             IntArg integerArg = (IntArg) os;
             operandValue = integerArg.getIntValue();
+
+            // signed values
+            if (operandValue < 0){
+                operandValue = Const.TWOBYTEMAX - (-1 * (operandValue + 1));
+            }
         }else if(os instanceof HexArg){
             HexArg hexArg = (HexArg) os;
             operandValue = hexArg.getHexValue();
         }else{
             operandValue = 0;
         }
-
-        // signed values
-        if (operandValue < 0)
-        {
-            operandValue = Const.TWOBYTEMAX - (-1 * (operandValue + 1));
-        }
-        
+      
         String leftbyte = intToHexStr(operandValue / 256);
         String rightbyte = intToHexStr(operandValue % 256);
 
         return leftbyte + " " + rightbyte;
+    }
+
+    public static String formatByte(AArg os)
+    {
+        int operandValue; 
+        
+        if (os instanceof IntArg){
+            IntArg integerArg = (IntArg) os;
+            operandValue = integerArg.getIntValue();
+
+            // signed values
+            if (operandValue < 0){
+                operandValue = Const.TWOBYTEMAX - (-1 * (operandValue + 1));
+            }
+        }else if(os instanceof HexArg){
+            HexArg hexArg = (HexArg) os;
+            operandValue = hexArg.getHexValue();
+        }else{
+            operandValue = 0;
+        } 
+
+        String rightbyte = intToHexStr(operandValue % 256);
+
+        return rightbyte;
     }
 }

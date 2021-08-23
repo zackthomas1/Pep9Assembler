@@ -70,7 +70,7 @@ public class NonUnaryInstr extends ACode{
                 hexCode = "E1";
                 break;
             default:        // Should not occur
-                hexCode = " ";
+                hexCode = "";
                 break;
 
         }
@@ -79,7 +79,7 @@ public class NonUnaryInstr extends ACode{
         hexCode = Util.intToHexStr(Util.hexStrToInt(hexCode) + Maps.MnemonValidAddresses.get(mnemonic).indexOf(address));
 
         // add operand specifier
-        hexCode += " " + Util.formatOperandSpecifier(operandSpecifier) + '\n';
+        hexCode += " " + Util.formatWord(operandSpecifier) + '\n';
 
         return hexCode;
     }

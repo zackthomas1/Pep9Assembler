@@ -13,6 +13,7 @@ import main.lexanalyzer.tokens.THex;
 import main.lexanalyzer.tokens.TIdentifier;
 import main.lexanalyzer.tokens.TInteger;
 import main.lexanalyzer.tokens.TInvalid;
+import main.lexanalyzer.tokens.TSymbol;
 import main.utility.InBuffer;
 
 public class TokenizerTest {
@@ -236,4 +237,35 @@ public class TokenizerTest {
 
         assertTrue(aToken6 instanceof TInvalid);
     }
+
+    @Test
+    public void getTokenTSymbolTest()
+    {
+        InBuffer b1 = new InBuffer("cat:"); 
+        Tokenizer t1 = new Tokenizer(b1); 
+        
+        b1.getLine(); 
+        AToken aToken1 = t1.getToken();
+
+        assertTrue(aToken1 instanceof TSymbol);
+
+        InBuffer b2 = new InBuffer("cat :"); 
+        Tokenizer t2 = new Tokenizer(b2); 
+        
+        b2.getLine(); 
+        AToken aToken2 = t2.getToken();
+
+        assertFalse(aToken2 instanceof TSymbol);
+
+        InBuffer b3 = new InBuffer("CaR:"); 
+        Tokenizer t3 = new Tokenizer(b3); 
+        
+        b3.getLine(); 
+        AToken aToken3 = t3.getToken();
+
+        assertTrue(aToken3 instanceof TSymbol);
+
+
+    }
+
 }

@@ -35,10 +35,12 @@ public class DotCommandInstr extends ACode {
                 if (operandSpecifier instanceof IntArg){
                     IntArg integerArg = (IntArg) operandSpecifier;
                     hexCode = "00 ".repeat(integerArg.getIntValue());
+                    hexCode = hexCode.substring(0, hexCode.length()-1);
 
                 }else if (operandSpecifier instanceof HexArg){
                     HexArg hexArg = (HexArg) operandSpecifier;
                     hexCode = "00 ".repeat(hexArg.getHexValue());
+                    hexCode = hexCode.substring(0, hexCode.length()-1);
                 }
                 hexCode += "\n";
                 break;

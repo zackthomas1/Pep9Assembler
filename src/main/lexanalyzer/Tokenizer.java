@@ -9,6 +9,8 @@ import main.lexanalyzer.tokens.THex;
 import main.lexanalyzer.tokens.TIdentifier;
 import main.lexanalyzer.tokens.TInteger;
 import main.lexanalyzer.tokens.TInvalid;
+import main.lexanalyzer.tokens.TSymbol;
+import main.parser.codes.Const;
 
 public class Tokenizer {
     private final InBuffer b; 
@@ -55,7 +57,7 @@ public class Tokenizer {
                     }else if (nextChar == '\n'){
                         state = LexState.LS_STOP; 
                     }else if (nextChar != ' '){
-                        aToken = new TInvalid("LS_START: Invalid first character.");
+                        aToken = new TInvalid("LS_START: Invalid character.");
                     }
                     break;
                 case LS_INT1: 
@@ -70,15 +72,6 @@ public class Tokenizer {
                         state = LexState.LS_STOP;
                     }
                     break;
-                case LS_INT2:
-                    if(Util.isDigit(nextChar)){
-                        localIntValue = (localIntValue * 10) + (nextChar - '0');
-                    }else{
-                        b.backUpInput();
-                        aToken = new TInteger(sign * localIntValue);
-                        state = LexState.LS_STOP;
-                    }
-                    break; 
                 case LS_SIGN: 
                     if (Util.isDigit(nextChar)){
                         localIntValue = nextChar - '0';
@@ -87,10 +80,25 @@ public class Tokenizer {
                         aToken = new TInvalid("LS_SIGN: sign character must be followed by numerical to form valid integer.");
                     }
                     break; 
+                case LS_INT2:
+                    if(Util.isDigit(nextChar)){
+                        localIntValue = (localIntValue * 10) + (nextChar - '0');
+                        if ( localIntValue < Const.TWOBYTEMIN || localIntValue > Const.TWOBYTEMAX){
+                            aToken = new TInvalid("LS_INT2: Integer outside of valid two byte range -32768 to 65535.");
+                        }
+                    }else{
+                        b.backUpInput();
+                        aToken = new TInteger(sign * localIntValue);
+                        state = LexState.LS_STOP;
+                    }
+                    break; 
                 case LS_IDENT:
                     if (Util.isAlpha(nextChar) || Util.isDigit(nextChar)){
                         localStringValue.append(nextChar); 
-                    }else{
+                    }else if(nextChar == ':'){
+                        state = LexState.LS_SYMBOL;
+                    }
+                    else{
                         b.backUpInput();
                         aToken = new TIdentifier(localStringValue);
                         state = LexState.LS_STOP;
@@ -121,11 +129,20 @@ public class Tokenizer {
                         aToken = new TInvalid("LS_HEX1: '0x' must be followed by valid hexadecimal character 1-9 and a-f.");
                     }
                     break;
+                case LS_SYMBOL: 
+                    if( nextChar == ' ' || nextChar == '\n'){
+                        b.backUpInput();
+                        aToken = new TSymbol(localStringValue);
+                        state = LexState.LS_STOP;
+                    }else{
+                        aToken = new TInvalid("LS_SYMBOL: Invalid character following symbol declaration");
+                    }
+                    break;
                 case LS_HEX2: 
                     if(Util.isHexdigit(nextChar)){
                         localStringValue.append(nextChar);
                         localIntValue = (localIntValue * 16) + Util.hexCharToInt(nextChar);
-                        if (localIntValue > 65535){
+                        if (localIntValue > Const.TWOBYTEMAX){
                             aToken = new TInvalid("LS_HEX2: Hex value exceeded max value of FFFF(hex)/65535(dec)");
                         }
                         state = LexState.LS_HEX2;

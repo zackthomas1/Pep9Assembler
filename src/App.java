@@ -39,7 +39,7 @@ public class App {
 
     public static void test_04()
     {
-        InBuffer inBuffer = new InBuffer(",i"); 
+        InBuffer inBuffer = new InBuffer("cat:"); 
         Tokenizer t = new Tokenizer(inBuffer); 
         
         inBuffer.getLine(); 
@@ -50,7 +50,15 @@ public class App {
 
     public static void test_05()
     {    
-        InBuffer inBuffer = new InBuffer("BR 0x007, i \n .BLOCK 4 \n deci 0x2   ,d \n LDWA   +2, d \n AdDa -5,   i \n STWA    0x0004, d \n       DECO   0x04, d \n Stop \n .End");
+        InBuffer inBuffer = new InBuffer("BR 0x007, i \n ." + 
+                                    "BLOCK 4 \n" + 
+                                    "deci 0x2   ,d \n" + 
+                                    "LDWA   +2,  d \n" + 
+                                    "AdDa -5,   i \n" + 
+                                    "STWA    0x0004, d \n" +
+                                    "       DECO   0x04, d \n" +
+                                    "Stop \n" + 
+                                    ".End");
         Translator tr = new Translator(inBuffer); 
         tr.translate();
     }
@@ -64,6 +72,6 @@ public class App {
 
 
     public static void main(String[] args) throws Exception {
-        test_05();
+        test_04();
     }
 }
