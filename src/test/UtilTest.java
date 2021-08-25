@@ -5,6 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import org.junit.Test;
 
+import main.parser.args.IntArg;
 import main.utility.Util;
 
 public class UtilTest {
@@ -88,7 +89,44 @@ public class UtilTest {
         assertEquals("0F", Util.intToHexStr(15));
         assertEquals("A5C2", Util.intToHexStr(42434));
         assertEquals("05C2", Util.intToHexStr(1474));
+    }
 
+    @Test
+    public void fomatWordTest()
+    {
+        IntArg arg01 = new IntArg(5);
+        assertEquals("00 05", Util.formatWord(arg01.getIntValue()));
+
+        IntArg arg02 = new IntArg(-5);
+        assertEquals("FF FB", Util.formatWord(arg02.getIntValue()));
+
+        IntArg arg03 = new IntArg(15);
+        assertEquals("00 0F", Util.formatWord(arg03.getIntValue()));
+
+        IntArg arg04 = new IntArg(65535);
+        assertEquals("FF FF", Util.formatWord(arg04.getIntValue()));
+
+        IntArg arg05 = new IntArg(0);
+        assertEquals("00 00", Util.formatWord(arg05.getIntValue()));
+    }
+
+    @Test
+    public void formatByteTest()
+    {
+        IntArg arg01 = new IntArg(5);
+        assertEquals("05", Util.formatByte(arg01.getIntValue()));
+
+        IntArg arg02 = new IntArg(-5);
+        assertEquals("FB", Util.formatByte(arg02.getIntValue()));
+
+        IntArg arg03 = new IntArg(15);
+        assertEquals("0F", Util.formatByte(arg03.getIntValue()));
+
+        IntArg arg04 = new IntArg(65535);
+        assertEquals("FF", Util.formatByte(arg04.getIntValue()));
+
+        IntArg arg05 = new IntArg(0);
+        assertEquals("00", Util.formatByte(arg05.getIntValue()));
     }
 
 }

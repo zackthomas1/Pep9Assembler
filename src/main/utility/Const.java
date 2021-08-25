@@ -1,4 +1,4 @@
-package main.parser.codes;
+package main.utility;
 
 public class Const {
     

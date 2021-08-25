@@ -4,24 +4,24 @@ import main.utility.Util;
 
 public class HexArg extends AArg {
 
-    private final int hexValue; 
+    private final int intValue; 
     private final String hexStr; 
 
     public HexArg(int hv)
     {
-        hexValue = hv;
+        intValue = hv;
         hexStr = Util.intToHexStr(hv);
     }
 
     public HexArg(String hstr)
     {
-        hexValue = Util.hexStrToInt(hstr);
+        intValue = Util.hexStrToInt(hstr);
         hexStr = hstr;
     }
 
-    public int getHexValue()
+    public int getIntValue()
     {
-        return hexValue; 
+        return intValue; 
     }
 
     public String getHexStr()

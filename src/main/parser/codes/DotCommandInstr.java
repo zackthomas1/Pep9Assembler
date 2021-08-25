@@ -16,12 +16,15 @@ public class DotCommandInstr extends ACode {
     {
         mnemonic = mn; 
         operandSpecifier = new EmptyArg();
+        byteSize = setInstrByteSize();
     }
 
     public DotCommandInstr(Mnemon mn, AArg os)
     {
         mnemonic = mn; 
         operandSpecifier = os;
+        
+        byteSize = setInstrByteSize();
     }
 
     @Override
@@ -39,7 +42,7 @@ public class DotCommandInstr extends ACode {
 
                 }else if (operandSpecifier instanceof HexArg){
                     HexArg hexArg = (HexArg) operandSpecifier;
-                    hexCode = "00 ".repeat(hexArg.getHexValue());
+                    hexCode = "00 ".repeat(hexArg.getIntValue());
                     hexCode = hexCode.substring(0, hexCode.length()-1);
                 }
                 hexCode += "\n";
@@ -63,7 +66,24 @@ public class DotCommandInstr extends ACode {
         }
     }
 
-
+    private int setInstrByteSize()
+    {
+        if (mnemonic == Mnemon.M_BLOCK)
+        {
+            if (operandSpecifier instanceof IntArg){
+                IntArg integerArg = (IntArg) operandSpecifier;
+                return integerArg.getIntValue();
+            }else if (operandSpecifier instanceof HexArg){
+                HexArg hexArg = (HexArg) operandSpecifier;
+                return hexArg.getIntValue();
+            }else
+                return -1;
+        }else if (mnemonic == Mnemon.M_END){
+            return 0;
+        }else{
+            return -1;
+        }
+    }
 
 
     

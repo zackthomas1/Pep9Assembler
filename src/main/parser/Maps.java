@@ -17,7 +17,11 @@ public class Maps {
     public static final Map<Mnemon, String> mnemonStringTable; 
     public static final Map<AddrMode, String> addressModeStringTable; 
 
+    public static Map<String, Integer> symbolTable;
+
     static{
+
+        symbolTable = new HashMap<>();
 
         // Unary
         unaryMnemonTable = new HashMap<>();
@@ -122,6 +126,8 @@ public class Maps {
         MnemonValidAddresses.put(Mnemon.M_STWA, 
             new ArrayList<AddrMode>(Arrays.asList(AddrMode.AM_D,AddrMode.AM_N,AddrMode.AM_S,AddrMode.AM_SF,AddrMode.AM_X,AddrMode.AM_SX,AddrMode.AM_SFX)));
 
-    }
+    
+    
+        }
 
 }

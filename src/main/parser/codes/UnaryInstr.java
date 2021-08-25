@@ -10,6 +10,7 @@ public class UnaryInstr extends ACode {
     public UnaryInstr(Mnemon mn)
     {
         mnemonic = mn; 
+        byteSize = 1;
     }
     
     public String generateCode()

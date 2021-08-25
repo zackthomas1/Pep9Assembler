@@ -1,10 +1,5 @@
 package main.utility;
 
-import main.parser.args.AArg;
-import main.parser.args.HexArg;
-import main.parser.args.IntArg;
-import main.parser.codes.Const;
-
 public class Util {
     
 
@@ -118,53 +113,31 @@ public class Util {
         hexcode.reverse();
         return hexcode.toString();
     }
+   
+    public static String formatWord(int i)
+    {    
+        // signed values
+        if (i < 0){
+            i = Const.TWOBYTEMAX - (-1 * (i + 1));
+        } 
 
-    public static String formatWord(AArg os)
-    {
-        int operandValue; 
-        
-        if (os instanceof IntArg){
-            IntArg integerArg = (IntArg) os;
-            operandValue = integerArg.getIntValue();
-
-            // signed values
-            if (operandValue < 0){
-                operandValue = Const.TWOBYTEMAX - (-1 * (operandValue + 1));
-            }
-        }else if(os instanceof HexArg){
-            HexArg hexArg = (HexArg) os;
-            operandValue = hexArg.getHexValue();
-        }else{
-            operandValue = 0;
-        }
-      
-        String leftbyte = intToHexStr(operandValue / 256);
-        String rightbyte = intToHexStr(operandValue % 256);
+        String leftbyte = intToHexStr(i / 256);
+        String rightbyte = intToHexStr(i % 256);
 
         return leftbyte + " " + rightbyte;
     }
 
-    public static String formatByte(AArg os)
-    {
-        int operandValue; 
-        
-        if (os instanceof IntArg){
-            IntArg integerArg = (IntArg) os;
-            operandValue = integerArg.getIntValue();
 
-            // signed values
-            if (operandValue < 0){
-                operandValue = Const.TWOBYTEMAX - (-1 * (operandValue + 1));
-            }
-        }else if(os instanceof HexArg){
-            HexArg hexArg = (HexArg) os;
-            operandValue = hexArg.getHexValue();
-        }else{
-            operandValue = 0;
+    public static String formatByte(int i)
+    {
+        // signed values
+        if (i < 0){
+            i = Const.TWOBYTEMAX - (-1 * (i + 1));
         } 
 
-        String rightbyte = intToHexStr(operandValue % 256);
+        String rightbyte = intToHexStr(i % 256);
 
         return rightbyte;
     }
+
 }

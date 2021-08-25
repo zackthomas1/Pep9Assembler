@@ -2,16 +2,21 @@ package main.parser.args;
 
 public class IdentArg extends AArg  
 {  
-    private final String identValue;
+    private final String identStr;
 
     public IdentArg(String str)
     {
-        identValue = str;
+        identStr = str;
     }
 
     public String generateListing()
     {
-        return identValue;
+        return identStr;
     } 
+
+    public String getIdentStr()
+    {
+        return identStr;
+    }
 
 }

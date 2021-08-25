@@ -4,6 +4,9 @@ import main.parser.AddrMode;
 import main.parser.Maps;
 import main.parser.Mnemon;
 import main.parser.args.AArg;
+import main.parser.args.HexArg;
+import main.parser.args.IdentArg;
+import main.parser.args.IntArg;
 import main.utility.Util;
 
 public class NonUnaryInstr extends ACode{
@@ -17,6 +20,7 @@ public class NonUnaryInstr extends ACode{
         mnemonic = mn; 
         operandSpecifier = os; 
         address = AddrMode.AM_I; 
+        byteSize = 3;
     }
 
     public NonUnaryInstr (Mnemon mn, AArg os, AddrMode addr)
@@ -24,6 +28,7 @@ public class NonUnaryInstr extends ACode{
         mnemonic = mn; 
         operandSpecifier = os; 
         address =  addr;
+        byteSize = 3;
     }
     @Override
     public String generateCode()
@@ -79,7 +84,18 @@ public class NonUnaryInstr extends ACode{
         hexCode = Util.intToHexStr(Util.hexStrToInt(hexCode) + Maps.MnemonValidAddresses.get(mnemonic).indexOf(address));
 
         // add operand specifier
-        hexCode += " " + Util.formatWord(operandSpecifier) + '\n';
+        if (operandSpecifier instanceof IntArg){
+            IntArg integerArg = (IntArg) operandSpecifier;
+            hexCode += " " + Util.formatWord(integerArg.getIntValue()) + '\n';
+        }else if(operandSpecifier instanceof HexArg){
+            HexArg hexArg = (HexArg) operandSpecifier;
+            hexCode += " " + Util.formatWord(hexArg.getIntValue()) + '\n';
+        }else if(operandSpecifier instanceof IdentArg){
+            IdentArg identArg = (IdentArg) operandSpecifier;
+            hexCode += " " + Util.formatWord(Maps.symbolTable.get(identArg.getIdentStr())) + '\n';
+        }else{
+            hexCode += " ";
+        }
 
         return hexCode;
     }

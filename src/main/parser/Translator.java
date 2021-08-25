@@ -1,8 +1,12 @@
 package main.parser;
 
 import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 
+import main.utility.Const;
 import main.utility.InBuffer;
+import main.utility.Util;
 import main.lexanalyzer.Tokenizer;
 import main.lexanalyzer.tokens.AToken;
 import main.lexanalyzer.tokens.TAddr;
@@ -11,11 +15,12 @@ import main.lexanalyzer.tokens.THex;
 import main.lexanalyzer.tokens.TIdentifier;
 import main.lexanalyzer.tokens.TInteger;
 import main.lexanalyzer.tokens.TInvalid;
+import main.lexanalyzer.tokens.TSymbol;
 import main.parser.args.AArg;
 import main.parser.args.HexArg;
+import main.parser.args.IdentArg;
 import main.parser.args.IntArg;
 import main.parser.codes.ACode;
-import main.parser.codes.Const;
 import main.parser.codes.DotCommandInstr;
 import main.parser.codes.EmptyInstr;
 import main.parser.codes.Error;
@@ -27,15 +32,17 @@ public class Translator {
     private final InBuffer b; 
     private Tokenizer t; 
     private ACode aCode; 
-    private ArrayList<ACode> codeTable;
 
+    private ArrayList<ACode> codeTable;
     private int currentline;
+    private int byteAdr;
 
     public Translator(InBuffer inBuffer)
     {
         b = inBuffer; 
         codeTable = new ArrayList<>(); 
         currentline = 0;
+        byteAdr = 0;
     }
 
     // Sets aCode and returns boolean true if end statement is processed 
@@ -48,10 +55,12 @@ public class Translator {
         AToken aToken; 
         aCode = new EmptyInstr(); 
         ParseState state = ParseState.PS_START; 
+        
         ++currentline;
 
         do{
             aToken = t.getToken();
+            
             switch (state)
             {
                 case PS_START:
@@ -67,14 +76,17 @@ public class Translator {
                             localMnemon = Maps.dotCmdMnemonTable.get(identStr.toLowerCase());
                             terminate = localMnemon == Mnemon.M_END;
                             state = ParseState.PS_DOT1; 
-                        } 
-                        else if (Maps.nonunaryMnemonTable.containsKey(identStr.toLowerCase())){
+                        } else if (Maps.nonunaryMnemonTable.containsKey(identStr.toLowerCase())){
                             localMnemon = Maps.nonunaryMnemonTable.get(identStr.toLowerCase());
                             state = ParseState.PS_FUNCTION; 
                         } else{
                             aCode = new Error("Invalid operation mnemonic.", currentline);
                         }
-                    }else if (aToken instanceof TEmpty){
+                    } else if (aToken instanceof TSymbol){
+                        TSymbol locaTSymbol = (TSymbol) aToken;
+                        Maps.symbolTable.put(locaTSymbol.getStringValue(), byteAdr);
+                        state = ParseState.PS_START;
+                    } else if (aToken instanceof TEmpty){
                         aCode = new EmptyInstr();
                         state = ParseState.PS_FINISH;
                     } else if (aToken instanceof TInvalid){
@@ -86,36 +98,39 @@ public class Translator {
                     }
                     break;
                 case PS_FUNCTION: 
-                    // if (aToken instanceof TIdentifier){ // use when implementing symbols
-                    //     TIdentifier localTIdentifier = (TIdentifier) aToken; 
-                    //     localFirstArg = new IdentArg(localTIdentifier.getStringValue()); 
-                    //     state = ParseState.PS_1ST_OPEND; 
-                    // }
-                    if (aToken instanceof TInteger){
+                    if (aToken instanceof TIdentifier){ // for symbols
+                        TIdentifier localTIdentifier = (TIdentifier) aToken; 
+                        
+                        if(Maps.symbolTable.containsKey(localTIdentifier.getStringValue())){
+                            localOperandArg = new IdentArg(localTIdentifier.getStringValue()); 
+                            state = ParseState.PS_NON_UNARY1; 
+                        } else{ 
+                            aCode = new Error(String.format("Invalid symbol. '%s' has not been declared",  localTIdentifier.getStringValue()), currentline);
+                        }
+                    }else if (aToken instanceof TInteger){
                         TInteger localTInteger = (TInteger) aToken;
 
                         if(localTInteger.getIntValue() < Const.TWOBYTEMIN || localTInteger.getIntValue() > Const.TWOBYTEMAX){
                             aCode = new Error("Integer value outside of valid range. Integer must be between -32768 and 65535.", currentline);
-                        }else{
+                        } else{
                             localOperandArg = new IntArg(localTInteger.getIntValue());
                             state = ParseState.PS_NON_UNARY1; 
                         }
-                    }else if (aToken instanceof THex){
+                    } else if (aToken instanceof THex){
                         THex localTHex = (THex) aToken;
 
                         if(localTHex.getIntValue() < Const.TWOBYTEMIN || localTHex.getIntValue() > Const.TWOBYTEMAX){
                             aCode = new Error("Hex value outside of valid range. Hex must be between 0x0000(hex) 0(dec) and 0xFFFF(hex) 65535(dec).", currentline);
-                        }else{
+                        } else{
                             localOperandArg = new HexArg(localTHex.getIntValue());
                             state = ParseState.PS_NON_UNARY1; 
                         }
-                    }else if (aToken instanceof TEmpty){
+                    } else if (aToken instanceof TEmpty){
                         state = ParseState.PS_FINISH;
-                    }
-                    else if (aToken instanceof TInvalid){
+                    } else if (aToken instanceof TInvalid){
                         TInvalid invalidToken = (TInvalid) aToken; 
                         aCode = new Error(invalidToken.getErrorMessage(), currentline);
-                    }else{ 
+                    } else{ 
                         aCode = new Error("Operand invalid. Must be integer, hexadecimal, or symbol.", currentline);
                     }
                     break; 
@@ -130,26 +145,24 @@ public class Translator {
                             {
                                 aCode = new NonUnaryInstr(localMnemon, localOperandArg, localAddrArg);
                                 state = ParseState.PS_NON_UNARY2;    
-                            }else{
+                            } else{
                                 aCode = new Error(String.format("'%s' is an invalid addressing mode for '%s' operation.", 
                                     Maps.addressModeStringTable.get(localAddrArg), Maps.mnemonStringTable.get(localMnemon)), currentline);
                             }
-                        }else
-                        {
+                        } else{
                             aCode = new Error("Invalid addressing mode.", currentline);
                         }
-                    }else if (aToken instanceof TEmpty){
+                    } else if (aToken instanceof TEmpty){
                         aCode = new NonUnaryInstr(localMnemon, localOperandArg);
                         state = ParseState.PS_FINISH;
-                    }
-                    else{ 
+                    } else{ 
                         aCode = new Error("Invalid addressing mode following first arugment.", currentline); 
                     }
                     break;       
                 case PS_NON_UNARY2: 
                     if (aToken instanceof TEmpty){
                         state = ParseState.PS_FINISH;
-                    }else{
+                    } else{
                         aCode = new Error("Invalid character/s folllowing addressing mode.", currentline);
                     }
                     break;
@@ -159,7 +172,7 @@ public class Translator {
                         
                         if(localTInteger.getIntValue() < Const.TWOBYTEMIN || localTInteger.getIntValue() > Const.TWOBYTEMAX){
                             aCode = new Error("Integer value outside of valid range. Integer must be between -32768 and 65535.", currentline);
-                        }else{
+                        } else{
                             localOperandArg = new IntArg(localTInteger.getIntValue());
                             state = ParseState.PS_DOT2; 
                         }
@@ -168,7 +181,7 @@ public class Translator {
                         
                         if(localTHex.getIntValue() < Const.TWOBYTEMIN || localTHex.getIntValue() > Const.TWOBYTEMAX){
                             aCode = new Error("Hex value outside of valid range. Hex must be between 0x0000(hex) 0(dec) and 0xFFFF(hex) 65535(dec).", currentline);
-                        }else{
+                        } else{
                             localOperandArg = new HexArg(localTHex.getIntValue());
                             state = ParseState.PS_DOT2; 
                         }
@@ -183,7 +196,7 @@ public class Translator {
                     if (aToken instanceof TEmpty){
                         aCode = new DotCommandInstr(localMnemon, localOperandArg);
                         state = ParseState.PS_FINISH;
-                    }else{ 
+                    } else{ 
                         aCode = new Error("Invalid character/s following dot command.", currentline);
                     }
                     break;
@@ -192,16 +205,18 @@ public class Translator {
                         aCode = new UnaryInstr(localMnemon);
                         terminate = localMnemon == Mnemon.M_END;
                         state = ParseState.PS_FINISH;
-                    }else{
+                    } else{
                         aCode = new Error("Invalid argument following unary instruction. Unary instructions take no arguments/s.", currentline);
                     }
                     break;
                 default:
-                    break;
-                
+                    break;    
             }
+
         }while(state != ParseState.PS_FINISH && !(aCode instanceof Error));
         
+        byteAdr += aCode.getByteSize();
+
         return terminate;
     }
 
@@ -231,10 +246,23 @@ public class Translator {
 
         // final output
         if (numErrors == 0){      
-            System.out.println("\nObject code:");
+            System.out.println("\n----------------");
+            System.out.println("\nObject code:");;
+            System.out.println("\n----------------");
             System.out.println(generateProgramCode());
+           
+            System.out.println("\n----------------------------------------------");
             System.out.println("\nProgram listing:");
+            System.out.println("\n----------------------------------------------");
+            System.out.println("\nAddr \t Symbol \t Mnemon \t Operand \t Comment");
             System.out.println(generateProgramListing());
+
+            System.out.println("\n----------------");
+            System.out.println("\nSymbol Table:");
+            System.out.println("\n----------------");
+            System.out.println("\nSymbol \t Value");
+            System.out.println(generateSymbolTable());
+
         }else{ 
             System.out.println(generateProgramErrorMessages());
         }
@@ -243,10 +271,10 @@ public class Translator {
     public String generateProgramCode()
     {   
         StringBuffer buf = new StringBuffer();
-
+    
         //  object code output  
         for (int i = 0; i < codeTable.size(); i++){
-            buf.append(String.format("%s", codeTable.get(i).generateCode()));
+            buf.append(String.format(" %s",  codeTable.get(i).generateCode()));
         }
 
         return buf.toString();
@@ -256,11 +284,26 @@ public class Translator {
     {
         StringBuffer buf = new StringBuffer();
 
+        int localMemAddressCount = 0;
+
         //  program listing output
         for(int i = 0; i < codeTable.size(); i++){
-            buf.append(String.format("%s", codeTable.get(i).generateListing()));
+            buf.append(String.format("%s \t  \t %s", Util.formatWord(localMemAddressCount), codeTable.get(i).generateListing()));
+            localMemAddressCount += codeTable.get(i).getByteSize();
         }
 
+        return buf.toString();
+    }
+
+    public String generateSymbolTable()
+    {
+        StringBuffer buf = new StringBuffer(); 
+
+        List<String> keys = Maps.symbolTable.keySet().stream().collect(Collectors.toList());
+
+        for(int i = 0; i < keys.size(); ++i){
+            buf.append(String.format("%s \t  %s\n", keys.get(i), Util.formatWord(Maps.symbolTable.get(keys.get(i)))));
+        }
         return buf.toString();
     }
 

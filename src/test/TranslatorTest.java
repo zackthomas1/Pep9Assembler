@@ -86,5 +86,15 @@ public class TranslatorTest {
 
         assertEquals("E1 FF FC\nE5 00 AF\nE3 00 05\nE6 00 A3\nzz\n", tr01.generateProgramCode());
     }
+
+    @Test
+    public void parseSymbol()
+    {
+        InBuffer b01 = new InBuffer("s: .Block 4 \n LDWA s, d \n.End");
+        Translator tr01 = new Translator(b01); 
+        tr01.translate();
+
+        assertEquals("C1 FF FC\nC0 00 AF\nC3 00 05\nC6 00 A3\nzz\n", tr01.generateProgramCode());
+    }
     
 }

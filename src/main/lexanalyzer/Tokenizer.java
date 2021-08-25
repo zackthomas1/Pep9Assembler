@@ -1,4 +1,5 @@
 package main.lexanalyzer;
+import main.utility.Const;
 import main.utility.InBuffer;
 import main.utility.Util;
 import main.lexanalyzer.tokens.AToken;
@@ -10,7 +11,6 @@ import main.lexanalyzer.tokens.TIdentifier;
 import main.lexanalyzer.tokens.TInteger;
 import main.lexanalyzer.tokens.TInvalid;
 import main.lexanalyzer.tokens.TSymbol;
-import main.parser.codes.Const;
 
 public class Tokenizer {
     private final InBuffer b; 
