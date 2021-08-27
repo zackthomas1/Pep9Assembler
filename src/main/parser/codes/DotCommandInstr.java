@@ -45,10 +45,9 @@ public class DotCommandInstr extends ACode {
                     hexCode = "00 ".repeat(hexArg.getIntValue());
                     hexCode = hexCode.substring(0, hexCode.length()-1);
                 }
-                hexCode += "\n";
                 break;
             case M_END: 
-                hexCode = "zz\n";
+                hexCode = "zz";
                 break;
             default:        // Should not occur
                 hexCode = " ";
@@ -60,9 +59,9 @@ public class DotCommandInstr extends ACode {
     @Override
     public String generateListing() {
         if(operandSpecifier instanceof EmptyArg){
-            return String.format("%s\n", Maps.mnemonStringTable.get(mnemonic));
+            return String.format("%s", Maps.mnemonStringTable.get(mnemonic));
         }else{
-            return String.format("%s %s\n", Maps.mnemonStringTable.get(mnemonic), operandSpecifier.generateListing());
+            return String.format("%s \t %s", Maps.mnemonStringTable.get(mnemonic), operandSpecifier.generateListing());
         }
     }
 

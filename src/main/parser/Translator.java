@@ -85,6 +85,7 @@ public class Translator {
                     } else if (aToken instanceof TSymbol){
                         TSymbol locaTSymbol = (TSymbol) aToken;
                         Maps.symbolTable.put(locaTSymbol.getStringValue(), byteAdr);
+                        Maps.symbolAddressTable.put(byteAdr, locaTSymbol.getStringValue());
                         state = ParseState.PS_START;
                     } else if (aToken instanceof TEmpty){
                         aCode = new EmptyInstr();
@@ -274,7 +275,7 @@ public class Translator {
     
         //  object code output  
         for (int i = 0; i < codeTable.size(); i++){
-            buf.append(String.format(" %s",  codeTable.get(i).generateCode()));
+            buf.append(String.format("%s\n",  codeTable.get(i).generateCode()));
         }
 
         return buf.toString();
@@ -286,9 +287,19 @@ public class Translator {
 
         int localMemAddressCount = 0;
 
+
         //  program listing output
         for(int i = 0; i < codeTable.size(); i++){
-            buf.append(String.format("%s \t  \t %s", Util.formatWord(localMemAddressCount), codeTable.get(i).generateListing()));
+
+            String symbolListing;
+            if(Maps.symbolAddressTable.containsKey(localMemAddressCount)){
+                symbolListing = Maps.symbolAddressTable.get(localMemAddressCount);
+            }else{
+                symbolListing = " ";
+            }
+
+            buf.append(String.format("%s \t %s \t\t %s\n", 
+                    Util.formatWord(localMemAddressCount), symbolListing, codeTable.get(i).generateListing()));
             localMemAddressCount += codeTable.get(i).getByteSize();
         }
 

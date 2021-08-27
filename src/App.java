@@ -72,7 +72,7 @@ public class App {
 
     public static void test_07()
     {    
-        InBuffer inBuffer = new InBuffer ("s: .Block 4 \n t: .Block 4 \n u: LDWA t, d \n.End");
+        InBuffer inBuffer = new InBuffer ("s: .Block 4 \n t: .Block 4 \n LDWA t, d \n.End");
         Translator tr = new Translator(inBuffer); 
         tr.translate();
     }

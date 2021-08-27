@@ -18,11 +18,11 @@ public class UnaryInstr extends ACode {
         switch(mnemonic)
         {
             case M_ASLA: 
-                return "0A\n";
+                return "0A";
             case M_ASRA: 
-                return "0C\n";
+                return "0C";
             case M_STOP:
-                return "00\n"; 
+                return "00"; 
             default: 
                 return "";  //Should not occur.
         }
@@ -30,7 +30,7 @@ public class UnaryInstr extends ACode {
 
     public String generateListing()
     {
-        return Maps.mnemonStringTable.get(mnemonic) + "\n";
+        return Maps.mnemonStringTable.get(mnemonic);
     } 
 
 }

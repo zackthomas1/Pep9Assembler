@@ -37,7 +37,6 @@ public class TranslatorTest {
         tr01.translate();
 
         assertEquals("0A\n0C\n00\nzz\n", tr01.generateProgramCode());
-        assertEquals("asla\nasra\nstop\n.end\n", tr01.generateProgramListing());
     }
     
     @Test
@@ -90,11 +89,11 @@ public class TranslatorTest {
     @Test
     public void parseSymbol()
     {
-        InBuffer b01 = new InBuffer("s: .Block 4 \n LDWA s, d \n.End");
+        InBuffer b01 = new InBuffer("s: .Block 4 \n t: .Block 4 \n LDWA t, d \n.End");
         Translator tr01 = new Translator(b01); 
         tr01.translate();
 
-        assertEquals("C1 FF FC\nC0 00 AF\nC3 00 05\nC6 00 A3\nzz\n", tr01.generateProgramCode());
+        assertEquals("00 00 00 00\n00 00 00 00\nC1 00 04\nzz\n", tr01.generateProgramCode());
     }
     
 }

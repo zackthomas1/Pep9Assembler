@@ -86,13 +86,13 @@ public class NonUnaryInstr extends ACode{
         // add operand specifier
         if (operandSpecifier instanceof IntArg){
             IntArg integerArg = (IntArg) operandSpecifier;
-            hexCode += " " + Util.formatWord(integerArg.getIntValue()) + '\n';
+            hexCode += " " + Util.formatWord(integerArg.getIntValue());
         }else if(operandSpecifier instanceof HexArg){
             HexArg hexArg = (HexArg) operandSpecifier;
-            hexCode += " " + Util.formatWord(hexArg.getIntValue()) + '\n';
+            hexCode += " " + Util.formatWord(hexArg.getIntValue());
         }else if(operandSpecifier instanceof IdentArg){
             IdentArg identArg = (IdentArg) operandSpecifier;
-            hexCode += " " + Util.formatWord(Maps.symbolTable.get(identArg.getIdentStr())) + '\n';
+            hexCode += " " + Util.formatWord(Maps.symbolTable.get(identArg.getIdentStr()));
         }else{
             hexCode += " ";
         }
@@ -105,11 +105,11 @@ public class NonUnaryInstr extends ACode{
     {
         if (address == AddrMode.AM_I && Maps.MnemonValidAddresses.get(mnemonic).size() == 2)
         {
-            return String.format("%s %s\n", Maps.mnemonStringTable.get(mnemonic), operandSpecifier.generateListing());
-
+            return String.format("%s \t\t %s", 
+                        Maps.mnemonStringTable.get(mnemonic), operandSpecifier.generateListing());
         } else {
-            return String.format("%s %s, %s\n", Maps.mnemonStringTable.get(mnemonic), 
-                        operandSpecifier.generateListing(), Maps.addressModeStringTable.get(address));
+            return String.format("%s \t\t %s, %s", 
+                        Maps.mnemonStringTable.get(mnemonic), operandSpecifier.generateListing(), Maps.addressModeStringTable.get(address));
         }
     }
     
