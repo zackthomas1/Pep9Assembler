@@ -213,7 +213,6 @@ public class Translator {
                 default:
                     break;    
             }
-
         }while(state != ParseState.PS_FINISH && !(aCode instanceof Error));
         
         byteAdr += aCode.getByteSize();
@@ -245,8 +244,14 @@ public class Translator {
             numErrors++;
         }
 
+        systemOutCompiledProgram(numErrors);
+
+    }
+
+    public void systemOutCompiledProgram(int errors)
+    {
         // final output
-        if (numErrors == 0){      
+        if (errors == 0){      
             System.out.println("\n----------------");
             System.out.println("\nObject code:");;
             System.out.println("\n----------------");
@@ -267,8 +272,9 @@ public class Translator {
         }else{ 
             System.out.println(generateProgramErrorMessages());
         }
-    }
 
+    }
+    
     public String generateProgramCode()
     {   
         StringBuffer buf = new StringBuffer();
