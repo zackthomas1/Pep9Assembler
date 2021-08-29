@@ -1,3 +1,4 @@
+package app;
 
 import java.net.URL;
 
@@ -14,7 +15,7 @@ public class App extends Application{
 	public void start(Stage stage) throws Exception
 	{
         FXMLLoader loader = new FXMLLoader();
-        loader.setLocation(new URL("file:///C:/Dev/Java/Pep9Assembler/javafx/pep9Assembler_gui_v001.fxml"));
+        loader.setLocation(new URL("file:///C:/Dev/Java/Pep9Assembler/src/app/fxml/pep9Assembler_gui_v001.fxml"));
         
         VBox vbox = loader.<VBox>load();
         Scene scene = new Scene(vbox);
