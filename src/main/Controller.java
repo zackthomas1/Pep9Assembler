@@ -31,11 +31,11 @@ public class Controller {
         Boolean translationValid = translator.translate();
 
         if (translationValid){
-            objectCodeTextArea.setText(translator.generateProgramCode());
-            programListingTextArea.setText(translator.generateProgramListing());
-            symbolTableTextArea.setText(translator.generateSymbolTable());    
+            objectCodeTextArea.setText(translator.outputObjectCode());
+            programListingTextArea.setText(translator.outputProgramListing());
+            symbolTableTextArea.setText(translator.outputSymbolTable());    
         }else{
-            errorsTextArea.setText(translator.generateProgramErrorMessages());   
+            errorsTextArea.setText(translator.outputProgramErrorMessages());   
         }
     }
     

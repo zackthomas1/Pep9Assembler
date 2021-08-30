@@ -28,7 +28,7 @@ public class TranslatorTest {
         
         assertTrue(tr01.translate());
         String string = "12 00 07\n00 00 00 00\n31 00 02\nC1 00 02\n60 FF FB\nE1 00 04\n39 00 04\n00\nzz\n";
-        assertEquals(string , tr01.generateProgramCode());
+        assertEquals(string , tr01.outputObjectCode());
     }
 
     @Test
@@ -38,7 +38,7 @@ public class TranslatorTest {
         Translator tr01 = new Translator(b01); 
         
         assertTrue(tr01.translate());
-        assertEquals("0A\n0C\n00\nzz\n", tr01.generateProgramCode());
+        assertEquals("0A\n0C\n00\nzz\n", tr01.outputObjectCode());
     }
     
     @Test 
@@ -53,7 +53,7 @@ public class TranslatorTest {
         Translator tr02 = new Translator(b02); 
 
         assertTrue(tr02.translate());
-        assertEquals("zz\n", tr02.generateProgramCode());
+        assertEquals("zz\n", tr02.outputObjectCode());
 
         InBuffer b03 = new InBuffer(".end 4"); 
         Translator tr03 = new Translator(b03); 
@@ -68,13 +68,13 @@ public class TranslatorTest {
         Translator tr01 = new Translator(b01); 
 
         assertTrue(tr01.translate());
-        assertEquals("00 00 00 00\nzz\n", tr01.generateProgramCode());
+        assertEquals("00 00 00 00\nzz\n", tr01.outputObjectCode());
 
         InBuffer b02 = new InBuffer(".BLock 0x04 \n .end");
         Translator tr02 = new Translator(b02); 
 
         assertTrue(tr02.translate());
-        assertEquals("00 00 00 00\nzz\n", tr02.generateProgramCode());
+        assertEquals("00 00 00 00\nzz\n", tr02.outputObjectCode());
 
         InBuffer b03 = new InBuffer("block 4 \n .end"); 
         Translator tr03 = new Translator(b03); 
@@ -94,7 +94,7 @@ public class TranslatorTest {
         Translator tr01 = new Translator(b01); 
        
         assertTrue(tr01.translate());
-        assertEquals("61 FF FC\n60 00 AF\n63 FF FF\n66 00 A3\nzz\n", tr01.generateProgramCode());
+        assertEquals("61 FF FC\n60 00 AF\n63 FF FF\n66 00 A3\nzz\n", tr01.outputObjectCode());
     }
     
     @Test
@@ -104,7 +104,7 @@ public class TranslatorTest {
         Translator tr01 = new Translator(b01); 
 
         assertTrue(tr01.translate());
-        assertEquals("C1 FF FC\nC0 00 AF\nC3 00 05\nC6 00 A3\nzz\n", tr01.generateProgramCode());
+        assertEquals("C1 FF FC\nC0 00 AF\nC3 00 05\nC6 00 A3\nzz\n", tr01.outputObjectCode());
     }
 
     @Test
@@ -114,7 +114,7 @@ public class TranslatorTest {
         Translator tr01 = new Translator(b01); 
 
         assertTrue(tr01.translate());
-        assertEquals("E1 FF FC\nE5 00 AF\nE3 00 05\nE6 00 A3\nzz\n", tr01.generateProgramCode());
+        assertEquals("E1 FF FC\nE5 00 AF\nE3 00 05\nE6 00 A3\nzz\n", tr01.outputObjectCode());
     }
 
     @Test
@@ -124,7 +124,7 @@ public class TranslatorTest {
         Translator tr01 = new Translator(b01); 
 
         assertTrue(tr01.translate());
-        assertEquals("00 00 00 00\n00 00 00 00\nC1 00 04\nzz\n", tr01.generateProgramCode());
+        assertEquals("00 00 00 00\n00 00 00 00\nC1 00 04\nzz\n", tr01.outputObjectCode());
     }
 
     
@@ -135,7 +135,7 @@ public class TranslatorTest {
         Translator tr02 = new Translator(b02); 
 
         assertTrue(tr02.translate());
-        assertEquals("12 00 0D\n00 00 00 00\n00 00 00 00 00 00\nC1 00 03\n00\nzz\n", tr02.generateProgramCode());
+        assertEquals("12 00 0D\n00 00 00 00\n00 00 00 00 00 00\nC1 00 03\n00\nzz\n", tr02.outputObjectCode());
     }
 
     @Test
