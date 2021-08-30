@@ -48,6 +48,17 @@ public class TranslatorTest {
         Translator tr01 = new Translator(b01); 
 
         assertFalse(tr01.translate());
+
+        InBuffer b02 = new InBuffer(".end"); 
+        Translator tr02 = new Translator(b02); 
+
+        assertTrue(tr02.translate());
+        assertEquals("zz\n", tr02.generateProgramCode());
+
+        InBuffer b03 = new InBuffer(".end 4"); 
+        Translator tr03 = new Translator(b03); 
+
+        assertFalse(tr03.translate());
     }
 
     @Test
@@ -114,6 +125,26 @@ public class TranslatorTest {
 
         assertTrue(tr01.translate());
         assertEquals("00 00 00 00\n00 00 00 00\nC1 00 04\nzz\n", tr01.generateProgramCode());
+    }
+
+    
+    @Test
+    public void parseSymbolBeforeDeclarationTest()
+    {
+        InBuffer b02 = new InBuffer("br main \n s: .block 4 \n t: .BLOCK 6 \n main: LDWA s, d \n STOP \n .end");
+        Translator tr02 = new Translator(b02); 
+
+        assertTrue(tr02.translate());
+        assertEquals("12 00 0D\n00 00 00 00\n00 00 00 00 00 00\nC1 00 03\n00\nzz\n", tr02.generateProgramCode());
+    }
+
+    @Test
+    public void invalidSymbolParseTest()
+    {
+        InBuffer b03 = new InBuffer("s: \n LDWA 5 \n .end");
+        Translator tr03 = new Translator(b03); 
+
+        assertFalse(tr03.translate());
     }
 
     @Test 
