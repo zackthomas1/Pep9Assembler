@@ -45,8 +45,8 @@
             <TextArea fx:id="assemblyInstTextArea" layoutX="50.0" layoutY="30.0" prefHeight="900.0" prefWidth="600.0" promptText="Enter assembly code here" />
             <Button fx:id="generateCodeBtn" layoutX="278.0" layoutY="956.0" mnemonicParsing="false" onAction="#buttonClick" text="Generate Machine Code" />
             <Label layoutX="50.0" layoutY="15.0" text="Pep9 Assembly Instructions" />
-            <Label layoutX="700.0" layoutY="15.0" text="Machine Code" />
-            <TextArea fx:id="machineCodeTextArea" layoutX="700.0" layoutY="30.0" prefHeight="200.0" prefWidth="600.0" />
+            <Label layoutX="700.0" layoutY="15.0" text="Object Code" />
+            <TextArea fx:id="objectCodeTextArea" editable="false" layoutX="700.0" layoutY="30.0" prefHeight="200.0" prefWidth="600.0" />
             <TextArea fx:id="programListingTextArea" editable="false" layoutX="700.0" layoutY="260.0" prefHeight="200.0" prefWidth="600.0" />
             <Label layoutX="700.0" layoutY="245.0" text="Program List " />
             <TextArea fx:id="symbolTableTextArea" editable="false" layoutX="700.0" layoutY="494.0" prefHeight="200.0" prefWidth="600.0" />

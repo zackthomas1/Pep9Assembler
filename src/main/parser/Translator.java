@@ -273,26 +273,26 @@ public class Translator {
             System.out.println("----------------");
             System.out.println("Object code:");;
             System.out.println("----------------");
-            System.out.println(generateProgramCode());
+            System.out.println(outputObjectCode());
            
             System.out.println("----------------------------------------------");
             System.out.println("Program listing:");
             System.out.println("----------------------------------------------");
             System.out.println("Addr \t Symbol \t Mnemon \t Operand \t Comment");
-            System.out.println(generateProgramListing());
+            System.out.println(outputProgramListing());
 
             System.out.println("----------------");
             System.out.println("Symbol Table:");
             System.out.println("----------------");
             System.out.println("Symbol \t Value");
-            System.out.println(generateSymbolTable());            
+            System.out.println(outputSymbolTable());            
         }else{ 
-            System.out.println(generateProgramErrorMessages());
+            System.out.println(outputProgramErrorMessages());
         }
 
     }
     
-    public String generateProgramCode()
+    public String outputObjectCode()
     {   
         StringBuffer buf = new StringBuffer();
     
@@ -304,7 +304,7 @@ public class Translator {
         return buf.toString();
     }
 
-    public String generateProgramListing()
+    public String outputProgramListing()
     {
         StringBuffer buf = new StringBuffer();
 
@@ -329,7 +329,7 @@ public class Translator {
         return buf.toString();
     }
 
-    public String generateSymbolTable()
+    public String outputSymbolTable()
     {
         StringBuffer buf = new StringBuffer(); 
 
@@ -341,7 +341,7 @@ public class Translator {
         return buf.toString();
     }
 
-    public String generateProgramErrorMessages()
+    public String outputProgramErrorMessages()
     {
         StringBuffer buf = new StringBuffer();
 

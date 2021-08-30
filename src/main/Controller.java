@@ -10,7 +10,7 @@ public class Controller {
     public Button generateCodeBtn; 
    
     public TextArea assemblyInstTextArea;
-    public TextArea machineCodeTextArea;
+    public TextArea objectCodeTextArea;
     public TextArea programListingTextArea;
     public TextArea symbolTableTextArea;
     public TextArea errorsTextArea;
@@ -20,7 +20,7 @@ public class Controller {
         System.out.println("Controller::buttonClick-> Generate machine code");
         
         // clear text fields
-        machineCodeTextArea.clear();
+        objectCodeTextArea.clear();
         programListingTextArea.clear();
         symbolTableTextArea.clear();
         errorsTextArea.clear();
@@ -31,7 +31,7 @@ public class Controller {
         Boolean translationValid = translator.translate();
 
         if (translationValid){
-            machineCodeTextArea.setText(translator.generateProgramCode());
+            objectCodeTextArea.setText(translator.generateProgramCode());
             programListingTextArea.setText(translator.generateProgramListing());
             symbolTableTextArea.setText(translator.generateSymbolTable());    
         }else{

@@ -146,23 +146,4 @@ public class TranslatorTest {
 
         assertFalse(tr03.translate());
     }
-
-    @Test 
-    public void  parseBookSample()
-    {
-        InBuffer inBuffer = new InBuffer("BR 0x007, i \n ." + 
-        "BLOCK 4 \n" + 
-        "deci 0x2   ,d \n" + 
-        "LDWA   +2,  d \n" + 
-        "AdDa -5,   i \n" + 
-        "STWA    0x0004, d \n" +
-        "       DECO   0x04, d \n" +
-        "Stop \n" + 
-        ".End");
-
-        Translator tr01 = new Translator(inBuffer); 
-
-        assertTrue(tr01.translate());
-        assertEquals("12 00 07\n00 00 00 00\n31 00 02\nC1 00 02\n60 FF FB\nE1 00 04\n39 00 04\n00\nzz\n", tr01.generateProgramCode());
-    }
 }
