@@ -51,6 +51,7 @@ public class Tokenizer {
                         localStringValue.append(nextChar); 
                         state = LexState.LS_IDENT; 
                     }else if (nextChar == '.'){                                 // LS_DOT1
+                        localStringValue.append(nextChar);
                         state = LexState.LS_DOT1; 
                     }else if (nextChar == ','){                                 // LS_ADDR1
                         state = LexState.LS_ADDR1; 

@@ -1,7 +1,9 @@
 package main.parser;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 import main.utility.Const;
@@ -18,7 +20,7 @@ import main.lexanalyzer.tokens.TInvalid;
 import main.lexanalyzer.tokens.TSymbol;
 import main.parser.args.AArg;
 import main.parser.args.HexArg;
-import main.parser.args.IdentArg;
+import main.parser.args.IdentifierSymbolArg;
 import main.parser.args.IntArg;
 import main.parser.codes.ACode;
 import main.parser.codes.DotCommandInstr;
@@ -36,6 +38,9 @@ public class Translator {
     private ArrayList<ACode> codeTable;
     private int currentline;
     private int byteAdr;
+    
+    private static Map<String, Integer> symbolTable;
+    private static Map<Integer, String> symbolAddressTable;
 
     public Translator(InBuffer inBuffer)
     {
@@ -43,6 +48,9 @@ public class Translator {
         codeTable = new ArrayList<>(); 
         currentline = 0;
         byteAdr = 0;
+
+        symbolTable = new HashMap<>();
+        symbolAddressTable = new HashMap<>();
     }
 
     // Sets aCode and returns boolean true if end statement is processed 
@@ -84,9 +92,14 @@ public class Translator {
                         }
                     } else if (aToken instanceof TSymbol){
                         TSymbol locaTSymbol = (TSymbol) aToken;
-                        Maps.symbolTable.put(locaTSymbol.getStringValue(), byteAdr);
-                        Maps.symbolAddressTable.put(byteAdr, locaTSymbol.getStringValue());
-                        state = ParseState.PS_START;
+
+                        if(symbolTable.containsKey(locaTSymbol.getStringValue())){
+                            aCode = new Error(String.format("Duplicate instance of '%s' symbol found.", locaTSymbol.getStringValue()), currentline);
+                        }else{
+                            symbolTable.put(locaTSymbol.getStringValue(), byteAdr);
+                            symbolAddressTable.put(byteAdr, locaTSymbol.getStringValue());
+                            state = ParseState.PS_START;
+                        }
                     } else if (aToken instanceof TEmpty){
                         aCode = new EmptyInstr();
                         state = ParseState.PS_FINISH;
@@ -102,8 +115,8 @@ public class Translator {
                     if (aToken instanceof TIdentifier){ // for symbols
                         TIdentifier localTIdentifier = (TIdentifier) aToken; 
                         
-                        if(Maps.symbolTable.containsKey(localTIdentifier.getStringValue())){
-                            localOperandArg = new IdentArg(localTIdentifier.getStringValue()); 
+                        if(symbolTable.containsKey(localTIdentifier.getStringValue())){
+                            localOperandArg = new IdentifierSymbolArg(localTIdentifier.getStringValue(), symbolTable.get(localTIdentifier.getStringValue())); 
                             state = ParseState.PS_NON_UNARY1; 
                         } else{ 
                             aCode = new Error(String.format("Invalid symbol. '%s' has not been declared",  localTIdentifier.getStringValue()), currentline);
@@ -220,7 +233,12 @@ public class Translator {
         return terminate;
     }
 
-    public void translate()
+    /**
+     * 
+     * returns true if translation was success and no errors occured
+     * @return
+     */
+    public Boolean translate()
     {
         int numErrors = 0; 
         t = new Tokenizer(b); 
@@ -244,31 +262,30 @@ public class Translator {
             numErrors++;
         }
 
-        systemOutCompiledProgram(numErrors);
+        return numErrors == 0;
 
     }
 
-    public void systemOutCompiledProgram(int errors)
+    public void systemOutCompiledProgram(Boolean translationValid)
     {
         // final output
-        if (errors == 0){      
-            System.out.println("\n----------------");
-            System.out.println("\nObject code:");;
-            System.out.println("\n----------------");
+        if (translationValid){      
+            System.out.println("----------------");
+            System.out.println("Object code:");;
+            System.out.println("----------------");
             System.out.println(generateProgramCode());
            
-            System.out.println("\n----------------------------------------------");
-            System.out.println("\nProgram listing:");
-            System.out.println("\n----------------------------------------------");
-            System.out.println("\nAddr \t Symbol \t Mnemon \t Operand \t Comment");
+            System.out.println("----------------------------------------------");
+            System.out.println("Program listing:");
+            System.out.println("----------------------------------------------");
+            System.out.println("Addr \t Symbol \t Mnemon \t Operand \t Comment");
             System.out.println(generateProgramListing());
 
-            System.out.println("\n----------------");
-            System.out.println("\nSymbol Table:");
-            System.out.println("\n----------------");
-            System.out.println("\nSymbol \t Value");
-            System.out.println(generateSymbolTable());
-
+            System.out.println("----------------");
+            System.out.println("Symbol Table:");
+            System.out.println("----------------");
+            System.out.println("Symbol \t Value");
+            System.out.println(generateSymbolTable());            
         }else{ 
             System.out.println(generateProgramErrorMessages());
         }
@@ -298,8 +315,8 @@ public class Translator {
         for(int i = 0; i < codeTable.size(); i++){
 
             String symbolListing;
-            if(Maps.symbolAddressTable.containsKey(localMemAddressCount)){
-                symbolListing = Maps.symbolAddressTable.get(localMemAddressCount);
+            if(symbolAddressTable.containsKey(localMemAddressCount)){
+                symbolListing = symbolAddressTable.get(localMemAddressCount);
             }else{
                 symbolListing = " ";
             }
@@ -316,10 +333,10 @@ public class Translator {
     {
         StringBuffer buf = new StringBuffer(); 
 
-        List<String> keys = Maps.symbolTable.keySet().stream().collect(Collectors.toList());
+        List<String> keys = symbolTable.keySet().stream().collect(Collectors.toList());
 
         for(int i = 0; i < keys.size(); ++i){
-            buf.append(String.format("%s \t  %s\n", keys.get(i), Util.formatWord(Maps.symbolTable.get(keys.get(i)))));
+            buf.append(String.format("%s \t  %s\n", keys.get(i), Util.formatWord(symbolTable.get(keys.get(i)))));
         }
         return buf.toString();
     }
@@ -336,7 +353,7 @@ public class Translator {
                 ++numErrors;
             }  
         }
-        buf.append(String.format("%d errors were detected. \n", numErrors));
+        buf.append(String.format("%d error/s were detected. \n", numErrors));
         
         return buf.toString();
     }

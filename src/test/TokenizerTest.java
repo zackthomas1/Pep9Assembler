@@ -72,6 +72,17 @@ public class TokenizerTest {
         AToken aToken3 = t3.getToken(); 
 
         assertFalse(aToken3 instanceof TDotCmd);
+        assertTrue(aToken3 instanceof TIdentifier);
+
+        InBuffer b4 = new InBuffer("block"); 
+        Tokenizer t4 = new Tokenizer(b4); 
+        
+        b4.getLine(); 
+        AToken aToken4 = t4.getToken(); 
+
+        assertFalse(aToken4 instanceof TDotCmd);
+        assertTrue(aToken4 instanceof TIdentifier);
+
     }
 
     @Test

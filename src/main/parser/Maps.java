@@ -17,15 +17,7 @@ public class Maps {
     public static final Map<Mnemon, String> mnemonStringTable; 
     public static final Map<AddrMode, String> addressModeStringTable; 
 
-    public static Map<String, Integer> symbolTable;
-    public static Map<Integer, String> symbolAddressTable;
-
-
     static{
-
-        symbolTable = new HashMap<>();
-        symbolAddressTable = new HashMap<>();
-
 
         // Unary
         unaryMnemonTable = new HashMap<>();
@@ -35,8 +27,8 @@ public class Maps {
 
         // Dot-commands
         dotCmdMnemonTable = new HashMap<>();
-        dotCmdMnemonTable.put("block", Mnemon.M_BLOCK);     //dot commands
-        dotCmdMnemonTable.put("end"  , Mnemon.M_END); 
+        dotCmdMnemonTable.put(".block", Mnemon.M_BLOCK);     //dot commands
+        dotCmdMnemonTable.put(".end"  , Mnemon.M_END); 
 
         // Non-Unary
         nonunaryMnemonTable = new HashMap<>();

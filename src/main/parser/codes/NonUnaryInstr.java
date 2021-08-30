@@ -5,7 +5,7 @@ import main.parser.Maps;
 import main.parser.Mnemon;
 import main.parser.args.AArg;
 import main.parser.args.HexArg;
-import main.parser.args.IdentArg;
+import main.parser.args.IdentifierSymbolArg;
 import main.parser.args.IntArg;
 import main.utility.Util;
 
@@ -90,9 +90,9 @@ public class NonUnaryInstr extends ACode{
         }else if(operandSpecifier instanceof HexArg){
             HexArg hexArg = (HexArg) operandSpecifier;
             hexCode += " " + Util.formatWord(hexArg.getIntValue());
-        }else if(operandSpecifier instanceof IdentArg){
-            IdentArg identArg = (IdentArg) operandSpecifier;
-            hexCode += " " + Util.formatWord(Maps.symbolTable.get(identArg.getIdentStr()));
+        }else if(operandSpecifier instanceof IdentifierSymbolArg){
+            IdentifierSymbolArg identArg = (IdentifierSymbolArg) operandSpecifier;
+            hexCode += " " + Util.formatWord(identArg.getIdentifierValue());
         }else{
             hexCode += " ";
         }
