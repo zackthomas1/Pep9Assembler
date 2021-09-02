@@ -11,7 +11,8 @@ import main.utility.InBuffer;
 import main.utility.Util;
 import main.lexanalyzer.Tokenizer;
 import main.lexanalyzer.tokens.AToken;
-import main.lexanalyzer.tokens.TAddr;
+import main.lexanalyzer.tokens.TAddress;
+import main.lexanalyzer.tokens.TDotCommand;
 import main.lexanalyzer.tokens.TEmpty;
 import main.lexanalyzer.tokens.THex;
 import main.lexanalyzer.tokens.TIdentifier;
@@ -90,7 +91,9 @@ public class Translator {
                         } else{
                             aCode = new Error("Invalid operation mnemonic.", currentline);
                         }
-                    } else if (aToken instanceof TSymbol){
+                    } else if (aToken instanceof TDotCommand){
+
+                    }else if (aToken instanceof TSymbol){
                         TSymbol locaTSymbol = (TSymbol) aToken;
 
                         if(symbolTable.containsKey(locaTSymbol.getStringValue())){
@@ -149,8 +152,8 @@ public class Translator {
                     }
                     break; 
                 case PS_NON_UNARY1:
-                    if (aToken instanceof TAddr){
-                        TAddr localTAddr = (TAddr) aToken;
+                    if (aToken instanceof TAddress){
+                        TAddress localTAddr = (TAddress) aToken;
                         if (Maps.addressModeTable.containsKey(localTAddr.getStringValue()))
                         {
                             localAddrArg = Maps.addressModeTable.get(localTAddr.getStringValue()); 
@@ -217,7 +220,7 @@ public class Translator {
                 case PS_UNARY: 
                     if (aToken instanceof TEmpty){
                         aCode = new UnaryInstr(localMnemon);
-                        terminate = localMnemon == Mnemon.M_END;
+                        // terminate = localMnemon == Mnemon.M_END;
                         state = ParseState.PS_FINISH;
                     } else{
                         aCode = new Error("Invalid argument following unary instruction. Unary instructions take no arguments/s.", currentline);

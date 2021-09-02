@@ -3,8 +3,8 @@ import main.utility.Const;
 import main.utility.InBuffer;
 import main.utility.Util;
 import main.lexanalyzer.tokens.AToken;
-import main.lexanalyzer.tokens.TAddr;
-import main.lexanalyzer.tokens.TDotCmd;
+import main.lexanalyzer.tokens.TAddress;
+import main.lexanalyzer.tokens.TDotCommand;
 import main.lexanalyzer.tokens.TEmpty;
 import main.lexanalyzer.tokens.THex;
 import main.lexanalyzer.tokens.TIdentifier;
@@ -159,7 +159,7 @@ public class Tokenizer {
                         state = LexState.LS_DOT2;
                     }else{
                         b.backUpInput();
-                        aToken = new TDotCmd(localStringValue);
+                        aToken = new TDotCommand(localStringValue);
                         state = LexState.LS_STOP;
                     }
                     break;
@@ -169,7 +169,7 @@ public class Tokenizer {
                         state = LexState.LS_ADDR2; 
                     }else{
                         b.backUpInput(); 
-                        aToken = new TAddr(localStringValue);
+                        aToken = new TAddress(localStringValue);
                         state = LexState.LS_STOP;
                     }
                     break;

@@ -3,11 +3,6 @@ public class TInvalid extends AToken {
     
     private String errorMessage;
     
-    public TInvalid()
-    {
-        errorMessage = "Tokenizier Error: ";
-    }
-
     public TInvalid(String errmsg)
     {
         errorMessage = errmsg; 
@@ -20,6 +15,6 @@ public class TInvalid extends AToken {
 
     public String getDescribtion()
     {
-        return "Syntax Error";
+        return "Error: " + errorMessage;
     }
 }

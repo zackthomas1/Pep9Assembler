@@ -6,8 +6,8 @@ import org.junit.Test;
 
 import main.lexanalyzer.Tokenizer;
 import main.lexanalyzer.tokens.AToken;
-import main.lexanalyzer.tokens.TAddr;
-import main.lexanalyzer.tokens.TDotCmd;
+import main.lexanalyzer.tokens.TAddress;
+import main.lexanalyzer.tokens.TDotCommand;
 import main.lexanalyzer.tokens.TEmpty;
 import main.lexanalyzer.tokens.THex;
 import main.lexanalyzer.tokens.TIdentifier;
@@ -19,7 +19,7 @@ import main.utility.InBuffer;
 public class TokenizerTest {
    
     @Test
-    public void getTokenTAddrTest()
+    public void getTokenTAddressTest()
     {
         InBuffer b1 = new InBuffer(",i"); 
         Tokenizer t1 = new Tokenizer(b1); 
@@ -27,7 +27,7 @@ public class TokenizerTest {
         b1.getLine(); 
         AToken aToken1 = t1.getToken(); 
 
-        assertTrue(aToken1 instanceof TAddr);
+        assertTrue(aToken1 instanceof TAddress);
 
         InBuffer b2 = new InBuffer(",d"); 
         Tokenizer t2 = new Tokenizer(b2); 
@@ -35,7 +35,7 @@ public class TokenizerTest {
         b2.getLine(); 
         AToken aToken2 = t2.getToken(); 
 
-        assertTrue(aToken2 instanceof TAddr);
+        assertTrue(aToken2 instanceof TAddress);
 
         InBuffer b3 = new InBuffer("i"); 
         Tokenizer t3 = new Tokenizer(b3); 
@@ -43,11 +43,11 @@ public class TokenizerTest {
         b3.getLine(); 
         AToken aToken3 = t3.getToken(); 
 
-        assertFalse(aToken3 instanceof TAddr);
+        assertFalse(aToken3 instanceof TAddress);
     }
 
     @Test
-    public void getTokenTDotCmdTest()
+    public void getTokenTDotCommandTest()
     {
         InBuffer b1 = new InBuffer(".End"); 
         Tokenizer t1 = new Tokenizer(b1); 
@@ -55,7 +55,7 @@ public class TokenizerTest {
         b1.getLine(); 
         AToken aToken1 = t1.getToken(); 
 
-        assertTrue(aToken1 instanceof TDotCmd);
+        assertTrue(aToken1 instanceof TDotCommand);
 
         InBuffer b2 = new InBuffer(".block"); 
         Tokenizer t2 = new Tokenizer(b2); 
@@ -63,7 +63,7 @@ public class TokenizerTest {
         b2.getLine(); 
         AToken aToken2 = t2.getToken(); 
 
-        assertTrue(aToken2 instanceof TDotCmd);
+        assertTrue(aToken2 instanceof TDotCommand);
 
         InBuffer b3 = new InBuffer("end"); 
         Tokenizer t3 = new Tokenizer(b3); 
@@ -71,7 +71,7 @@ public class TokenizerTest {
         b3.getLine(); 
         AToken aToken3 = t3.getToken(); 
 
-        assertFalse(aToken3 instanceof TDotCmd);
+        assertFalse(aToken3 instanceof TDotCommand);
         assertTrue(aToken3 instanceof TIdentifier);
 
         InBuffer b4 = new InBuffer("block"); 
@@ -80,7 +80,7 @@ public class TokenizerTest {
         b4.getLine(); 
         AToken aToken4 = t4.getToken(); 
 
-        assertFalse(aToken4 instanceof TDotCmd);
+        assertFalse(aToken4 instanceof TDotCommand);
         assertTrue(aToken4 instanceof TIdentifier);
 
     }

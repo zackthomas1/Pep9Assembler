@@ -1,8 +1,10 @@
 package main.lexanalyzer.tokens;
 
-public class TAddr extends TIdentifier {
+public class TAddress extends AToken {
     
-    public TAddr(StringBuffer addrss)
+    private String stringValue; 
+
+    public TAddress(StringBuffer addrss)
     {
         stringValue = new String(addrss);
     }
@@ -11,5 +13,10 @@ public class TAddr extends TIdentifier {
     public String getDescribtion()
     {
         return String.format("Address: %s", stringValue);
+    }
+
+    public String getStringValue()
+    {
+        return stringValue;
     }
 }

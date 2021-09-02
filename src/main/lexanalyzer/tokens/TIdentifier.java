@@ -2,12 +2,7 @@ package main.lexanalyzer.tokens;
 
 public class TIdentifier extends AToken {
 
-    protected String stringValue; 
-
-    public TIdentifier()
-    {
-        stringValue = "";
-    }
+    private String stringValue; 
     
     public TIdentifier(StringBuffer stringBuffer)
     {
