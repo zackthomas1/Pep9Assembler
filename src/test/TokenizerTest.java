@@ -29,7 +29,7 @@ public class TokenizerTest {
 
         assertTrue(aToken1 instanceof TAddress);
 
-        InBuffer b2 = new InBuffer(",d"); 
+        InBuffer b2 = new InBuffer(",     d"); 
         Tokenizer t2 = new Tokenizer(b2); 
         
         b2.getLine(); 

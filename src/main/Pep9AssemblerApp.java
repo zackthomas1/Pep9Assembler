@@ -10,8 +10,9 @@ public class Pep9AssemblerApp extends Application{
 
   public static void main(String[] args) throws Exception 
   {
-  System.out.println("Pep9AssemblerApp::main-> Launch");
-  launch(args);     
+    System.out.println("Pep9AssemblerApp::main-> Launch");
+    launch(args);  
+  
   }
 
 

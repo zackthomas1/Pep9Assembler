@@ -60,7 +60,7 @@ public class Translator {
         boolean terminate = false; 
         Mnemon localMnemon = Mnemon.M_END; // useless initialization
         AArg localOperandArg = new IntArg(0); 
-        AddrMode localAddrArg; 
+        AddressMode localAddrArg; 
         AToken aToken; 
         aCode = new EmptyInstr(); 
         ParseState state = ParseState.PS_START; 

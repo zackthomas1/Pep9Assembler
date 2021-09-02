@@ -1,6 +1,6 @@
 package main.parser.codes;
 
-import main.parser.AddrMode;
+import main.parser.AddressMode;
 import main.parser.Maps;
 import main.parser.Mnemon;
 import main.parser.args.AArg;
@@ -13,17 +13,17 @@ public class NonUnaryInstr extends ACode{
 
     private final Mnemon mnemonic; 
     private final AArg operandSpecifier; 
-    private final AddrMode address;
+    private final AddressMode address;
 
     public NonUnaryInstr (Mnemon mn, AArg os)
     {
         mnemonic = mn; 
         operandSpecifier = os; 
-        address = AddrMode.AM_I; 
+        address = AddressMode.AM_I; 
         byteSize = 3;
     }
 
-    public NonUnaryInstr (Mnemon mn, AArg os, AddrMode addr)
+    public NonUnaryInstr (Mnemon mn, AArg os, AddressMode addr)
     {
         mnemonic = mn; 
         operandSpecifier = os; 
@@ -103,7 +103,7 @@ public class NonUnaryInstr extends ACode{
     @Override
     public String generateListing()
     {
-        if (address == AddrMode.AM_I && Maps.MnemonValidAddresses.get(mnemonic).size() == 2)
+        if (address == AddressMode.AM_I && Maps.MnemonValidAddresses.get(mnemonic).size() == 2)
         {
             return String.format("%s \t\t %s", 
                         Maps.mnemonStringTable.get(mnemonic), operandSpecifier.generateListing());
