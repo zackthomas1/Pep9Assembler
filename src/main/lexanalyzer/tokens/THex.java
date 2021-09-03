@@ -2,7 +2,7 @@ package main.lexanalyzer.tokens;
 
 import main.utility.Util;
 
-public class THex extends AToken {
+public class THex extends AToken implements StrToken, IntToken {
 
     private int hexIntValue; 
     private String hexSymbol;
@@ -18,10 +18,10 @@ public class THex extends AToken {
         hexIntValue = Util.hexStrToInt(h);
         hexSymbol = h;
     }
-    
+
     public String getDescribtion()
     {
-        return String.format("Hexadecimal: %d", hexIntValue);
+        return String.format("Hexcode: %s", hexSymbol);
     }
 
     public int getIntValue()
@@ -29,7 +29,7 @@ public class THex extends AToken {
         return hexIntValue; 
     }
 
-    public String getHexSymbol()
+    public String getStringValue()
     {
         return hexSymbol;
     }

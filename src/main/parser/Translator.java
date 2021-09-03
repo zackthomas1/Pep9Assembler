@@ -108,7 +108,7 @@ public class Translator {
                         state = ParseState.PS_FINISH;
                     } else if (aToken instanceof TInvalid){
                         TInvalid invalidToken = (TInvalid) aToken; 
-                        aCode = new Error(invalidToken.getErrorMessage(), currentline);
+                        aCode = new Error(invalidToken.getStringValue(), currentline);
                     }
                     else { 
                         aCode = new Error("Line must begin with function identifier", currentline);
@@ -146,7 +146,7 @@ public class Translator {
                         state = ParseState.PS_FINISH;
                     } else if (aToken instanceof TInvalid){
                         TInvalid invalidToken = (TInvalid) aToken; 
-                        aCode = new Error(invalidToken.getErrorMessage(), currentline);
+                        aCode = new Error(invalidToken.getStringValue(), currentline);
                     } else{ 
                         aCode = new Error("Operand invalid. Must be integer, hexadecimal, or symbol.", currentline);
                     }

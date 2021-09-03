@@ -1,25 +1,19 @@
 package main.lexanalyzer.tokens;
 
-public class TDotCommand extends AToken {
-    
-    private String stringValue; 
+public class TDotCommand extends AToken implements StrToken {
 
-    public TDotCommand(StringBuffer dotCmmd)
+    private String dotCommand;
+
+    public TDotCommand(String dtcmd)
     {
-        stringValue = new String(dotCmmd); 
+        dotCommand = dtcmd;
+    }
+
+    public String getDescribtion() {
+        return String.format("Dot Command: %s", dotCommand);
     }
     
-    @Override
-    public String getDescribtion()
-    {
-        return String.format("Dot Command: %s", stringValue);
+    public String getStringValue() {
+        return dotCommand;
     }
-
-    public String getStringValue()
-    {
-        return stringValue;
-    }
-
-
 }
-

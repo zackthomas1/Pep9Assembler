@@ -32,12 +32,14 @@ public class Maps {
 
         // Non-Unary
         nonunaryMnemonTable = new HashMap<>();
-        nonunaryMnemonTable.put("br"  , Mnemon.M_BR);       // single-argument
+        // non-addressed
+        nonunaryMnemonTable.put("br"  , Mnemon.M_BR);       
         nonunaryMnemonTable.put("brlt", Mnemon.M_BRLT);
         nonunaryMnemonTable.put("breq", Mnemon.M_BREQ);
         nonunaryMnemonTable.put("brle", Mnemon.M_BRLE);
         nonunaryMnemonTable.put("call", Mnemon.M_CALL);  
-        nonunaryMnemonTable.put("cpwa", Mnemon.M_CPWA);     // double-argument
+        // addressed
+        nonunaryMnemonTable.put("cpwa", Mnemon.M_CPWA);    
         nonunaryMnemonTable.put("deci", Mnemon.M_DECI);
         nonunaryMnemonTable.put("deco", Mnemon.M_DECO);
         nonunaryMnemonTable.put("adda", Mnemon.M_ADDA);
@@ -57,6 +59,7 @@ public class Maps {
         addressModeTable.put("sfx", AddressMode.AM_SFX);  // Stack-deferred indexed 
 
         // mneomic strings
+        // --------------------------------------------
         mnemonStringTable = new EnumMap<>(Mnemon.class);
         // Unary
         mnemonStringTable.put(Mnemon.M_ASLA, "asla");   
@@ -68,13 +71,14 @@ public class Maps {
         mnemonStringTable.put(Mnemon.M_END,   ".end");
 
         // Non-Unary
-        mnemonStringTable.put(Mnemon.M_BR,   "br");         // single-argument
+        // non-addressed
+        mnemonStringTable.put(Mnemon.M_BR,   "br");        
         mnemonStringTable.put(Mnemon.M_BRLT, "brlt");
         mnemonStringTable.put(Mnemon.M_BREQ, "breq");
         mnemonStringTable.put(Mnemon.M_BRLE, "brle");
         mnemonStringTable.put(Mnemon.M_CALL, "call");
-
-        mnemonStringTable.put(Mnemon.M_ADDA, "adda");       // double-argument
+        // addressed
+        mnemonStringTable.put(Mnemon.M_ADDA, "adda");       
         mnemonStringTable.put(Mnemon.M_CPWA, "cpwa");   
         mnemonStringTable.put(Mnemon.M_DECI, "deci");
         mnemonStringTable.put(Mnemon.M_DECO, "deco");
@@ -93,7 +97,6 @@ public class Maps {
         addressModeStringTable.put(AddressMode.AM_SX,  "sx");   
         addressModeStringTable.put(AddressMode.AM_SFX, "sfx");   
 
-        // 
         MnemonValidAddresses = new HashMap<>();
         // non addressed
         MnemonValidAddresses.put(Mnemon.M_BR, 

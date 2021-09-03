@@ -1,22 +1,22 @@
 package main.lexanalyzer.tokens;
 
-public class TIdentifier extends AToken {
+public class TIdentifier extends AToken implements StrToken {
 
-    private String stringValue; 
+    private String identifier; 
     
-    public TIdentifier(StringBuffer stringBuffer)
+    public TIdentifier(String ident)
     {
-        stringValue = new String(stringBuffer); 
+        identifier = ident; 
     }
 
     public String getDescribtion()
     {
-        return String.format("Identifier: %s", stringValue);
+        return String.format("Identifier: %s", identifier);
     }
 
     public String getStringValue()
     {
-        return stringValue;
+        return identifier;
     }
     
 }
