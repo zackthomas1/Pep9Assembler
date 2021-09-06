@@ -344,8 +344,33 @@ public class TokenizerTest {
         AToken aToken3 = t3.getToken();
 
         assertTrue(aToken3 instanceof TSymbol);
-
-
     }
 
+    @Test
+    public void leadingTabsTest()
+    {
+        InBuffer b1 = new InBuffer("ldwa \t\t");
+        Tokenizer t1 = new Tokenizer(b1); 
+        
+        b1.getLine(); 
+        AToken aToken1 = t1.getToken();
+
+        assertTrue(aToken1 instanceof TIdentifier);
+
+        InBuffer b2 = new InBuffer(", \t d");
+        Tokenizer t2 = new Tokenizer(b2); 
+        
+        b2.getLine(); 
+        AToken aToken2 = t2.getToken();
+
+        assertTrue(aToken2 instanceof TAddress);
+
+        InBuffer b3 = new InBuffer("\t   .end\t");
+        Tokenizer t3 = new Tokenizer(b3); 
+        
+        b3.getLine(); 
+        AToken aToken3 = t3.getToken();
+
+        assertTrue(aToken3 instanceof TDotCommand);
+    }
 }
