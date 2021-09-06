@@ -278,4 +278,20 @@ public class TranslatorTest {
         assertTrue(tr01.translate());
         assertEquals("12 00 05\n14 00 05\n16 00 05\n18 00 05\n1A 00 05\n1C 00 05\n1E 00 05\n20 00 05\n22 00 05\n24 00 05\nzz\n", g01.generateObjectCode());
     }
+
+    @Test
+    public void extendedNonUnaryInputOutputTest()
+    {
+        InBuffer b1 = new InBuffer("deci 5 , d \ndeco 5 , i \n  hexo 5 , i \n stro 5 , d \n .end");
+        Translator tr01 = new Translator(b1); 
+        Generator g01 = new Generator(tr01);
+
+        assertTrue(tr01.translate());
+        assertEquals("31 00 05\n38 00 05\n40 00 05\n49 00 05\nzz\n", g01.generateObjectCode());
+
+        InBuffer b2 = new InBuffer("deci 5 , i \ndeco 5 , i \n  hexo 5 , i \n stro 5 , d \n .end");
+        Translator tr02 = new Translator(b2); 
+
+        assertFalse(tr02.translate());
+    }
 }
