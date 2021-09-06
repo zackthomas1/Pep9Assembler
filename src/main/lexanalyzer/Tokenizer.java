@@ -38,26 +38,26 @@ public class Tokenizer {
 
             switch(state){
                 case LS_START:
-                    if (Util.isDigit(nextChar) && nextChar - '0' == 0){         // LS_INT1
+                    if (Util.isDigit(nextChar) && nextChar - '0' == 0){         
                         state = LexState.LS_INT1;
-                    } else if (Util.isDigit(nextChar) && nextChar - '0' > 0){   // LS_INT2
+                    }else if (Util.isDigit(nextChar) && nextChar - '0' > 0){   
                         localIntValue = nextChar - '0'; 
                         state = LexState.LS_INT2;
-                    }else if (nextChar == '-'){                                 // LS_SIGN
+                    }else if (nextChar == '-'){                               
                         sign = -1; 
                         state = LexState.LS_SIGN;                               
-                    }else if (nextChar == '+'){                                 // LS_SIGN
+                    }else if (nextChar == '+'){                                 
                         sign = +1; 
                         state = LexState.LS_SIGN; 
-                    }else if (Util.isAlpha(nextChar)){                          // LS_IDENT
+                    }else if (Util.isAlpha(nextChar)){                          
                         localStringValue.append(nextChar); 
                         state = LexState.LS_IDENT; 
-                    }else if (nextChar == '.'){                                 // LS_DOT1
+                    }else if (nextChar == '.'){                                
                         localStringValue.append(nextChar); 
                         state = LexState.LS_DOT1; 
-                    }else if (nextChar == ','){                                 // LS_ADDR1
+                    }else if (nextChar == ','){                                 
                         state = LexState.LS_ADDR1;
-                    }else if (nextChar == ';'){                                 // LS_ADDR1
+                    }else if (nextChar == ';'){                                 
                         state = LexState.LS_COMMENT1;
                     }else if (nextChar == '\"'){
                         state = LexState.LS_STRLIT1;

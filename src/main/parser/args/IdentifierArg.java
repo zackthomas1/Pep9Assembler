@@ -1,11 +1,11 @@
 package main.parser.args;
 
-public class IdentifierSymbolArg extends AArg  
+public class IdentifierArg extends AArg  
 {  
     private final String identifierStr;
     private final int identifierValue;
 
-    public IdentifierSymbolArg(String str, int val)
+    public IdentifierArg(String str, int val)
     {
         identifierStr = str;
         identifierValue = val;

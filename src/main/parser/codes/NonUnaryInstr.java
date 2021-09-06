@@ -5,7 +5,7 @@ import main.parser.Maps;
 import main.parser.Mnemon;
 import main.parser.args.AArg;
 import main.parser.args.HexArg;
-import main.parser.args.IdentifierSymbolArg;
+import main.parser.args.IdentifierArg;
 import main.parser.args.IntArg;
 import main.utility.Util;
 
@@ -15,14 +15,6 @@ public class NonUnaryInstr extends ACode{
     private final AArg operandSpecifier; 
     private final AddressMode address;
 
-    public NonUnaryInstr (Mnemon mn, AArg os)
-    {
-        mnemonic = mn; 
-        operandSpecifier = os; 
-        address = AddressMode.AM_I; 
-        byteSize = 3;
-    }
-
     public NonUnaryInstr (Mnemon mn, AArg os, AddressMode addr)
     {
         mnemonic = mn; 
@@ -30,6 +22,7 @@ public class NonUnaryInstr extends ACode{
         address =  addr;
         byteSize = 3;
     }
+
     @Override
     public String generateCode()
     {
@@ -90,8 +83,8 @@ public class NonUnaryInstr extends ACode{
         }else if(operandSpecifier instanceof HexArg){
             HexArg hexArg = (HexArg) operandSpecifier;
             hexCode += " " + Util.formatWord(hexArg.getIntValue());
-        }else if(operandSpecifier instanceof IdentifierSymbolArg){
-            IdentifierSymbolArg identArg = (IdentifierSymbolArg) operandSpecifier;
+        }else if(operandSpecifier instanceof IdentifierArg){
+            IdentifierArg identArg = (IdentifierArg) operandSpecifier;
             hexCode += " " + Util.formatWord(identArg.getIdentifierValue());
         }else{
             hexCode += " ";
@@ -103,11 +96,12 @@ public class NonUnaryInstr extends ACode{
     @Override
     public String generateListing()
     {
-        if (address == AddressMode.AM_I && Maps.MnemonValidAddresses.get(mnemonic).size() == 2)
+        if (address == AddressMode.AM_I && 
+        (mnemonic == Mnemon.M_BR || mnemonic == Mnemon.M_BRLT || mnemonic == Mnemon.M_BREQ || mnemonic == Mnemon.M_BRLE || mnemonic == Mnemon.M_CALL))
         {
             return String.format("%s \t\t %s", 
                         Maps.mnemonStringTable.get(mnemonic), operandSpecifier.generateListing());
-        } else {
+        }else {
             return String.format("%s \t\t %s, %s", 
                         Maps.mnemonStringTable.get(mnemonic), operandSpecifier.generateListing(), Maps.addressModeStringTable.get(address));
         }

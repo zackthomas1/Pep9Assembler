@@ -90,7 +90,7 @@ public class TokenizerTest {
         AToken aToken1 = t1.getToken(); 
 
         assertTrue(aToken1 instanceof TDotCommand);
-
+        assertEquals("Dot Command: .End", aToken1.getDescribtion());
 
         InBuffer b2 = new InBuffer(".block"); 
         Tokenizer t2 = new Tokenizer(b2); 
@@ -99,6 +99,7 @@ public class TokenizerTest {
         AToken aToken2 = t2.getToken(); 
 
         assertTrue(aToken2 instanceof TDotCommand);
+        assertEquals("Dot Command: .block", aToken2.getDescribtion());
 
         InBuffer b3 = new InBuffer("end"); 
         Tokenizer t3 = new Tokenizer(b3); 
