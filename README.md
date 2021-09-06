@@ -16,9 +16,7 @@ An Java based assembler program for the Pep9 assembly language. Compiles Pep9 in
     - `view`: source for GUI UI
   -  `test`: maintains unit testing 
 
-Meanwhile, the compiled output files will be generated in the `bin` folder by default.
-
-> If you want to customize the folder structure, open `.vscode/settings.json` and update the related settings there.
+Compiled output files will be generated in the `bin` folder by default.
 
 ## Dependency Management
 
