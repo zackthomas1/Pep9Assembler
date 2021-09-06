@@ -3,7 +3,6 @@ package main.model.parser;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 
 import main.model.lexanalyzer.Tokenizer;
@@ -42,9 +41,6 @@ public class Translator {
     private ArrayList<ACode> codeTable;
     private int currentline;
     private int byteAdr;
-    
-    private static Map<String, Integer> symbolTable;
-    private static Map<Integer, String> symbolAddressTable;
 
     public Translator(InBuffer inBuffer)
     {
@@ -53,8 +49,8 @@ public class Translator {
         currentline = 0;
         byteAdr = 0;
 
-        symbolTable = new HashMap<>();
-        symbolAddressTable = new HashMap<>();
+        Maps.symbolTable = new HashMap<>();
+        Maps.symbolAddressTable = new HashMap<>();
     }
 
     // Sets aCode and returns boolean true if end statement is processed 
@@ -104,11 +100,11 @@ public class Translator {
                     } else if (aToken instanceof TSymbol){
                         TSymbol locaTSymbol = (TSymbol) aToken;
 
-                        if(symbolTable.containsKey(locaTSymbol.getStringValue())){
+                        if(Maps.symbolTable.containsKey(locaTSymbol.getStringValue())){
                             aCode = new Error(String.format("Duplicate instance of '%s' symbol found.", locaTSymbol.getStringValue()), currentline);
                         }else{
-                            symbolTable.put(locaTSymbol.getStringValue(), byteAdr);
-                            symbolAddressTable.put(byteAdr, locaTSymbol.getStringValue());
+                            Maps.symbolTable.put(locaTSymbol.getStringValue(), byteAdr);
+                            Maps.symbolAddressTable.put(byteAdr, locaTSymbol.getStringValue());
                             state = ParseState.PS_SYMBOL;
                         }
                     } else if(aToken instanceof TComment){
@@ -125,6 +121,34 @@ public class Translator {
                     }
                     break;
                 case PS_SYMBOL: 
+                    if (aToken instanceof TIdentifier){
+                            
+                        TIdentifier localIdentifier = (TIdentifier) aToken;
+                        String identStr = localIdentifier.getStringValue();
+                        
+                        if(Maps.unaryMnemonTable.containsKey(identStr.toLowerCase())){
+                            localMnemon = Maps.unaryMnemonTable.get(identStr.toLowerCase());
+                            state = ParseState.PS_UNARY;
+                        } else if (Maps.nonunaryMnemonTable.containsKey(identStr.toLowerCase())){
+                            localMnemon = Maps.nonunaryMnemonTable.get(identStr.toLowerCase());
+                            state = ParseState.PS_FUNCTION; 
+                        } else{
+                            aCode = new Error("Invalid operation mnemonic.", currentline);
+                        }
+                    }else if (aToken instanceof TDotCommand){
+                        TDotCommand localDotCommand = (TDotCommand) aToken;
+                        String dotCommand = localDotCommand.getStringValue();
+
+                        if (Maps.dotCmdMnemonTable.containsKey(dotCommand.toLowerCase())){
+                            localMnemon = Maps.dotCmdMnemonTable.get(dotCommand.toLowerCase());
+                            terminate = localMnemon == Mnemon.M_END;
+                            state = ParseState.PS_DOT1; 
+                        }else{
+                            aCode = new Error("Invalid operation mnemonic.", currentline);
+                        }
+                    }else{
+                        aCode = new Error("Must have mnemonic or dot command after symbol definition.", currentline);
+                    }
                     break;
                 case PS_FUNCTION: 
                     if (aToken instanceof TInteger){
@@ -147,12 +171,9 @@ public class Translator {
                         }
                     }else if (aToken instanceof TIdentifier){
                         TIdentifier localTIdentifier = (TIdentifier) aToken;            
-                        if(symbolTable.containsKey(localTIdentifier.getStringValue())){
-                            localOperandArg = new IdentifierArg(localTIdentifier.getStringValue(), symbolTable.get(localTIdentifier.getStringValue())); 
-                            state = ParseState.PS_NON_UNARY1; 
-                        } else{ 
-                            aCode = new Error(String.format("Invalid symbol. '%s' has not been declared",  localTIdentifier.getStringValue()), currentline);
-                        }
+                        localOperandArg = new IdentifierArg(localTIdentifier.getStringValue()); 
+                        state = ParseState.PS_NON_UNARY1; 
+                        
                     }else if (aToken instanceof TStringLiteral){
                         TStringLiteral localTStringLiteral = (TStringLiteral) aToken;
 
@@ -344,7 +365,35 @@ public class Translator {
             }
             b.getLine();
         }
-        
+
+        // Generate error if symbol identifier used in argument, but not declared
+        for (int i = 0; i < codeTable.size(); i++){
+            if (codeTable.get(i) instanceof NonUnaryInstr)
+            {
+                NonUnaryInstr localNonUnaryInstr = (NonUnaryInstr) codeTable.get(i);
+
+                if(localNonUnaryInstr.getOperandSpecifier() instanceof IdentifierArg){
+                    IdentifierArg localIdentifierArg = (IdentifierArg) localNonUnaryInstr.getOperandSpecifier();
+                    if(!Maps.symbolTable.containsKey(localIdentifierArg.getIdentStr())){
+                        aCode = new Error("Invalid Symbol using undeclared symbol.", i+1); 
+                        codeTable.add(aCode); 
+                        numErrors++;                   
+                    }
+                }
+            }else if(codeTable.get(i) instanceof DotCommandInstr){
+                DotCommandInstr localDotCommandInstr = (DotCommandInstr) codeTable.get(i);
+                
+                if(localDotCommandInstr.getOperandSpecifier() instanceof IdentifierArg){
+                    IdentifierArg localIdentifierArg = (IdentifierArg) localDotCommandInstr.getOperandSpecifier();
+                    if(!Maps.symbolTable.containsKey(localIdentifierArg.getIdentStr())){
+                        aCode = new Error("Invalid Symbol using undelecared symbol.", i+1); 
+                        codeTable.add(aCode); 
+                        numErrors++;                    
+                    }
+                }
+            }
+        }
+
         // Generate error if input program does not end with ".END" command
         if(!terminateWithEnd){
             aCode = new Error("Missing \"end\" sentinel", currentline); 
@@ -409,8 +458,8 @@ public class Translator {
         for(int i = 0; i < codeTable.size(); i++){
 
             String symbolListing;
-            if(symbolAddressTable.containsKey(localMemAddressCount)){
-                symbolListing = symbolAddressTable.get(localMemAddressCount);
+            if(Maps.symbolAddressTable.containsKey(localMemAddressCount)){
+                symbolListing = Maps.symbolAddressTable.get(localMemAddressCount);
             }else{
                 symbolListing = " ";
             }
@@ -431,10 +480,10 @@ public class Translator {
     {
         StringBuffer buf = new StringBuffer(); 
 
-        List<String> keys = symbolTable.keySet().stream().collect(Collectors.toList());
+        List<String> keys = Maps.symbolTable.keySet().stream().collect(Collectors.toList());
 
         for(int i = 0; i < keys.size(); ++i){
-            buf.append(String.format("%s \t  %s\n", keys.get(i), Util.formatWord(symbolTable.get(keys.get(i)))));
+            buf.append(String.format("%s \t  %s\n", keys.get(i), Util.formatWord(Maps.symbolTable.get(keys.get(i)))));
         }
         return buf.toString();
     }

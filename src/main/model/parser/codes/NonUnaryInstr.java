@@ -7,9 +7,10 @@ import main.model.parser.args.AArg;
 import main.model.parser.args.HexArg;
 import main.model.parser.args.IdentifierArg;
 import main.model.parser.args.IntArg;
+import main.model.parser.args.OperandSpecifiedInstr;
 import main.model.utility.Util;
 
-public class NonUnaryInstr extends ACode{
+public class NonUnaryInstr extends ACode implements OperandSpecifiedInstr{
 
     private final Mnemon mnemonic; 
     private final AArg operandSpecifier; 
@@ -22,8 +23,7 @@ public class NonUnaryInstr extends ACode{
         address =  addr;
         byteSize = 3;
     }
-
-    @Override
+    
     public String generateCode()
     {
 
@@ -85,7 +85,13 @@ public class NonUnaryInstr extends ACode{
             hexCode += " " + Util.formatWord(hexArg.getIntValue());
         }else if(operandSpecifier instanceof IdentifierArg){
             IdentifierArg identArg = (IdentifierArg) operandSpecifier;
-            hexCode += " " + Util.formatWord(identArg.getIdentifierValue());
+            if(Maps.symbolTable.containsKey(identArg.getIdentStr())){
+                hexCode += " " + Util.formatWord(Maps.symbolTable.get(identArg.getIdentStr()));
+            }
+            else{
+                // if symbol is not in table
+                hexCode += " " + "xx xx";
+            }
         }else{
             hexCode += " ";
         }
@@ -93,7 +99,6 @@ public class NonUnaryInstr extends ACode{
         return hexCode;
     }
 
-    @Override
     public String generateListing()
     {
         if (address == AddressMode.AM_I && 
@@ -107,4 +112,9 @@ public class NonUnaryInstr extends ACode{
         }
     }
     
+    public AArg getOperandSpecifier()
+    {
+        return operandSpecifier;
+    }
+
 }

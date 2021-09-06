@@ -5,8 +5,9 @@ import main.model.parser.Mnemon;
 import main.model.parser.args.AArg;
 import main.model.parser.args.HexArg;
 import main.model.parser.args.IntArg;
+import main.model.parser.args.OperandSpecifiedInstr;
 
-public class DotCommandInstr extends ACode {
+public class DotCommandInstr extends ACode implements OperandSpecifiedInstr {
 
     private final Mnemon mnemonic; 
     private final AArg operandSpecifier; 
@@ -19,7 +20,6 @@ public class DotCommandInstr extends ACode {
         byteSize = setInstrByteSize();
     }
 
-    @Override
     public String generateCode() {
 
         String hexCode = "";
@@ -48,7 +48,6 @@ public class DotCommandInstr extends ACode {
         return hexCode;
     }
 
-    @Override
     public String generateListing() {
         if(operandSpecifier == null){
             return String.format("%s", Maps.mnemonStringTable.get(mnemonic));
@@ -57,6 +56,11 @@ public class DotCommandInstr extends ACode {
         }
     }
 
+    public AArg getOperandSpecifier()
+    {
+        return operandSpecifier;
+    }
+    
     private int setInstrByteSize()
     {
         if (mnemonic == Mnemon.M_BLOCK)

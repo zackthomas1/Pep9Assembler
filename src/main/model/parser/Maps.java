@@ -17,6 +17,9 @@ public class Maps {
     public static final Map<Mnemon, String> mnemonStringTable; 
     public static final Map<AddressMode, String> addressModeStringTable; 
 
+    public static Map<String, Integer> symbolTable;
+    public static Map<Integer, String> symbolAddressTable;
+
     static{
 
         // Unary

@@ -4,9 +4,9 @@ public class Error extends ACode {
     private final String errorMessage; 
     private final int errorLine;
 
-    public Error(String errMessage, int line)
+    public Error(String errMssg, int line)
     {
-        errorMessage = errMessage;
+        errorMessage = errMssg;
         errorLine = line;
     }
 

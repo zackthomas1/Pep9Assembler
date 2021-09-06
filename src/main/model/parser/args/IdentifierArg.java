@@ -3,12 +3,10 @@ package main.model.parser.args;
 public class IdentifierArg extends AArg  
 {  
     private final String identifierStr;
-    private final int identifierValue;
 
-    public IdentifierArg(String str, int val)
+    public IdentifierArg(String str)
     {
         identifierStr = str;
-        identifierValue = val;
     }
 
     public String generateListing()
@@ -21,8 +19,4 @@ public class IdentifierArg extends AArg
         return identifierStr;
     }
 
-    public int getIdentifierValue()
-    {
-        return identifierValue;
-    }
 }
