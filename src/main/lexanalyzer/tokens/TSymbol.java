@@ -9,9 +9,9 @@ public class TSymbol extends AToken {
         stringValue = "";
     }
     
-    public TSymbol(StringBuffer stringBuffer)
+    public TSymbol(String sym)
     {
-        stringValue = new String(stringBuffer); 
+        stringValue = sym; 
     }
 
     @Override

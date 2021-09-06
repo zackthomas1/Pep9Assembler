@@ -4,12 +4,14 @@ import main.utility.InBuffer;
 import main.utility.Util;
 import main.lexanalyzer.tokens.AToken;
 import main.lexanalyzer.tokens.TAddress;
+import main.lexanalyzer.tokens.TComment;
 import main.lexanalyzer.tokens.TDotCommand;
 import main.lexanalyzer.tokens.TEmpty;
 import main.lexanalyzer.tokens.THex;
 import main.lexanalyzer.tokens.TIdentifier;
 import main.lexanalyzer.tokens.TInteger;
 import main.lexanalyzer.tokens.TInvalid;
+import main.lexanalyzer.tokens.TStringLiteral;
 import main.lexanalyzer.tokens.TSymbol;
 
 public class Tokenizer {
@@ -36,25 +38,29 @@ public class Tokenizer {
 
             switch(state){
                 case LS_START:
-                    if (Util.isDigit(nextChar) && nextChar - '0' == 0){         // LS_INT1
+                    if (Util.isDigit(nextChar) && nextChar - '0' == 0){         
                         state = LexState.LS_INT1;
-                    } else if (Util.isDigit(nextChar) && nextChar - '0' > 0){   // LS_INT2
+                    }else if (Util.isDigit(nextChar) && nextChar - '0' > 0){   
                         localIntValue = nextChar - '0'; 
                         state = LexState.LS_INT2;
-                    }else if (nextChar == '-'){                                 // LS_SIGN
+                    }else if (nextChar == '-'){                               
                         sign = -1; 
                         state = LexState.LS_SIGN;                               
-                    }else if (nextChar == '+'){                                 // LS_SIGN
+                    }else if (nextChar == '+'){                                 
                         sign = +1; 
                         state = LexState.LS_SIGN; 
-                    }else if (Util.isAlpha(nextChar)){                          // LS_IDENT
+                    }else if (Util.isAlpha(nextChar)){                          
                         localStringValue.append(nextChar); 
                         state = LexState.LS_IDENT; 
-                    }else if (nextChar == '.'){                                 // LS_DOT1
-                        localStringValue.append(nextChar);
+                    }else if (nextChar == '.'){                                
+                        localStringValue.append(nextChar); 
                         state = LexState.LS_DOT1; 
-                    }else if (nextChar == ','){                                 // LS_ADDR1
-                        state = LexState.LS_ADDR1; 
+                    }else if (nextChar == ','){                                 
+                        state = LexState.LS_ADDR1;
+                    }else if (nextChar == ';'){                                 
+                        state = LexState.LS_COMMENT1;
+                    }else if (nextChar == '\"'){
+                        state = LexState.LS_STRLIT1;
                     }else if (nextChar == '\n'){
                         state = LexState.LS_STOP; 
                     }else if (nextChar != ' '){
@@ -73,14 +79,6 @@ public class Tokenizer {
                         state = LexState.LS_STOP;
                     }
                     break;
-                case LS_SIGN: 
-                    if (Util.isDigit(nextChar)){
-                        localIntValue = nextChar - '0';
-                        state = LexState.LS_INT2; 
-                    }else{
-                        aToken = new TInvalid("LS_SIGN: sign character must be followed by numerical to form valid integer.");
-                    }
-                    break; 
                 case LS_INT2:
                     if(Util.isDigit(nextChar)){
                         localIntValue = (localIntValue * 10) + (nextChar - '0');
@@ -92,6 +90,14 @@ public class Tokenizer {
                         aToken = new TInteger(sign * localIntValue);
                         state = LexState.LS_STOP;
                     }
+                    break;               
+                case LS_SIGN: 
+                    if (Util.isDigit(nextChar)){
+                        localIntValue = nextChar - '0';
+                        state = LexState.LS_INT2; 
+                    }else{
+                        aToken = new TInvalid("LS_SIGN: sign character must be followed by numerical to form valid integer.");
+                    }
                     break; 
                 case LS_IDENT:
                     if (Util.isAlpha(nextChar) || Util.isDigit(nextChar)){
@@ -101,15 +107,15 @@ public class Tokenizer {
                     }
                     else{
                         b.backUpInput();
-                        aToken = new TIdentifier(localStringValue);
+                        aToken = new TIdentifier(localStringValue.toString());
                         state = LexState.LS_STOP;
                     }
                     break; 
                 case LS_DOT1: 
                     if (Util.isAlpha(nextChar)){
                         localStringValue.append(nextChar);
-                        state = LexState.LS_DOT2; 
-                    }else{
+                        state = LexState.LS_DOT2;
+                    }else if (nextChar != ' '){
                         aToken = new TInvalid("LS_DOT1: Invalid dot command syntax. Character '.' must be followed by alphabetical character.");
                     }
                     break;
@@ -119,6 +125,24 @@ public class Tokenizer {
                         state = LexState.LS_ADDR2; 
                     }else if (nextChar != ' '){
                         aToken = new TInvalid("LS_ADDR1: Invalid character used in adddress name. Use only alphabetical character."); 
+                    }
+                    break;
+                case LS_COMMENT1: 
+                    if(nextChar != '\n'){
+                        localStringValue.append(nextChar);
+                    }else{
+                        b.backUpInput();
+                        aToken = new TComment(localStringValue.toString());
+                        state = LexState.LS_STOP;
+                    }
+                    break;
+                case LS_STRLIT1: 
+                    if(nextChar != '\"'){
+                        localStringValue.append(nextChar);
+                    }else{
+                        b.backUpInput();
+                        aToken = new TStringLiteral(localStringValue.toString());
+                        state = LexState.LS_STOP;
                     }
                     break;
                 case LS_HEX1: 
@@ -133,10 +157,30 @@ public class Tokenizer {
                 case LS_SYMBOL: 
                     if( nextChar == ' ' || nextChar == '\n'){
                         b.backUpInput();
-                        aToken = new TSymbol(localStringValue);
+                        aToken = new TSymbol(localStringValue.toString());
                         state = LexState.LS_STOP;
                     }else{
                         aToken = new TInvalid("LS_SYMBOL: Invalid character following symbol declaration");
+                    }
+                    break;
+                case LS_DOT2: 
+                    if(Util.isAlpha(nextChar)){
+                        localStringValue.append(nextChar);
+                        state = LexState.LS_DOT2;
+                    }else{
+                        b.backUpInput();
+                        aToken = new TDotCommand(localStringValue.toString());
+                        state = LexState.LS_STOP;
+                    }
+                    break;
+                case LS_ADDR2: 
+                    if(Util.isAlpha(nextChar)){
+                        localStringValue.append(nextChar); 
+                        state = LexState.LS_ADDR2; 
+                    }else{
+                        b.backUpInput(); 
+                        aToken = new TAddress(localStringValue.toString());
+                        state = LexState.LS_STOP;
                     }
                     break;
                 case LS_HEX2: 
@@ -150,26 +194,6 @@ public class Tokenizer {
                     }else{
                         b.backUpInput();
                         aToken = new THex(localIntValue);
-                        state = LexState.LS_STOP;
-                    }
-                    break;
-                case LS_DOT2: 
-                    if(Util.isAlpha(nextChar)){
-                        localStringValue.append(nextChar);
-                        state = LexState.LS_DOT2;
-                    }else{
-                        b.backUpInput();
-                        aToken = new TDotCommand(localStringValue);
-                        state = LexState.LS_STOP;
-                    }
-                    break;
-                case LS_ADDR2: 
-                    if(Util.isAlpha(nextChar)){
-                        localStringValue.append(nextChar); 
-                        state = LexState.LS_ADDR2; 
-                    }else{
-                        b.backUpInput(); 
-                        aToken = new TAddress(localStringValue);
                         state = LexState.LS_STOP;
                     }
                     break;

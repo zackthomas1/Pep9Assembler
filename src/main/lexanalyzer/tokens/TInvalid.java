@@ -1,5 +1,5 @@
 package main.lexanalyzer.tokens;
-public class TInvalid extends AToken {
+public class TInvalid extends AToken implements StrToken {
     
     private String errorMessage;
     
@@ -8,13 +8,13 @@ public class TInvalid extends AToken {
         errorMessage = errmsg; 
     }
 
-    public String getErrorMessage()
-    {
-        return errorMessage;
-    }
-
     public String getDescribtion()
     {
         return "Error: " + errorMessage;
+    }
+
+    public String getStringValue()
+    {
+        return errorMessage;
     }
 }

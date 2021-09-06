@@ -42,7 +42,7 @@ public class TranslatorTest {
     }
     
     @Test 
-    public void dotCommandTest()
+    public void endTest()
     {
         InBuffer b01 = new InBuffer(" end"); 
         Translator tr01 = new Translator(b01); 
@@ -59,6 +59,16 @@ public class TranslatorTest {
         Translator tr03 = new Translator(b03); 
 
         assertFalse(tr03.translate());
+
+        InBuffer b04 = new InBuffer(".end 0x44"); 
+        Translator tr04 = new Translator(b04); 
+
+        assertFalse(tr04.translate());
+
+        InBuffer b05 = new InBuffer(".end main"); 
+        Translator tr05 = new Translator(b05); 
+
+        assertFalse(tr05.translate());
     }
 
     @Test
@@ -85,10 +95,20 @@ public class TranslatorTest {
         Translator tr05 = new Translator(b05); 
 
         assertFalse(tr05.translate());
+
+        InBuffer b06 = new InBuffer(" .block \"Hellow String\" \n .end"); 
+        Translator tr06 = new Translator(b06); 
+
+        assertFalse(tr06.translate());
+
+        InBuffer b07 = new InBuffer(" .block main \n .end"); 
+        Translator tr07 = new Translator(b07); 
+
+        assertFalse(tr07.translate());
     }
 
     @Test
-    public void parseLineADDA()
+    public void addaTest()
     {
         InBuffer b01 = new InBuffer("ADDA -4, d \n ADDa 0x00Af, i \n ADdA 65535, s \n ADDA 0x00A3, sx \n.End");
         Translator tr01 = new Translator(b01); 
@@ -98,7 +118,7 @@ public class TranslatorTest {
     }
     
     @Test
-    public void parseLineLDWA()
+    public void ldwaTest()
     {
         InBuffer b01 = new InBuffer("Ldwa -4, d \n LDWA 0x00Af, i \n LDwA 5, s \n ldwA 0x00A3, sx \n.End");
         Translator tr01 = new Translator(b01); 
@@ -108,13 +128,76 @@ public class TranslatorTest {
     }
 
     @Test
-    public void parseLineEmptySTWA()
+    public void stwaTest()
     {
         InBuffer b01 = new InBuffer("STWA -4, d \n STwA 0x00Af, x \n sTWA 5, s \n STWA 0x00A3, sx \n.End");
         Translator tr01 = new Translator(b01); 
 
         assertTrue(tr01.translate());
         assertEquals("E1 FF FC\nE5 00 AF\nE3 00 05\nE6 00 A3\nzz\n", tr01.outputObjectCode());
+    }
+
+    @Test
+    public void commentLineTest()
+    {
+        InBuffer b01 = new InBuffer(";Hlloe this is a commment line \n" + 
+                            ".End ; Goodbye");
+
+        Translator tr01 = new Translator(b01); 
+        
+        assertTrue(tr01.translate());
+        String string = "zz\n";
+        assertEquals(string , tr01.outputObjectCode());
+    }
+
+    @Test
+    public void commentUnaryNonUnary()
+    {
+        InBuffer b01 = new InBuffer(";hello this is a commment line \n" + 
+                            "LDWA +2, d ; comment3 \n" +
+                            "STOP ; #2 comment \n" +
+                            ".End ; Goodbye");
+
+        Translator tr01 = new Translator(b01); 
+        
+        assertTrue(tr01.translate());
+        String string = "C1 00 02\n00\nzz\n";
+        assertEquals(string , tr01.outputObjectCode());
+    }
+
+    @Test
+    public void commentDotCommandTest()
+    {
+        InBuffer b01 = new InBuffer(";hello this is a commment line \n" + 
+                            ".BLOCK 4 \n" + 
+                            ".End ; Goodbye");
+
+        Translator tr01 = new Translator(b01); 
+        
+        assertTrue(tr01.translate());
+        String string = "00 00 00 00\nzz\n";
+        assertEquals(string , tr01.outputObjectCode());
+    }
+
+    @Test
+    public void commentTest()
+    {
+        InBuffer b01 = new InBuffer("BR 0x007, i ; helllo world \n" + 
+                            ".BLOCK 4 ;    \n" + 
+                            "deci 0x2 ,d;This is a comment 3 \n" + 
+                            "LDWA   +2,  d ;33333%!@#$$ \n" + 
+                            "AdDa -5,   i ;      fsdf5435/* \n" + 
+                            "STWA    0x0004, d  ; hellow rosd\n" +
+                            "       DECO   0x04, d ;TESTING \n" +
+                            "Stop ; GOOOD BYE\n" +
+                            ";Hlloe this is a commment line \n" + 
+                            ".End ; Goodbye");
+
+        Translator tr01 = new Translator(b01); 
+        
+        assertTrue(tr01.translate());
+        String string = "12 00 07\n00 00 00 00\n31 00 02\nC1 00 02\n60 FF FB\nE1 00 04\n39 00 04\n00\nzz\n";
+        assertEquals(string , tr01.outputObjectCode());
     }
 
     @Test

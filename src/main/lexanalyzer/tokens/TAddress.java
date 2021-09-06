@@ -1,22 +1,21 @@
 package main.lexanalyzer.tokens;
 
-public class TAddress extends AToken {
+public class TAddress extends AToken implements StrToken {
     
-    private String stringValue; 
+    private String address; 
 
-    public TAddress(StringBuffer addrss)
+    public TAddress(String addrs)
     {
-        stringValue = new String(addrss);
+        address = addrs;
     }
 
-    @Override
     public String getDescribtion()
     {
-        return String.format("Address: %s", stringValue);
+        return String.format("Address: %s", address);
     }
 
     public String getStringValue()
     {
-        return stringValue;
+        return address;
     }
 }

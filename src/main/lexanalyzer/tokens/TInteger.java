@@ -1,5 +1,5 @@
 package main.lexanalyzer.tokens;
-public class TInteger extends AToken {
+public class TInteger extends AToken implements IntToken {
     
     private int intValue; 
 

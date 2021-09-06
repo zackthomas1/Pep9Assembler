@@ -1,5 +1,6 @@
 package test;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import org.junit.Test;
@@ -7,12 +8,14 @@ import org.junit.Test;
 import main.lexanalyzer.Tokenizer;
 import main.lexanalyzer.tokens.AToken;
 import main.lexanalyzer.tokens.TAddress;
+import main.lexanalyzer.tokens.TComment;
 import main.lexanalyzer.tokens.TDotCommand;
 import main.lexanalyzer.tokens.TEmpty;
 import main.lexanalyzer.tokens.THex;
 import main.lexanalyzer.tokens.TIdentifier;
 import main.lexanalyzer.tokens.TInteger;
 import main.lexanalyzer.tokens.TInvalid;
+import main.lexanalyzer.tokens.TStringLiteral;
 import main.lexanalyzer.tokens.TSymbol;
 import main.utility.InBuffer;
 
@@ -47,6 +50,37 @@ public class TokenizerTest {
     }
 
     @Test
+    public void getTokenTComment()
+    {
+        InBuffer b1 = new InBuffer(";hello "); 
+        Tokenizer t1 = new Tokenizer(b1); 
+        
+        b1.getLine(); 
+        AToken aToken1 = t1.getToken(); 
+
+        assertTrue(aToken1 instanceof TComment);
+        assertEquals("Comment: hello ", aToken1.getDescribtion());
+
+        InBuffer b2 = new InBuffer(";              hello "); 
+        Tokenizer t2 = new Tokenizer(b2); 
+        
+        b2.getLine(); 
+        AToken aToken2 = t2.getToken(); 
+
+        assertTrue(aToken2 instanceof TComment);
+        assertEquals("Comment:               hello ", aToken2.getDescribtion());
+
+        InBuffer b3 = new InBuffer("; hello \t world "); 
+        Tokenizer t3 = new Tokenizer(b3); 
+        
+        b3.getLine(); 
+        AToken aToken3 = t3.getToken(); 
+
+        assertTrue(aToken3 instanceof TComment);
+        assertEquals("Comment:  hello \t world ", aToken3.getDescribtion());
+    }
+
+    @Test
     public void getTokenTDotCommandTest()
     {
         InBuffer b1 = new InBuffer(".End"); 
@@ -56,6 +90,7 @@ public class TokenizerTest {
         AToken aToken1 = t1.getToken(); 
 
         assertTrue(aToken1 instanceof TDotCommand);
+        assertEquals("Dot Command: .End", aToken1.getDescribtion());
 
         InBuffer b2 = new InBuffer(".block"); 
         Tokenizer t2 = new Tokenizer(b2); 
@@ -64,6 +99,7 @@ public class TokenizerTest {
         AToken aToken2 = t2.getToken(); 
 
         assertTrue(aToken2 instanceof TDotCommand);
+        assertEquals("Dot Command: .block", aToken2.getDescribtion());
 
         InBuffer b3 = new InBuffer("end"); 
         Tokenizer t3 = new Tokenizer(b3); 
@@ -151,6 +187,7 @@ public class TokenizerTest {
         AToken aToken1 = t1.getToken(); 
 
         assertTrue(aToken1 instanceof TIdentifier);
+        assertEquals("Identifier: Cat5", aToken1.getDescribtion());
 
         InBuffer b2 = new InBuffer("Hello"); 
         Tokenizer t2 = new Tokenizer(b2); 
@@ -159,7 +196,8 @@ public class TokenizerTest {
         AToken aToken2 = t2.getToken(); 
 
         assertTrue(aToken2 instanceof TIdentifier);
-        
+        assertEquals("Identifier: Hello", aToken2.getDescribtion());
+
         InBuffer b3 = new InBuffer("!Cat5"); 
         Tokenizer t3 = new Tokenizer(b3); 
         
@@ -247,6 +285,37 @@ public class TokenizerTest {
         AToken aToken6 = t6.getToken(); 
 
         assertTrue(aToken6 instanceof TInvalid);
+    }
+
+    @Test
+    public void getTokenTStringLiteral()
+    {
+        InBuffer b1 = new InBuffer("\"Hello\""); 
+        Tokenizer t1 = new Tokenizer(b1); 
+        
+        b1.getLine(); 
+        AToken aToken1 = t1.getToken(); 
+
+        assertTrue(aToken1 instanceof TStringLiteral);
+        assertEquals("String Literal: Hello", aToken1.getDescribtion());
+
+        InBuffer b2 = new InBuffer("\" Goodbye World. \""); 
+        Tokenizer t2 = new Tokenizer(b2); 
+        
+        b2.getLine(); 
+        AToken aToken2 = t2.getToken();
+
+        assertTrue(aToken2 instanceof TStringLiteral);
+        assertEquals("String Literal:  Goodbye World. ", aToken2.getDescribtion());
+        
+        InBuffer b3 = new InBuffer("\" Goodbye \t World. \""); 
+        Tokenizer t3 = new Tokenizer(b3); 
+        
+        b3.getLine(); 
+        AToken aToken3 = t3.getToken();
+
+        assertTrue(aToken3 instanceof TStringLiteral);
+        assertEquals("String Literal:  Goodbye \t World. ", aToken3.getDescribtion());
     }
 
     @Test
