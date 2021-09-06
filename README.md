@@ -1,6 +1,6 @@
 ## Getting Started
 
-An Java based assembler program for the Pep9 assembly language. Compiles Pep9 instructions to machine code to be run in Pep9 application (Download here: https://computersystemsbook.com/5th-edition/pep9/). Based on "Computer Systems" courses and book by J. Stanley Warford at Peperdine University. For learning proposes only.
+A Java based assembler program for the Pep9 assembly language. Compiles Pep9 instructions to machine code to be run in Pep9 application (Download here: https://computersystemsbook.com/5th-edition/pep9/). Based on "Computer Systems" courses and book by J. Stanley Warford at Peperdine University. For learning proposes only.
 
 ## Folder Structure
 - `docs`: documenation for program
