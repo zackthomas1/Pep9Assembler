@@ -34,18 +34,33 @@ public class NonUnaryInstr extends AInstr implements OperandSpecifiedInstr{
             case M_BR:      // Operand Specifier
                 hexCode = "12";
                 break;
+            case M_BRLE:
+                hexCode = "14";
+                break;
             case M_BRLT:
                 hexCode = "16";
                 break;
             case M_BREQ:
                 hexCode = "18";
                 break;
-            case M_BRLE:
-                hexCode = "14";
+            case M_BRNE: 
+                hexCode = "1A";
+                break;
+            case M_BRGE:
+                hexCode = "1C";
+                break;
+            case M_BRGT:
+                hexCode = "1E";
+                break;
+            case M_BRV:
+                hexCode = "20";
+                break;
+            case M_BRC:
+                hexCode = "22";
                 break;
             case M_CALL: 
                 hexCode = "24";
-                break;
+                break;               
             case M_ADDA:    // Operand Specifier and Addressing Mode
                 hexCode = "60";
                 break;

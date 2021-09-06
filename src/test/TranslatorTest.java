@@ -261,11 +261,21 @@ public class TranslatorTest {
     @Test
     public void extendedUnaryInstructionsTest()
     {
-        InBuffer b1 = new InBuffer("asla \n aslx \n asra \nasrx \nrola \n rolx \n rora \n rorx \n nota \nnotx \n nega \n negx \n movspa \n movflga \nmovaflg \nrettr \nret \n stop \n.end");
+        InBuffer b1 = new InBuffer("asla \n aslx \n asra \nasrx \nrola \n rolx \n rora \n rorx \n nota \n notx \n nega \n negx \n movspa \n movflga \nmovaflg \nrettr \nret \n stop \n.end");
         Translator tr01 = new Translator(b1); 
         Generator g01 = new Generator(tr01);
 
         assertTrue(tr01.translate());
         assertEquals("0A\n0B\n0C\n0D\n0E\n0F\n10\n11\n06\n07\n08\n09\n03\n04\n05\n02\n01\n00\nzz\n", g01.generateObjectCode());
+    }
+    @Test
+    public void extendedNonAddressedInstructionsTest()
+    {
+        InBuffer b1 = new InBuffer("br 5 \n brle 5 \n brlt 5 \n breq 5 \n brne 5 \n brge 5 \n brgt 5 \n brv 5 \n brc 5 \n call 5 \n .end");
+        Translator tr01 = new Translator(b1); 
+        Generator g01 = new Generator(tr01);
+
+        assertTrue(tr01.translate());
+        assertEquals("12 00 05\n14 00 05\n16 00 05\n18 00 05\n1A 00 05\n1C 00 05\n1E 00 05\n20 00 05\n22 00 05\n24 00 05\nzz\n", g01.generateObjectCode());
     }
 }

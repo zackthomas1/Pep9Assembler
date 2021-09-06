@@ -52,9 +52,14 @@ public class Maps {
         nonunaryMnemonTable = new HashMap<>();
         // non-addressed
         nonunaryMnemonTable.put("br"  , Mnemon.M_BR);       
+        nonunaryMnemonTable.put("brle", Mnemon.M_BRLE);
         nonunaryMnemonTable.put("brlt", Mnemon.M_BRLT);
         nonunaryMnemonTable.put("breq", Mnemon.M_BREQ);
-        nonunaryMnemonTable.put("brle", Mnemon.M_BRLE);
+        nonunaryMnemonTable.put("brne", Mnemon.M_BRNE);  
+        nonunaryMnemonTable.put("brge", Mnemon.M_BRGE);       
+        nonunaryMnemonTable.put("brgt", Mnemon.M_BRGT);
+        nonunaryMnemonTable.put("brv", Mnemon.M_BRV);
+        nonunaryMnemonTable.put("brc", Mnemon.M_BRC);
         nonunaryMnemonTable.put("call", Mnemon.M_CALL);  
         // addressed
         nonunaryMnemonTable.put("cpwa", Mnemon.M_CPWA);    
@@ -105,11 +110,16 @@ public class Maps {
 
         // Non-Unary
         // non-addressed
-        mnemonStringTable.put(Mnemon.M_BR,   "br");        
-        mnemonStringTable.put(Mnemon.M_BRLT, "brlt");
-        mnemonStringTable.put(Mnemon.M_BREQ, "breq");
-        mnemonStringTable.put(Mnemon.M_BRLE, "brle");
-        mnemonStringTable.put(Mnemon.M_CALL, "call");
+        mnemonStringTable.put(Mnemon.M_BR,      "br");        
+        mnemonStringTable.put(Mnemon.M_BRLE,    "brle");
+        mnemonStringTable.put(Mnemon.M_BRLT,    "brlt");
+        mnemonStringTable.put(Mnemon.M_BREQ,    "breq");
+        mnemonStringTable.put(Mnemon.M_BRNE,    "brne");        
+        mnemonStringTable.put(Mnemon.M_BRGE,    "brge");
+        mnemonStringTable.put(Mnemon.M_BRGT,    "brgt");
+        mnemonStringTable.put(Mnemon.M_BRV,     "brv");
+        mnemonStringTable.put(Mnemon.M_BRC,     "brc");
+        mnemonStringTable.put(Mnemon.M_CALL,    "call");
         // addressed
         mnemonStringTable.put(Mnemon.M_ADDA, "adda");       
         mnemonStringTable.put(Mnemon.M_CPWA, "cpwa");   
@@ -134,11 +144,21 @@ public class Maps {
         // non addressed
         MnemonValidAddresses.put(Mnemon.M_BR, 
             new ArrayList<AddressMode>(Arrays.asList(AddressMode.AM_I,AddressMode.AM_X)));
+        MnemonValidAddresses.put(Mnemon.M_BRLE, 
+            new ArrayList<AddressMode>(Arrays.asList(AddressMode.AM_I,AddressMode.AM_X)));
         MnemonValidAddresses.put(Mnemon.M_BRLT, 
             new ArrayList<AddressMode>(Arrays.asList(AddressMode.AM_I,AddressMode.AM_X)));
         MnemonValidAddresses.put(Mnemon.M_BREQ, 
             new ArrayList<AddressMode>(Arrays.asList(AddressMode.AM_I,AddressMode.AM_X)));
-        MnemonValidAddresses.put(Mnemon.M_BRLE, 
+        MnemonValidAddresses.put(Mnemon.M_BRNE, 
+            new ArrayList<AddressMode>(Arrays.asList(AddressMode.AM_I,AddressMode.AM_X)));
+        MnemonValidAddresses.put(Mnemon.M_BRGE, 
+            new ArrayList<AddressMode>(Arrays.asList(AddressMode.AM_I,AddressMode.AM_X)));
+        MnemonValidAddresses.put(Mnemon.M_BRGT, 
+            new ArrayList<AddressMode>(Arrays.asList(AddressMode.AM_I,AddressMode.AM_X)));
+        MnemonValidAddresses.put(Mnemon.M_BRV, 
+            new ArrayList<AddressMode>(Arrays.asList(AddressMode.AM_I,AddressMode.AM_X)));
+        MnemonValidAddresses.put(Mnemon.M_BRC, 
             new ArrayList<AddressMode>(Arrays.asList(AddressMode.AM_I,AddressMode.AM_X)));
         MnemonValidAddresses.put(Mnemon.M_CALL, 
             new ArrayList<AddressMode>(Arrays.asList(AddressMode.AM_I,AddressMode.AM_X)));

@@ -8,6 +8,6 @@ public enum Mnemon {
     M_BLOCK, M_END,  
      
     // Non-Unary
-    M_BR, M_BRLT, M_BREQ, M_BRLE, M_CALL,       // single-argument
+    M_BR, M_BRLE, M_BRLT, M_BREQ, M_BRNE, M_BRGE, M_BRGT, M_BRV, M_BRC, M_CALL,       // single-argument
     M_CPWA, M_DECI, M_DECO, M_ADDA, M_SUBA, M_STWA, M_LDWA, // double-argument
 }
