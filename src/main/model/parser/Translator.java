@@ -2,8 +2,6 @@ package main.model.parser;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
-import java.util.stream.Collectors;
 
 import main.model.lexanalyzer.Tokenizer;
 import main.model.lexanalyzer.tokens.AToken;
@@ -30,7 +28,6 @@ import main.model.parser.codes.NonUnaryInstr;
 import main.model.parser.codes.UnaryInstr;
 import main.model.utility.Const;
 import main.model.utility.InBuffer;
-import main.model.utility.Util;
 
 public class Translator {
     
@@ -53,7 +50,10 @@ public class Translator {
         Maps.symbolAddressTable = new HashMap<>();
     }
 
-    // Sets aCode and returns boolean true if end statement is processed 
+    /**
+     * FSM that generates instruction based on token patttern in line.
+     * @return
+     */ 
     private boolean parseLine()
     {
         boolean terminate = false; 
@@ -344,8 +344,8 @@ public class Translator {
     }
 
     /**
-     * 
-     * returns true if translation was success and no errors occured
+     * Populates codeTable data structure with instructions
+     * Returns true if translation was successful and no errors occured
      * @return
      */
     public Boolean translate()
@@ -399,112 +399,11 @@ public class Translator {
             codeTable.add(aCode); 
             numErrors++;
         }
-
         return numErrors == 0;
-
     }
 
-    public void systemOutCompiledProgram(Boolean translationValid)
+    public  ArrayList<ACode> getCodeTable()
     {
-        // final output
-        if (translationValid){      
-            System.out.println("----------------");
-            System.out.println("Object code:");;
-            System.out.println("----------------");
-            System.out.println(outputObjectCode());
-           
-            System.out.println("----------------------------------------------");
-            System.out.println("Program listing:");
-            System.out.println("----------------------------------------------");
-            System.out.println("Addr \t Symbol \t Mnemon \t Operand \t Comment");
-            System.out.println(outputProgramListing());
-
-            System.out.println("----------------");
-            System.out.println("Symbol Table:");
-            System.out.println("----------------");
-            System.out.println("Symbol \t Value");
-            System.out.println(outputSymbolTable());            
-        }else{ 
-            System.out.println(outputProgramErrorMessages());
-        }
-
-    }
-    
-    public String outputObjectCode()
-    {   
-        StringBuffer buf = new StringBuffer();
-    
-        //  object code output  
-        for (int i = 0; i < codeTable.size(); i++){
-            if (codeTable.get(i) instanceof EmptyInstr) {
-                buf.append("");
-            }else{
-                buf.append(String.format("%s\n",  codeTable.get(i).generateCode()));
-            }
-        }
-
-        return buf.toString();
-    }
-
-    public String outputProgramListing()
-    {
-        StringBuffer buf = new StringBuffer();
-
-        int localMemAddressCount = 0;
-
-
-        //  program listing output
-        for(int i = 0; i < codeTable.size(); i++){
-
-            String symbolListing;
-            if(Maps.symbolAddressTable.containsKey(localMemAddressCount)){
-                symbolListing = Maps.symbolAddressTable.get(localMemAddressCount);
-            }else{
-                symbolListing = " ";
-            }
-
-            if (codeTable.get(i) instanceof EmptyInstr){
-                buf.append("");
-            }else{
-                buf.append(String.format("%s \t %s \t\t %s\n", 
-                    Util.formatWord(localMemAddressCount), symbolListing, codeTable.get(i).generateListing()));
-                localMemAddressCount += codeTable.get(i).getByteSize();
-            }
-        }
-
-        return buf.toString();
-    }
-
-    public String outputSymbolTable()
-    {
-        StringBuffer buf = new StringBuffer(); 
-
-        List<String> keys = Maps.symbolTable.keySet().stream().collect(Collectors.toList());
-
-        for(int i = 0; i < keys.size(); ++i){
-            buf.append(String.format("%s \t  %s\n", keys.get(i), Util.formatWord(Maps.symbolTable.get(keys.get(i)))));
-        }
-        return buf.toString();
-    }
-
-    public String outputProgramErrorMessages()
-    {
-        StringBuffer buf = new StringBuffer();
-
-        int numErrors = 0;
-        for(int i = 0; i < codeTable.size(); i++){
-            if (codeTable.get(i) instanceof Error){
-                buf.append(String.format("%s", codeTable.get(i).generateListing()));
-                ++numErrors;
-            }  
-        }
-
-        if (numErrors == 1){
-            buf.append("1 error detected. \n");
-        }else {
-            buf.append(String.format("%d errors detected. \n", numErrors));
-        }
-        
-        return buf.toString();
+        return codeTable;
     }
 }
