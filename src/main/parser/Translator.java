@@ -6,7 +6,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-import javafx.scene.input.Mnemonic;
 import main.utility.Const;
 import main.utility.InBuffer;
 import main.utility.Util;
