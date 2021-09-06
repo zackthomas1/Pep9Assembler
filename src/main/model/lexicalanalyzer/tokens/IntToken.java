@@ -1,4 +1,4 @@
-package main.model.lexanalyzer.tokens;
+package main.model.lexicalanalyzer.tokens;
 
 public interface IntToken {
     

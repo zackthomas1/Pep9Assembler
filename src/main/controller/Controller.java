@@ -2,8 +2,10 @@ package main.controller;
 
 import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
-import main.model.parser.Translator;
+
 import main.model.utility.InBuffer;
+import main.model.parser.Translator;
+import main.model.Generator;
 
 public class Controller {
 
@@ -28,14 +30,14 @@ public class Controller {
         InBuffer buffer = new InBuffer(assemblyInstTextArea.getText()); 
 
         Translator translator = new Translator(buffer); 
-        Boolean translationValid = translator.translate();
+        Generator generator = new Generator(translator);
 
-        if (translationValid){
-            objectCodeTextArea.setText(translator.outputObjectCode());
-            programListingTextArea.setText(translator.outputProgramListing());
-            symbolTableTextArea.setText(translator.outputSymbolTable());    
+        if (translator.translate()){
+            objectCodeTextArea.setText(generator.generateObjectCode());
+            programListingTextArea.setText(generator.generateProgramListing());
+            symbolTableTextArea.setText(generator.generateSymbolTable());    
         }else{
-            errorsTextArea.setText(translator.outputProgramErrorMessages());   
+            errorsTextArea.setText(generator.generateErrorMessages());   
         }
     }
     

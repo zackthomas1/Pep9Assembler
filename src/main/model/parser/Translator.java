@@ -2,43 +2,40 @@ package main.model.parser;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
-import java.util.stream.Collectors;
 
-import main.model.lexanalyzer.Tokenizer;
-import main.model.lexanalyzer.tokens.AToken;
-import main.model.lexanalyzer.tokens.TAddress;
-import main.model.lexanalyzer.tokens.TComment;
-import main.model.lexanalyzer.tokens.TDotCommand;
-import main.model.lexanalyzer.tokens.TEmpty;
-import main.model.lexanalyzer.tokens.THex;
-import main.model.lexanalyzer.tokens.TIdentifier;
-import main.model.lexanalyzer.tokens.TInteger;
-import main.model.lexanalyzer.tokens.TInvalid;
-import main.model.lexanalyzer.tokens.TStringLiteral;
-import main.model.lexanalyzer.tokens.TSymbol;
+import main.model.lexicalanalyzer.Tokenizer;
+import main.model.lexicalanalyzer.tokens.AToken;
+import main.model.lexicalanalyzer.tokens.TAddress;
+import main.model.lexicalanalyzer.tokens.TComment;
+import main.model.lexicalanalyzer.tokens.TDotCommand;
+import main.model.lexicalanalyzer.tokens.TEmpty;
+import main.model.lexicalanalyzer.tokens.THex;
+import main.model.lexicalanalyzer.tokens.TIdentifier;
+import main.model.lexicalanalyzer.tokens.TInteger;
+import main.model.lexicalanalyzer.tokens.TInvalid;
+import main.model.lexicalanalyzer.tokens.TStringLiteral;
+import main.model.lexicalanalyzer.tokens.TSymbol;
 import main.model.parser.args.AArg;
 import main.model.parser.args.HexArg;
 import main.model.parser.args.IdentifierArg;
 import main.model.parser.args.IntArg;
 import main.model.parser.args.StringLiteralArg;
-import main.model.parser.codes.ACode;
-import main.model.parser.codes.DotCommandInstr;
-import main.model.parser.codes.EmptyInstr;
-import main.model.parser.codes.Error;
-import main.model.parser.codes.NonUnaryInstr;
-import main.model.parser.codes.UnaryInstr;
+import main.model.parser.instrs.AInstr;
+import main.model.parser.instrs.DotCommandInstr;
+import main.model.parser.instrs.EmptyInstr;
+import main.model.parser.instrs.Error;
+import main.model.parser.instrs.NonUnaryInstr;
+import main.model.parser.instrs.UnaryInstr;
 import main.model.utility.Const;
 import main.model.utility.InBuffer;
-import main.model.utility.Util;
 
 public class Translator {
     
     private final InBuffer b; 
     private Tokenizer t; 
-    private ACode aCode; 
+    private AInstr aCode; 
 
-    private ArrayList<ACode> codeTable;
+    private ArrayList<AInstr> codeTable;
     private int currentline;
     private int byteAdr;
 
@@ -53,7 +50,10 @@ public class Translator {
         Maps.symbolAddressTable = new HashMap<>();
     }
 
-    // Sets aCode and returns boolean true if end statement is processed 
+    /**
+     * FSM that generates instruction based on token patttern in line.
+     * @return
+     */ 
     private boolean parseLine()
     {
         boolean terminate = false; 
@@ -82,7 +82,7 @@ public class Translator {
                             state = ParseState.PS_UNARY;
                         } else if (Maps.nonunaryMnemonTable.containsKey(identStr.toLowerCase())){
                             localMnemon = Maps.nonunaryMnemonTable.get(identStr.toLowerCase());
-                            state = ParseState.PS_FUNCTION; 
+                            state = ParseState.PS_NON_UNARY1; 
                         } else{
                             aCode = new Error("Invalid operation mnemonic.", currentline);
                         }
@@ -130,7 +130,7 @@ public class Translator {
                             state = ParseState.PS_UNARY;
                         } else if (Maps.nonunaryMnemonTable.containsKey(identStr.toLowerCase())){
                             localMnemon = Maps.nonunaryMnemonTable.get(identStr.toLowerCase());
-                            state = ParseState.PS_FUNCTION; 
+                            state = ParseState.PS_NON_UNARY1; 
                         } else{
                             aCode = new Error("Invalid operation mnemonic.", currentline);
                         }
@@ -149,7 +149,7 @@ public class Translator {
                         aCode = new Error("Must have mnemonic or dot command after symbol definition.", currentline);
                     }
                     break;
-                case PS_FUNCTION: 
+                case PS_NON_UNARY1: 
                     if (aToken instanceof TInteger){
                         TInteger localTInteger = (TInteger) aToken;
 
@@ -157,7 +157,7 @@ public class Translator {
                             aCode = new Error("Integer value outside of valid range. Integer must be between -32768 and 65535.", currentline);
                         } else{
                             localOperandArg = new IntArg(localTInteger.getIntValue());
-                            state = ParseState.PS_NON_UNARY1; 
+                            state = ParseState.PS_NON_UNARY2; 
                         }
                     } else if (aToken instanceof THex){
                         THex localTHex = (THex) aToken;
@@ -166,12 +166,12 @@ public class Translator {
                             aCode = new Error("Hex value outside of valid range. Hex must be between 0x0000(hex) 0(dec) and 0xFFFF(hex) 65535(dec).", currentline);
                         } else{
                             localOperandArg = new HexArg(localTHex.getIntValue());
-                            state = ParseState.PS_NON_UNARY1; 
+                            state = ParseState.PS_NON_UNARY2; 
                         }
                     }else if (aToken instanceof TIdentifier){
                         TIdentifier localTIdentifier = (TIdentifier) aToken;            
                         localOperandArg = new IdentifierArg(localTIdentifier.getStringValue()); 
-                        state = ParseState.PS_NON_UNARY1; 
+                        state = ParseState.PS_NON_UNARY2; 
                         
                     }else if (aToken instanceof TStringLiteral){
                         TStringLiteral localTStringLiteral = (TStringLiteral) aToken;
@@ -180,7 +180,7 @@ public class Translator {
                             aCode = new Error("String operands must have length at most two.", currentline);
                         }else{
                             localOperandArg = new StringLiteralArg(localTStringLiteral.getStringValue());
-                            state = ParseState.PS_NON_UNARY1; 
+                            state = ParseState.PS_NON_UNARY2; 
                         }
                     } else if (aToken instanceof TInvalid){
                         TInvalid invalidToken = (TInvalid) aToken; 
@@ -189,7 +189,7 @@ public class Translator {
                         aCode = new Error("Operand invalid. Must be integer, hexadecimal, or symbol.", currentline);
                     }
                     break; 
-                case PS_NON_UNARY1:
+                case PS_NON_UNARY2:
                     if (aToken instanceof TAddress){
                         TAddress localTAddr = (TAddress) aToken;
                         if (Maps.addressModeTable.containsKey(localTAddr.getStringValue())){
@@ -197,7 +197,7 @@ public class Translator {
                             
                             if (Maps.MnemonValidAddresses.get(localMnemon).contains(localAddrArg)){
                                 aCode = new NonUnaryInstr(localMnemon, localOperandArg, localAddrArg);
-                                state = ParseState.PS_NON_UNARY2;    
+                                state = ParseState.PS_NON_UNARY3;    
                             }else{
                                 aCode = new Error(String.format("'%s' is an invalid addressing mode for '%s' instruction mnemonic.", 
                                     Maps.addressModeStringTable.get(localAddrArg), Maps.mnemonStringTable.get(localMnemon)), currentline);
@@ -227,7 +227,7 @@ public class Translator {
                         aCode = new Error("Invalid addressing mode.", currentline); 
                     }
                     break;       
-                case PS_NON_UNARY2: 
+                case PS_NON_UNARY3: 
                     if (aToken instanceof TEmpty){
                         state = ParseState.PS_FINISH;
                     }else if(aToken instanceof TComment){
@@ -344,8 +344,8 @@ public class Translator {
     }
 
     /**
-     * 
-     * returns true if translation was success and no errors occured
+     * Populates codeTable data structure with instructions
+     * Returns true if translation was successful and no errors occured
      * @return
      */
     public Boolean translate()
@@ -399,112 +399,11 @@ public class Translator {
             codeTable.add(aCode); 
             numErrors++;
         }
-
         return numErrors == 0;
-
     }
 
-    public void systemOutCompiledProgram(Boolean translationValid)
+    public  ArrayList<AInstr> getCodeTable()
     {
-        // final output
-        if (translationValid){      
-            System.out.println("----------------");
-            System.out.println("Object code:");;
-            System.out.println("----------------");
-            System.out.println(outputObjectCode());
-           
-            System.out.println("----------------------------------------------");
-            System.out.println("Program listing:");
-            System.out.println("----------------------------------------------");
-            System.out.println("Addr \t Symbol \t Mnemon \t Operand \t Comment");
-            System.out.println(outputProgramListing());
-
-            System.out.println("----------------");
-            System.out.println("Symbol Table:");
-            System.out.println("----------------");
-            System.out.println("Symbol \t Value");
-            System.out.println(outputSymbolTable());            
-        }else{ 
-            System.out.println(outputProgramErrorMessages());
-        }
-
-    }
-    
-    public String outputObjectCode()
-    {   
-        StringBuffer buf = new StringBuffer();
-    
-        //  object code output  
-        for (int i = 0; i < codeTable.size(); i++){
-            if (codeTable.get(i) instanceof EmptyInstr) {
-                buf.append("");
-            }else{
-                buf.append(String.format("%s\n",  codeTable.get(i).generateCode()));
-            }
-        }
-
-        return buf.toString();
-    }
-
-    public String outputProgramListing()
-    {
-        StringBuffer buf = new StringBuffer();
-
-        int localMemAddressCount = 0;
-
-
-        //  program listing output
-        for(int i = 0; i < codeTable.size(); i++){
-
-            String symbolListing;
-            if(Maps.symbolAddressTable.containsKey(localMemAddressCount)){
-                symbolListing = Maps.symbolAddressTable.get(localMemAddressCount);
-            }else{
-                symbolListing = " ";
-            }
-
-            if (codeTable.get(i) instanceof EmptyInstr){
-                buf.append("");
-            }else{
-                buf.append(String.format("%s \t %s \t\t %s\n", 
-                    Util.formatWord(localMemAddressCount), symbolListing, codeTable.get(i).generateListing()));
-                localMemAddressCount += codeTable.get(i).getByteSize();
-            }
-        }
-
-        return buf.toString();
-    }
-
-    public String outputSymbolTable()
-    {
-        StringBuffer buf = new StringBuffer(); 
-
-        List<String> keys = Maps.symbolTable.keySet().stream().collect(Collectors.toList());
-
-        for(int i = 0; i < keys.size(); ++i){
-            buf.append(String.format("%s \t  %s\n", keys.get(i), Util.formatWord(Maps.symbolTable.get(keys.get(i)))));
-        }
-        return buf.toString();
-    }
-
-    public String outputProgramErrorMessages()
-    {
-        StringBuffer buf = new StringBuffer();
-
-        int numErrors = 0;
-        for(int i = 0; i < codeTable.size(); i++){
-            if (codeTable.get(i) instanceof Error){
-                buf.append(String.format("%s", codeTable.get(i).generateListing()));
-                ++numErrors;
-            }  
-        }
-
-        if (numErrors == 1){
-            buf.append("1 error detected. \n");
-        }else {
-            buf.append(String.format("%d errors detected. \n", numErrors));
-        }
-        
-        return buf.toString();
+        return codeTable;
     }
 }
