@@ -244,4 +244,17 @@ public class TranslatorTest {
 
         assertFalse(tr03.translate());
     }
+
+    @Test
+    public void leadingTabsTest()
+    {
+        InBuffer b1 = new InBuffer("ldwa \t\t 4	, i \n" + 
+                                    "Stwa 5   , \t d \n" +
+                                    "\t   .end\t	"); 
+        Translator tr01 = new Translator(b1); 
+        Generator g01 = new Generator(tr01);
+
+        assertTrue(tr01.translate());
+        assertEquals("C0 00 04\nE1 00 05\nzz\n", g01.generateObjectCode());
+    }
 }

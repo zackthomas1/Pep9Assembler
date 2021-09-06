@@ -63,7 +63,7 @@ public class Tokenizer {
                         state = LexState.LS_STRLIT1;
                     }else if (nextChar == '\n'){
                         state = LexState.LS_STOP; 
-                    }else if (nextChar != ' '){
+                    }else if (nextChar != ' ' && nextChar != '\t'){
                         aToken = new TInvalid("LS_START: Invalid character.");
                     }
                     break;
@@ -123,7 +123,7 @@ public class Tokenizer {
                     if (Util.isAlpha(nextChar)){
                         localStringValue.append(nextChar);
                         state = LexState.LS_ADDR2; 
-                    }else if (nextChar != ' '){
+                    }else if (nextChar != ' ' && nextChar != '\t'){
                         aToken = new TInvalid("LS_ADDR1: Invalid character used in adddress name. Use only alphabetical character."); 
                     }
                     break;
