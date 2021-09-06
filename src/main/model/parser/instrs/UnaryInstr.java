@@ -1,9 +1,9 @@
-package main.model.parser.codes;
+package main.model.parser.instrs;
 
 import main.model.parser.Maps;
 import main.model.parser.Mnemon;
 
-public class UnaryInstr extends ACode {
+public class UnaryInstr extends AInstr {
     
     private final Mnemon mnemonic;
 

@@ -1,5 +1,5 @@
-package main.model.parser.codes;
-abstract public class ACode {
+package main.model.parser.instrs;
+abstract public class AInstr {
     
     protected int byteSize;
 

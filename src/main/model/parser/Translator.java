@@ -3,29 +3,29 @@ package main.model.parser;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import main.model.lexanalyzer.Tokenizer;
-import main.model.lexanalyzer.tokens.AToken;
-import main.model.lexanalyzer.tokens.TAddress;
-import main.model.lexanalyzer.tokens.TComment;
-import main.model.lexanalyzer.tokens.TDotCommand;
-import main.model.lexanalyzer.tokens.TEmpty;
-import main.model.lexanalyzer.tokens.THex;
-import main.model.lexanalyzer.tokens.TIdentifier;
-import main.model.lexanalyzer.tokens.TInteger;
-import main.model.lexanalyzer.tokens.TInvalid;
-import main.model.lexanalyzer.tokens.TStringLiteral;
-import main.model.lexanalyzer.tokens.TSymbol;
+import main.model.lexicalanalyzer.Tokenizer;
+import main.model.lexicalanalyzer.tokens.AToken;
+import main.model.lexicalanalyzer.tokens.TAddress;
+import main.model.lexicalanalyzer.tokens.TComment;
+import main.model.lexicalanalyzer.tokens.TDotCommand;
+import main.model.lexicalanalyzer.tokens.TEmpty;
+import main.model.lexicalanalyzer.tokens.THex;
+import main.model.lexicalanalyzer.tokens.TIdentifier;
+import main.model.lexicalanalyzer.tokens.TInteger;
+import main.model.lexicalanalyzer.tokens.TInvalid;
+import main.model.lexicalanalyzer.tokens.TStringLiteral;
+import main.model.lexicalanalyzer.tokens.TSymbol;
 import main.model.parser.args.AArg;
 import main.model.parser.args.HexArg;
 import main.model.parser.args.IdentifierArg;
 import main.model.parser.args.IntArg;
 import main.model.parser.args.StringLiteralArg;
-import main.model.parser.codes.ACode;
-import main.model.parser.codes.DotCommandInstr;
-import main.model.parser.codes.EmptyInstr;
-import main.model.parser.codes.Error;
-import main.model.parser.codes.NonUnaryInstr;
-import main.model.parser.codes.UnaryInstr;
+import main.model.parser.instrs.AInstr;
+import main.model.parser.instrs.DotCommandInstr;
+import main.model.parser.instrs.EmptyInstr;
+import main.model.parser.instrs.Error;
+import main.model.parser.instrs.NonUnaryInstr;
+import main.model.parser.instrs.UnaryInstr;
 import main.model.utility.Const;
 import main.model.utility.InBuffer;
 
@@ -33,9 +33,9 @@ public class Translator {
     
     private final InBuffer b; 
     private Tokenizer t; 
-    private ACode aCode; 
+    private AInstr aCode; 
 
-    private ArrayList<ACode> codeTable;
+    private ArrayList<AInstr> codeTable;
     private int currentline;
     private int byteAdr;
 
@@ -402,7 +402,7 @@ public class Translator {
         return numErrors == 0;
     }
 
-    public  ArrayList<ACode> getCodeTable()
+    public  ArrayList<AInstr> getCodeTable()
     {
         return codeTable;
     }

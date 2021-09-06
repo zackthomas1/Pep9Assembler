@@ -6,9 +6,9 @@ import java.util.stream.Collectors;
 
 import main.model.parser.Maps;
 import main.model.parser.Translator;
-import main.model.parser.codes.ACode;
-import main.model.parser.codes.EmptyInstr;
-import main.model.parser.codes.Error;
+import main.model.parser.instrs.AInstr;
+import main.model.parser.instrs.EmptyInstr;
+import main.model.parser.instrs.Error;
 import main.model.utility.Util;
 
 public class Generator {
@@ -48,7 +48,7 @@ public class Generator {
     public String generateObjectCode()
     {   
         StringBuffer buf = new StringBuffer();
-        ArrayList<ACode> codeTable = translator.getCodeTable();
+        ArrayList<AInstr> codeTable = translator.getCodeTable();
     
         //  object code output  
         for (int i = 0; i < codeTable.size(); i++){
@@ -65,7 +65,7 @@ public class Generator {
     public String generateProgramListing()
     {
         StringBuffer buf = new StringBuffer();
-        ArrayList<ACode> codeTable = translator.getCodeTable();
+        ArrayList<AInstr> codeTable = translator.getCodeTable();
         int localMemAddressCount = 0;
 
         for(int i = 0; i < codeTable.size(); i++){
@@ -102,7 +102,7 @@ public class Generator {
     public String generateErrorMessages()
     {
         StringBuffer buf = new StringBuffer();
-        ArrayList<ACode> codeTable = translator.getCodeTable();
+        ArrayList<AInstr> codeTable = translator.getCodeTable();
 
         int numErrors = 0;
         for(int i = 0; i < codeTable.size(); i++){

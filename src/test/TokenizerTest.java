@@ -5,18 +5,18 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import org.junit.Test;
 
-import main.model.lexanalyzer.Tokenizer;
-import main.model.lexanalyzer.tokens.AToken;
-import main.model.lexanalyzer.tokens.TAddress;
-import main.model.lexanalyzer.tokens.TComment;
-import main.model.lexanalyzer.tokens.TDotCommand;
-import main.model.lexanalyzer.tokens.TEmpty;
-import main.model.lexanalyzer.tokens.THex;
-import main.model.lexanalyzer.tokens.TIdentifier;
-import main.model.lexanalyzer.tokens.TInteger;
-import main.model.lexanalyzer.tokens.TInvalid;
-import main.model.lexanalyzer.tokens.TStringLiteral;
-import main.model.lexanalyzer.tokens.TSymbol;
+import main.model.lexicalanalyzer.Tokenizer;
+import main.model.lexicalanalyzer.tokens.AToken;
+import main.model.lexicalanalyzer.tokens.TAddress;
+import main.model.lexicalanalyzer.tokens.TComment;
+import main.model.lexicalanalyzer.tokens.TDotCommand;
+import main.model.lexicalanalyzer.tokens.TEmpty;
+import main.model.lexicalanalyzer.tokens.THex;
+import main.model.lexicalanalyzer.tokens.TIdentifier;
+import main.model.lexicalanalyzer.tokens.TInteger;
+import main.model.lexicalanalyzer.tokens.TInvalid;
+import main.model.lexicalanalyzer.tokens.TStringLiteral;
+import main.model.lexicalanalyzer.tokens.TSymbol;
 import main.model.utility.InBuffer;
 
 public class TokenizerTest {

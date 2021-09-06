@@ -1,4 +1,4 @@
-package main.model.parser.codes;
+package main.model.parser.instrs;
 
 import main.model.parser.Maps;
 import main.model.parser.Mnemon;
@@ -7,7 +7,7 @@ import main.model.parser.args.HexArg;
 import main.model.parser.args.IntArg;
 import main.model.parser.args.OperandSpecifiedInstr;
 
-public class DotCommandInstr extends ACode implements OperandSpecifiedInstr {
+public class DotCommandInstr extends AInstr implements OperandSpecifiedInstr {
 
     private final Mnemon mnemonic; 
     private final AArg operandSpecifier; 
