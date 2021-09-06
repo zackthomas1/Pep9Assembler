@@ -115,8 +115,7 @@ public class Translator {
                     } else if (aToken instanceof TInvalid){
                         TInvalid invalidToken = (TInvalid) aToken; 
                         aCode = new Error(invalidToken.getStringValue(), currentline);
-                    }
-                    else { 
+                    }else { 
                         aCode = new Error("Line must begin with function identifier", currentline);
                     }
                     break;
