@@ -257,4 +257,15 @@ public class TranslatorTest {
         assertTrue(tr01.translate());
         assertEquals("C0 00 04\nE1 00 05\nzz\n", g01.generateObjectCode());
     }
+
+    @Test
+    public void extendedUnaryInstructionsTest()
+    {
+        InBuffer b1 = new InBuffer("asla \n aslx \n asra \nasrx \nrola \n rolx \n rora \n rorx \n nota \nnotx \n nega \n negx \n movspa \n movflga \nmovaflg \nrettr \nret \n stop \n.end");
+        Translator tr01 = new Translator(b1); 
+        Generator g01 = new Generator(tr01);
+
+        assertTrue(tr01.translate());
+        assertEquals("0A\n0B\n0C\n0D\n0E\n0F\n10\n11\n06\n07\n08\n09\n03\n04\n05\n02\n01\n00\nzz\n", g01.generateObjectCode());
+    }
 }
