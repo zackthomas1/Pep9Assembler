@@ -1,4 +1,4 @@
-package main.model.parser.codes;
+package main.model.parser.instrs;
 
 import main.model.parser.AddressMode;
 import main.model.parser.Maps;
@@ -10,7 +10,7 @@ import main.model.parser.args.IntArg;
 import main.model.parser.args.OperandSpecifiedInstr;
 import main.model.utility.Util;
 
-public class NonUnaryInstr extends ACode implements OperandSpecifiedInstr{
+public class NonUnaryInstr extends AInstr implements OperandSpecifiedInstr{
 
     private final Mnemon mnemonic; 
     private final AArg operandSpecifier; 

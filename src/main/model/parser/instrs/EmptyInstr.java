@@ -1,6 +1,6 @@
-package main.model.parser.codes;
+package main.model.parser.instrs;
 
-public class EmptyInstr extends ACode {
+public class EmptyInstr extends AInstr {
     // For an empty source line
    
     public String generateCode()

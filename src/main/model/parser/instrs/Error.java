@@ -1,5 +1,5 @@
-package main.model.parser.codes;
-public class Error extends ACode {
+package main.model.parser.instrs;
+public class Error extends AInstr {
     
     private final String errorMessage; 
     private final int errorLine;

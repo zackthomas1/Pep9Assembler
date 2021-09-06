@@ -6,6 +6,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.junit.Test;
 
+import main.model.Generator;
 import main.model.parser.Translator;
 import main.model.utility.InBuffer;
 
@@ -25,10 +26,11 @@ public class TranslatorTest {
                             ".End");
 
         Translator tr01 = new Translator(b01); 
+        Generator g01 = new Generator(tr01);
         
         assertTrue(tr01.translate());
         String string = "12 00 07\n00 00 00 00\n31 00 02\nC1 00 02\n60 FF FB\nE1 00 04\n39 00 04\n00\nzz\n";
-        assertEquals(string , tr01.outputObjectCode());
+        assertEquals(string , g01.generateObjectCode());
     }
 
     @Test
@@ -36,9 +38,10 @@ public class TranslatorTest {
     {
         InBuffer b01 = new InBuffer("ASLA \n AsrA \n stop \n .End");
         Translator tr01 = new Translator(b01); 
+        Generator g01 = new Generator(tr01);
         
         assertTrue(tr01.translate());
-        assertEquals("0A\n0C\n00\nzz\n", tr01.outputObjectCode());
+        assertEquals("0A\n0C\n00\nzz\n", g01.generateObjectCode());
     }
     
     @Test 
@@ -51,9 +54,10 @@ public class TranslatorTest {
 
         InBuffer b02 = new InBuffer(".end"); 
         Translator tr02 = new Translator(b02); 
+        Generator g02 = new Generator(tr02);
 
         assertTrue(tr02.translate());
-        assertEquals("zz\n", tr02.outputObjectCode());
+        assertEquals("zz\n", g02.generateObjectCode());
 
         InBuffer b03 = new InBuffer(".end 4"); 
         Translator tr03 = new Translator(b03); 
@@ -76,15 +80,17 @@ public class TranslatorTest {
     {
         InBuffer b01 = new InBuffer(".block 4 \n .End");
         Translator tr01 = new Translator(b01); 
+        Generator g01 = new Generator(tr01);
 
         assertTrue(tr01.translate());
-        assertEquals("00 00 00 00\nzz\n", tr01.outputObjectCode());
+        assertEquals("00 00 00 00\nzz\n", g01.generateObjectCode());
 
         InBuffer b02 = new InBuffer(".BLock 0x04 \n .end");
         Translator tr02 = new Translator(b02); 
+        Generator g02 = new Generator(tr01);
 
         assertTrue(tr02.translate());
-        assertEquals("00 00 00 00\nzz\n", tr02.outputObjectCode());
+        assertEquals("00 00 00 00\nzz\n", g02.generateObjectCode());
 
         InBuffer b03 = new InBuffer("block 4 \n .end"); 
         Translator tr03 = new Translator(b03); 
@@ -112,9 +118,10 @@ public class TranslatorTest {
     {
         InBuffer b01 = new InBuffer("ADDA -4, d \n ADDa 0x00Af, i \n ADdA 65535, s \n ADDA 0x00A3, sx \n.End");
         Translator tr01 = new Translator(b01); 
+        Generator g01 = new Generator(tr01);
        
         assertTrue(tr01.translate());
-        assertEquals("61 FF FC\n60 00 AF\n63 FF FF\n66 00 A3\nzz\n", tr01.outputObjectCode());
+        assertEquals("61 FF FC\n60 00 AF\n63 FF FF\n66 00 A3\nzz\n", g01.generateObjectCode());
     }
     
     @Test
@@ -122,9 +129,10 @@ public class TranslatorTest {
     {
         InBuffer b01 = new InBuffer("Ldwa -4, d \n LDWA 0x00Af, i \n LDwA 5, s \n ldwA 0x00A3, sx \n.End");
         Translator tr01 = new Translator(b01); 
+        Generator g01 = new Generator(tr01);
 
         assertTrue(tr01.translate());
-        assertEquals("C1 FF FC\nC0 00 AF\nC3 00 05\nC6 00 A3\nzz\n", tr01.outputObjectCode());
+        assertEquals("C1 FF FC\nC0 00 AF\nC3 00 05\nC6 00 A3\nzz\n", g01.generateObjectCode());
     }
 
     @Test
@@ -132,9 +140,10 @@ public class TranslatorTest {
     {
         InBuffer b01 = new InBuffer("STWA -4, d \n STwA 0x00Af, x \n sTWA 5, s \n STWA 0x00A3, sx \n.End");
         Translator tr01 = new Translator(b01); 
+        Generator g01 = new Generator(tr01);
 
         assertTrue(tr01.translate());
-        assertEquals("E1 FF FC\nE5 00 AF\nE3 00 05\nE6 00 A3\nzz\n", tr01.outputObjectCode());
+        assertEquals("E1 FF FC\nE5 00 AF\nE3 00 05\nE6 00 A3\nzz\n", g01.generateObjectCode());
     }
 
     @Test
@@ -144,10 +153,11 @@ public class TranslatorTest {
                             ".End ; Goodbye");
 
         Translator tr01 = new Translator(b01); 
-        
+        Generator g01 = new Generator(tr01);
+
         assertTrue(tr01.translate());
         String string = "zz\n";
-        assertEquals(string , tr01.outputObjectCode());
+        assertEquals(string , g01.generateObjectCode());
     }
 
     @Test
@@ -159,10 +169,11 @@ public class TranslatorTest {
                             ".End ; Goodbye");
 
         Translator tr01 = new Translator(b01); 
-        
+        Generator g01 = new Generator(tr01);
+
         assertTrue(tr01.translate());
         String string = "C1 00 02\n00\nzz\n";
-        assertEquals(string , tr01.outputObjectCode());
+        assertEquals(string , g01.generateObjectCode());
     }
 
     @Test
@@ -173,10 +184,11 @@ public class TranslatorTest {
                             ".End ; Goodbye");
 
         Translator tr01 = new Translator(b01); 
-        
+        Generator g01 = new Generator(tr01);
+
         assertTrue(tr01.translate());
         String string = "00 00 00 00\nzz\n";
-        assertEquals(string , tr01.outputObjectCode());
+        assertEquals(string , g01.generateObjectCode());
     }
 
     @Test
@@ -194,10 +206,11 @@ public class TranslatorTest {
                             ".End ; Goodbye");
 
         Translator tr01 = new Translator(b01); 
+        Generator g01 = new Generator(tr01);
         
         assertTrue(tr01.translate());
         String string = "12 00 07\n00 00 00 00\n31 00 02\nC1 00 02\n60 FF FB\nE1 00 04\n39 00 04\n00\nzz\n";
-        assertEquals(string , tr01.outputObjectCode());
+        assertEquals(string , g01.generateObjectCode());
     }
 
     @Test
@@ -205,20 +218,22 @@ public class TranslatorTest {
     {
         InBuffer b01 = new InBuffer("s: .Block 4 \n t: .Block 4 \n LDWA t, d \n.End");
         Translator tr01 = new Translator(b01); 
+        Generator g01 = new Generator(tr01);
 
         assertTrue(tr01.translate());
-        assertEquals("00 00 00 00\n00 00 00 00\nC1 00 04\nzz\n", tr01.outputObjectCode());
+        assertEquals("00 00 00 00\n00 00 00 00\nC1 00 04\nzz\n", g01.generateObjectCode());
     }
 
     
     @Test
     public void parseSymbolBeforeDeclarationTest()
     {
-        InBuffer b02 = new InBuffer("br main \n s: .block 4 \n t: .BLOCK 6 \n main: LDWA s, d \n STOP \n .end");
-        Translator tr02 = new Translator(b02); 
+        InBuffer b01 = new InBuffer("br main \n s: .block 4 \n t: .BLOCK 6 \n main: LDWA s, d \n STOP \n .end");
+        Translator tr01 = new Translator(b01); 
+        Generator g01 = new Generator(tr01);
 
-        assertTrue(tr02.translate());
-        assertEquals("12 00 0D\n00 00 00 00\n00 00 00 00 00 00\nC1 00 03\n00\nzz\n", tr02.outputObjectCode());
+        assertTrue(tr01.translate());
+        assertEquals("12 00 0D\n00 00 00 00\n00 00 00 00 00 00\nC1 00 03\n00\nzz\n", g01.generateObjectCode());
     }
 
     @Test
