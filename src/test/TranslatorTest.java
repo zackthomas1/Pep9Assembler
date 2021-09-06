@@ -249,7 +249,7 @@ public class TranslatorTest {
     public void leadingTabsTest()
     {
         InBuffer b1 = new InBuffer("ldwa \t\t 4	, i \n" + 
-                                    "Stwa 5   , \t d \n" +
+                                    "\t Stwa 5   , \t d \n" +
                                     "\t   .end\t	"); 
         Translator tr01 = new Translator(b1); 
         Generator g01 = new Generator(tr01);
