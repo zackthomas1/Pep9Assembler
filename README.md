@@ -22,5 +22,5 @@ Meanwhile, the compiled output files will be generated in the `bin` folder by de
 
 ## Dependency Management
 
-- `JavaFx`: Framework for java based GUI applications. Download here
-- `Junit`: Unit testing framework for java projects. Download here
+- `JavaFx`: Framework for java based GUI applications. Download here https://gluonhq.com/products/javafx/
+- `Junit`: Unit testing framework for java projects. Download here https://search.maven.org/search?q=g:org.junit.platform%20AND%20v:1.7.2
