@@ -21,7 +21,7 @@ public class Pep9AssemblerApp extends Application{
 	{
 
     FXMLLoader loader = new FXMLLoader();
-    loader.setLocation(getClass().getResource("resources/pep9Assembler_gui_v001.fxml"));
+    loader.setLocation(getClass().getResource("view/pep9Assembler_gui_v001.fxml"));
     Parent root = loader.load();
 
     loader.getController();

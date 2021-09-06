@@ -5,19 +5,19 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import org.junit.Test;
 
-import main.lexanalyzer.Tokenizer;
-import main.lexanalyzer.tokens.AToken;
-import main.lexanalyzer.tokens.TAddress;
-import main.lexanalyzer.tokens.TComment;
-import main.lexanalyzer.tokens.TDotCommand;
-import main.lexanalyzer.tokens.TEmpty;
-import main.lexanalyzer.tokens.THex;
-import main.lexanalyzer.tokens.TIdentifier;
-import main.lexanalyzer.tokens.TInteger;
-import main.lexanalyzer.tokens.TInvalid;
-import main.lexanalyzer.tokens.TStringLiteral;
-import main.lexanalyzer.tokens.TSymbol;
-import main.utility.InBuffer;
+import main.model.lexanalyzer.Tokenizer;
+import main.model.lexanalyzer.tokens.AToken;
+import main.model.lexanalyzer.tokens.TAddress;
+import main.model.lexanalyzer.tokens.TComment;
+import main.model.lexanalyzer.tokens.TDotCommand;
+import main.model.lexanalyzer.tokens.TEmpty;
+import main.model.lexanalyzer.tokens.THex;
+import main.model.lexanalyzer.tokens.TIdentifier;
+import main.model.lexanalyzer.tokens.TInteger;
+import main.model.lexanalyzer.tokens.TInvalid;
+import main.model.lexanalyzer.tokens.TStringLiteral;
+import main.model.lexanalyzer.tokens.TSymbol;
+import main.model.utility.InBuffer;
 
 public class TokenizerTest {
    

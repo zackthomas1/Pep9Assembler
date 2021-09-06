@@ -6,8 +6,8 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.junit.Test;
 
-import main.parser.Translator;
-import main.utility.InBuffer;
+import main.model.parser.Translator;
+import main.model.utility.InBuffer;
 
 public class TranslatorTest {
         

@@ -5,7 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import org.junit.Test;
 
-import main.utility.InBuffer;
+import main.model.utility.InBuffer;
 
 public class InBufferTest {
     
