@@ -294,4 +294,12 @@ public class TranslatorTest {
 
         assertFalse(tr02.translate());
     }
+
+    @Test
+    public void extendedADDSPSUBSPTest()
+    {
+
+    }
+
+    
 }
