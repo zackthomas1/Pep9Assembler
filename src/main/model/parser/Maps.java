@@ -25,24 +25,24 @@ public class Maps {
         // Unary
         // -----------------------
         unaryMnemonTable = new HashMap<>();
-        unaryMnemonTable.put("asla", Mnemon.M_ASLA);
-        unaryMnemonTable.put("aslx", Mnemon.M_ASLX);  
-        unaryMnemonTable.put("asra", Mnemon.M_ASRA);
-        unaryMnemonTable.put("asrx", Mnemon.M_ASRX);
-        unaryMnemonTable.put("rola", Mnemon.M_ROLA);
-        unaryMnemonTable.put("rolx", Mnemon.M_ROLX);
-        unaryMnemonTable.put("rora", Mnemon.M_RORA);
-        unaryMnemonTable.put("rorx", Mnemon.M_RORX);
-        unaryMnemonTable.put("nota", Mnemon.M_NOTA);
-        unaryMnemonTable.put("notx", Mnemon.M_NOTX);
-        unaryMnemonTable.put("nega", Mnemon.M_NEGA);
-        unaryMnemonTable.put("negx", Mnemon.M_NEGX);
-        unaryMnemonTable.put("movspa", Mnemon.M_MOVSPA);
+        unaryMnemonTable.put("stop",    Mnemon.M_STOP);
+        unaryMnemonTable.put("ret",     Mnemon.M_RET);
+        unaryMnemonTable.put("rettr",   Mnemon.M_RETTR);
+        unaryMnemonTable.put("movspa",  Mnemon.M_MOVSPA);
         unaryMnemonTable.put("movflga", Mnemon.M_MOVFLGA);
         unaryMnemonTable.put("movaflg", Mnemon.M_MOVAFLG);
-        unaryMnemonTable.put("rettr", Mnemon.M_RETTR);
-        unaryMnemonTable.put("ret", Mnemon.M_RET);
-        unaryMnemonTable.put("stop", Mnemon.M_STOP);
+        unaryMnemonTable.put("nota",    Mnemon.M_NOTA);
+        unaryMnemonTable.put("notx",    Mnemon.M_NOTX);
+        unaryMnemonTable.put("nega",    Mnemon.M_NEGA);
+        unaryMnemonTable.put("negx",    Mnemon.M_NEGX);
+        unaryMnemonTable.put("rora",    Mnemon.M_RORA);
+        unaryMnemonTable.put("rorx",    Mnemon.M_RORX);
+        unaryMnemonTable.put("rola",    Mnemon.M_ROLA);
+        unaryMnemonTable.put("rolx",    Mnemon.M_ROLX);
+        unaryMnemonTable.put("asla",    Mnemon.M_ASLA);
+        unaryMnemonTable.put("aslx",    Mnemon.M_ASLX);  
+        unaryMnemonTable.put("asra",    Mnemon.M_ASRA);
+        unaryMnemonTable.put("asrx",    Mnemon.M_ASRX);
 
         // Dot-commands
         // -----------------------
@@ -100,24 +100,24 @@ public class Maps {
         // --------------------------------------------
         mnemonStringTable = new EnumMap<>(Mnemon.class);
         // Unary
+        mnemonStringTable.put(Mnemon.M_STOP,    "stop");
+        mnemonStringTable.put(Mnemon.M_RET,     "ret");
+        mnemonStringTable.put(Mnemon.M_RETTR,   "rettr");
+        mnemonStringTable.put(Mnemon.M_MOVSPA,  "movspa");
+        mnemonStringTable.put(Mnemon.M_MOVFLGA, "movflga");
+        mnemonStringTable.put(Mnemon.M_MOVAFLG, "movaflg");
+        mnemonStringTable.put(Mnemon.M_NOTA,    "nota");
+        mnemonStringTable.put(Mnemon.M_NOTX,    "notx");
+        mnemonStringTable.put(Mnemon.M_NEGA,    "nega");
+        mnemonStringTable.put(Mnemon.M_NEGX,    "negx");
+        mnemonStringTable.put(Mnemon.M_RORA,    "rora");
+        mnemonStringTable.put(Mnemon.M_RORX,    "rorx");
         mnemonStringTable.put(Mnemon.M_ASLA,    "asla");  
         mnemonStringTable.put(Mnemon.M_ASLX,    "aslx");  
         mnemonStringTable.put(Mnemon.M_ASRA,    "asra");
         mnemonStringTable.put(Mnemon.M_ASRX,    "asrx");
         mnemonStringTable.put(Mnemon.M_ROLA,    "rola");
         mnemonStringTable.put(Mnemon.M_ROLX,    "rolx");
-        mnemonStringTable.put(Mnemon.M_RORA,    "rora");
-        mnemonStringTable.put(Mnemon.M_RORX,    "rorx");
-        mnemonStringTable.put(Mnemon.M_NOTA,    "nota");
-        mnemonStringTable.put(Mnemon.M_NOTX,    "notx");
-        mnemonStringTable.put(Mnemon.M_NEGA,    "nega");
-        mnemonStringTable.put(Mnemon.M_NEGX,    "negx");
-        mnemonStringTable.put(Mnemon.M_MOVSPA,  "movspa");
-        mnemonStringTable.put(Mnemon.M_MOVFLGA, "movflga");
-        mnemonStringTable.put(Mnemon.M_MOVAFLG, "movaflg");
-        mnemonStringTable.put(Mnemon.M_RETTR,   "rettr");
-        mnemonStringTable.put(Mnemon.M_RET,     "ret");
-        mnemonStringTable.put(Mnemon.M_STOP,    "stop");
         
         // Dot Commands
         mnemonStringTable.put(Mnemon.M_BLOCK, ".block");  
