@@ -327,4 +327,17 @@ public class TranslatorTest {
         assertTrue(tr01.translate());
         assertEquals("A0 00 05\nA8 00 05\nB0 00 05\nB8 00 05\nC0 00 05\nC8 00 05\nD0 00 05\nD8 00 05\nE1 00 05\nE9 00 05\nF1 00 05\nF9 00 05\nzz\n", g01.generateObjectCode());
     }  
+
+    @Test
+    public void uppperCaseAddressTest()
+    {
+        InBuffer b1 = new InBuffer("CPWA 5, I \n STWA 5, D \n .end");
+        Translator tr01 = new Translator(b1); 
+        Generator g01 = new Generator(tr01);
+
+        assertTrue(tr01.translate());
+        assertEquals("A0 00 05\nE1 00 05\nzz\n", g01.generateObjectCode());
+
+    }
+
 }
