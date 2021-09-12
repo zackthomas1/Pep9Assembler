@@ -179,7 +179,7 @@ public class Tokenizer {
                         state = LexState.LS_ADDR2; 
                     }else{
                         b.backUpInput(); 
-                        aToken = new TAddress(localStringValue.toString());
+                        aToken = new TAddress(localStringValue.toString().toLowerCase());
                         state = LexState.LS_STOP;
                     }
                     break;
