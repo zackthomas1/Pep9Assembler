@@ -316,5 +316,15 @@ public class TranslatorTest {
         assertTrue(tr01.translate());
         assertEquals("60 00 05\n68 00 05\n70 00 05\n78 00 05\n80 00 05\n88 00 05\n90 00 05\n98 00 05\nzz\n", g01.generateObjectCode());
     }
-    
+
+    @Test
+    public void extendedNonUnaryTest02()
+    {
+        InBuffer b1 = new InBuffer("CPWA 5, i \n CPWX 5, i \n CPBA 5, i \n CPBX 5, i \n LDWA 5, i \n LDWX 5, i \n LDBA 5, i \n LDBX 5, i \n STWA 5, d \n STWX 5, d \n STBA 5, d \n STBX 5, d \n .end");
+        Translator tr01 = new Translator(b1); 
+        Generator g01 = new Generator(tr01);
+
+        assertTrue(tr01.translate());
+        assertEquals("A0 00 05\nA8 00 05\nB0 00 05\nB8 00 05\nC0 00 05\nC8 00 05\nD0 00 05\nD8 00 05\nE1 00 05\nE9 00 05\nF1 00 05\nF9 00 05\nzz\n", g01.generateObjectCode());
+    }  
 }

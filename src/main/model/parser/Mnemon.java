@@ -12,5 +12,5 @@ public enum Mnemon {
     M_DECI, M_DECO, M_HEXO, M_STRO,                                                           // addressed
     M_ADDSP, M_SUBSP,
     M_ADDA, M_ADDX,  M_SUBA, M_SUBX, M_ANDA, M_ANDX, M_ORA, M_ORX,
-    M_CPWA, M_STWA, M_LDWA, 
+    M_CPWA, M_CPWX, M_CPBA, M_CPBX, M_LDWA, M_LDWX, M_LDBA, M_LDBX, M_STWA, M_STWX, M_STBA, M_STBX
 }
