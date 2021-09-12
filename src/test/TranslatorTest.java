@@ -244,4 +244,100 @@ public class TranslatorTest {
 
         assertFalse(tr03.translate());
     }
+
+    @Test
+    public void leadingTabsTest()
+    {
+        InBuffer b1 = new InBuffer("ldwa \t\t 4	, i \n" + 
+                                    "\t Stwa 5   , \t d \n" +
+                                    "\t   .end\t	"); 
+        Translator tr01 = new Translator(b1); 
+        Generator g01 = new Generator(tr01);
+
+        assertTrue(tr01.translate());
+        assertEquals("C0 00 04\nE1 00 05\nzz\n", g01.generateObjectCode());
+    }
+
+    @Test
+    public void extendedUnaryInstructionsTest()
+    {
+        InBuffer b1 = new InBuffer("asla \n aslx \n asra \nasrx \nrola \n rolx \n rora \n rorx \n nota \n notx \n nega \n negx \n movspa \n movflga \nmovaflg \nrettr \nret \n stop \n.end");
+        Translator tr01 = new Translator(b1); 
+        Generator g01 = new Generator(tr01);
+
+        assertTrue(tr01.translate());
+        assertEquals("0A\n0B\n0C\n0D\n0E\n0F\n10\n11\n06\n07\n08\n09\n03\n04\n05\n02\n01\n00\nzz\n", g01.generateObjectCode());
+    }
+    @Test
+    public void extendedNonAddressedInstructionsTest()
+    {
+        InBuffer b1 = new InBuffer("br 5 \n brle 5 \n brlt 5 \n breq 5 \n brne 5 \n brge 5 \n brgt 5 \n brv 5 \n brc 5 \n call 5 \n .end");
+        Translator tr01 = new Translator(b1); 
+        Generator g01 = new Generator(tr01);
+
+        assertTrue(tr01.translate());
+        assertEquals("12 00 05\n14 00 05\n16 00 05\n18 00 05\n1A 00 05\n1C 00 05\n1E 00 05\n20 00 05\n22 00 05\n24 00 05\nzz\n", g01.generateObjectCode());
+    }
+
+    @Test
+    public void extendedNonUnaryInputOutputTest()
+    {
+        InBuffer b1 = new InBuffer("deci 5 , d \ndeco 5 , i \n  hexo 5 , i \n stro 5 , d \n .end");
+        Translator tr01 = new Translator(b1); 
+        Generator g01 = new Generator(tr01);
+
+        assertTrue(tr01.translate());
+        assertEquals("31 00 05\n38 00 05\n40 00 05\n49 00 05\nzz\n", g01.generateObjectCode());
+
+        InBuffer b2 = new InBuffer("deci 5 , i \ndeco 5 , i \n  hexo 5 , i \n stro 5 , d \n .end");
+        Translator tr02 = new Translator(b2); 
+
+        assertFalse(tr02.translate());
+    }
+
+    @Test
+    public void extendedADDSPSUBSPTest()
+    {
+        InBuffer b1 = new InBuffer("addsp 5 ,d \n subsp 5 , d \n .end");
+        Translator tr01 = new Translator(b1); 
+        Generator g01 = new Generator(tr01);
+
+        assertTrue(tr01.translate());
+        assertEquals("51 00 05\n59 00 05\nzz\n", g01.generateObjectCode());
+    }
+
+    @Test
+    public void extendedNonUnaryTest01()
+    {
+        InBuffer b1 = new InBuffer("adda 5, i \n addx 5, i \n suba 5, i \nsubx 5, i \n anda 5, i \n andx 5, i \n  ora 5, i \n  orx 5, i \n .end");
+        Translator tr01 = new Translator(b1); 
+        Generator g01 = new Generator(tr01);
+
+        assertTrue(tr01.translate());
+        assertEquals("60 00 05\n68 00 05\n70 00 05\n78 00 05\n80 00 05\n88 00 05\n90 00 05\n98 00 05\nzz\n", g01.generateObjectCode());
+    }
+
+    @Test
+    public void extendedNonUnaryTest02()
+    {
+        InBuffer b1 = new InBuffer("CPWA 5, i \n CPWX 5, i \n CPBA 5, i \n CPBX 5, i \n LDWA 5, i \n LDWX 5, i \n LDBA 5, i \n LDBX 5, i \n STWA 5, d \n STWX 5, d \n STBA 5, d \n STBX 5, d \n .end");
+        Translator tr01 = new Translator(b1); 
+        Generator g01 = new Generator(tr01);
+
+        assertTrue(tr01.translate());
+        assertEquals("A0 00 05\nA8 00 05\nB0 00 05\nB8 00 05\nC0 00 05\nC8 00 05\nD0 00 05\nD8 00 05\nE1 00 05\nE9 00 05\nF1 00 05\nF9 00 05\nzz\n", g01.generateObjectCode());
+    }  
+
+    @Test
+    public void uppperCaseAddressTest()
+    {
+        InBuffer b1 = new InBuffer("CPWA 5, I \n STWA 5, D \n .end");
+        Translator tr01 = new Translator(b1); 
+        Generator g01 = new Generator(tr01);
+
+        assertTrue(tr01.translate());
+        assertEquals("A0 00 05\nE1 00 05\nzz\n", g01.generateObjectCode());
+
+    }
+
 }

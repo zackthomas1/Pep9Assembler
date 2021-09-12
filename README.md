@@ -1,18 +1,24 @@
 ## Getting Started
 
-Welcome to the VS Code Java world. Here is a guideline to help you get started to write Java code in Visual Studio Code.
+A Java based assembler program for the Pep9 assembly language. Compiles Pep9 instructions to machine code to be run in Pep9 application (Download here: https://computersystemsbook.com/5th-edition/pep9/). Based on "Computer Systems" courses and book by J. Stanley Warford at Peperdine University. For learning proposes only.
 
 ## Folder Structure
+- `docs`: documenation for program
+  - `diagrams`: UML diagram docs   
+- `lib`: maintains dependencies
+- `src`: maintains sources
+  - `main`: maintains non-testing sources
+    - `controller`: source for GUI controller 
+    - `model`: source for program backend.
+      - `lexicalanalyzer`: source for tokenization stage
+      -  `parser`: source for instruction parsing stage
+      -  `utility`: source for static utitily functions and variables for use across project.
+    - `view`: source for GUI UI
+  -  `test`: maintains unit testing 
 
-The workspace contains two folders by default, where:
-
-- `src`: the folder to maintain sources
-- `lib`: the folder to maintain dependencies
-
-Meanwhile, the compiled output files will be generated in the `bin` folder by default.
-
-> If you want to customize the folder structure, open `.vscode/settings.json` and update the related settings there.
+Compiled output files will be generated in the `bin` folder by default.
 
 ## Dependency Management
 
-The `JAVA PROJECTS` view allows you to manage your dependencies. More details can be found [here](https://github.com/microsoft/vscode-java-dependency#manage-dependencies).
+- `JavaFx`: Framework for java based GUI applications. Download here https://gluonhq.com/products/javafx/
+- `Junit`: Unit testing framework for java projects. Download here https://search.maven.org/search?q=g:org.junit.platform%20AND%20v:1.7.2
