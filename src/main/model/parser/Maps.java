@@ -23,6 +23,7 @@ public class Maps {
     static{
 
         // Unary
+        // -----------------------
         unaryMnemonTable = new HashMap<>();
         unaryMnemonTable.put("asla", Mnemon.M_ASLA);
         unaryMnemonTable.put("aslx", Mnemon.M_ASLX);  
@@ -44,11 +45,13 @@ public class Maps {
         unaryMnemonTable.put("stop", Mnemon.M_STOP);
 
         // Dot-commands
+        // -----------------------
         dotCmdMnemonTable = new HashMap<>();
         dotCmdMnemonTable.put(".block", Mnemon.M_BLOCK);     //dot commands
         dotCmdMnemonTable.put(".end"  , Mnemon.M_END); 
 
         // Non-Unary
+        // -----------------------
         nonunaryMnemonTable = new HashMap<>();
         // non-addressed
         nonunaryMnemonTable.put("br"  , Mnemon.M_BR);       
@@ -58,8 +61,8 @@ public class Maps {
         nonunaryMnemonTable.put("brne", Mnemon.M_BRNE);  
         nonunaryMnemonTable.put("brge", Mnemon.M_BRGE);       
         nonunaryMnemonTable.put("brgt", Mnemon.M_BRGT);
-        nonunaryMnemonTable.put("brv", Mnemon.M_BRV);
-        nonunaryMnemonTable.put("brc", Mnemon.M_BRC);
+        nonunaryMnemonTable.put("brv",  Mnemon.M_BRV);
+        nonunaryMnemonTable.put("brc",  Mnemon.M_BRC);
         nonunaryMnemonTable.put("call", Mnemon.M_CALL);  
         // addressed
         nonunaryMnemonTable.put("deci", Mnemon.M_DECI);
@@ -69,6 +72,15 @@ public class Maps {
 
         nonunaryMnemonTable.put("addsp", Mnemon.M_ADDSP);
         nonunaryMnemonTable.put("subsp", Mnemon.M_SUBSP);
+
+        nonunaryMnemonTable.put("adda", Mnemon.M_ADDA);  
+        nonunaryMnemonTable.put("addx", Mnemon.M_ADDX);  
+        nonunaryMnemonTable.put("suba", Mnemon.M_SUBA);
+        nonunaryMnemonTable.put("subx", Mnemon.M_SUBX);
+        nonunaryMnemonTable.put("anda", Mnemon.M_ANDA);
+        nonunaryMnemonTable.put("andx", Mnemon.M_ANDX);
+        nonunaryMnemonTable.put("ora",  Mnemon.M_ORA);
+        nonunaryMnemonTable.put("orx",  Mnemon.M_ORX);
         
         nonunaryMnemonTable.put("cpwa", Mnemon.M_CPWA);    
         nonunaryMnemonTable.put("adda", Mnemon.M_ADDA);
@@ -76,16 +88,6 @@ public class Maps {
         nonunaryMnemonTable.put("stwa", Mnemon.M_STWA);
         nonunaryMnemonTable.put("ldwa", Mnemon.M_LDWA); 
         
-        // Addressing modes
-        addressModeTable = new HashMap<>();
-        addressModeTable.put("i",   AddressMode.AM_I);    // Immediate 
-        addressModeTable.put("d",   AddressMode.AM_D);    // Direct
-        addressModeTable.put("n",   AddressMode.AM_N);    // Indirect
-        addressModeTable.put("s",   AddressMode.AM_S);    // Stack-relative
-        addressModeTable.put("sf",  AddressMode.AM_SF);   // Stack-relative deferred 
-        addressModeTable.put("x",   AddressMode.AM_X);    // Indexed 
-        addressModeTable.put("sx",  AddressMode.AM_SX);   // Stack-indexed 
-        addressModeTable.put("sfx", AddressMode.AM_SFX);  // Stack-deferred indexed 
 
         // mneomic strings
         // --------------------------------------------
@@ -135,13 +137,34 @@ public class Maps {
         mnemonStringTable.put(Mnemon.M_ADDSP, "addsp");
         mnemonStringTable.put(Mnemon.M_SUBSP, "subsp");
 
-        mnemonStringTable.put(Mnemon.M_ADDA, "adda");       
+        mnemonStringTable.put(Mnemon.M_ADDA, "adda");  
+        mnemonStringTable.put(Mnemon.M_ADDX, "addx");  
+        mnemonStringTable.put(Mnemon.M_SUBA, "suba");
+        mnemonStringTable.put(Mnemon.M_SUBX, "subx");
+        mnemonStringTable.put(Mnemon.M_ANDA, "anda");
+        mnemonStringTable.put(Mnemon.M_ANDX, "andx");
+        mnemonStringTable.put(Mnemon.M_ORA, "ora");
+        mnemonStringTable.put(Mnemon.M_ORX, "orx");
+
+
         mnemonStringTable.put(Mnemon.M_CPWA, "cpwa");   
         mnemonStringTable.put(Mnemon.M_LDWA, "ldwa"); 
-        mnemonStringTable.put(Mnemon.M_SUBA, "suba");
         mnemonStringTable.put(Mnemon.M_STWA, "stwa");
         
-        // Addressing Modes
+        // Addressing modes
+        // -----------------------
+        addressModeTable = new HashMap<>();
+        addressModeTable.put("i",   AddressMode.AM_I);    // Immediate 
+        addressModeTable.put("d",   AddressMode.AM_D);    // Direct
+        addressModeTable.put("n",   AddressMode.AM_N);    // Indirect
+        addressModeTable.put("s",   AddressMode.AM_S);    // Stack-relative
+        addressModeTable.put("sf",  AddressMode.AM_SF);   // Stack-relative deferred 
+        addressModeTable.put("x",   AddressMode.AM_X);    // Indexed 
+        addressModeTable.put("sx",  AddressMode.AM_SX);   // Stack-indexed 
+        addressModeTable.put("sfx", AddressMode.AM_SFX);  // Stack-deferred indexed 
+        
+        // Addressing Modes String
+        // -----------------------
         addressModeStringTable = new EnumMap<>(AddressMode.class); 
         addressModeStringTable.put(AddressMode.AM_I,   "i");   
         addressModeStringTable.put(AddressMode.AM_D,   "d");   
@@ -152,6 +175,8 @@ public class Maps {
         addressModeStringTable.put(AddressMode.AM_SX,  "sx");   
         addressModeStringTable.put(AddressMode.AM_SFX, "sfx");   
 
+        // Instruction valid addressing modes
+        // -----------------------
         MnemonValidAddresses = new HashMap<>();
         // non addressed
         MnemonValidAddresses.put(Mnemon.M_BR, 
@@ -189,14 +214,27 @@ public class Maps {
         MnemonValidAddresses.put(Mnemon.M_SUBSP, 
         new ArrayList<AddressMode>(Arrays.asList(AddressMode.AM_I,AddressMode.AM_D,AddressMode.AM_N,AddressMode.AM_S,AddressMode.AM_SF,AddressMode.AM_X,AddressMode.AM_SX,AddressMode.AM_SFX)));
 
- 
         MnemonValidAddresses.put(Mnemon.M_ADDA, 
             new ArrayList<AddressMode>(Arrays.asList(AddressMode.AM_I,AddressMode.AM_D,AddressMode.AM_N,AddressMode.AM_S,AddressMode.AM_SF,AddressMode.AM_X,AddressMode.AM_SX,AddressMode.AM_SFX)));
+        MnemonValidAddresses.put(Mnemon.M_ADDX, 
+            new ArrayList<AddressMode>(Arrays.asList(AddressMode.AM_I,AddressMode.AM_D,AddressMode.AM_N,AddressMode.AM_S,AddressMode.AM_SF,AddressMode.AM_X,AddressMode.AM_SX,AddressMode.AM_SFX)));
+        MnemonValidAddresses.put(Mnemon.M_SUBA, 
+            new ArrayList<AddressMode>(Arrays.asList(AddressMode.AM_I,AddressMode.AM_D,AddressMode.AM_N,AddressMode.AM_S,AddressMode.AM_SF,AddressMode.AM_X,AddressMode.AM_SX,AddressMode.AM_SFX)));
+        MnemonValidAddresses.put(Mnemon.M_SUBX, 
+            new ArrayList<AddressMode>(Arrays.asList(AddressMode.AM_I,AddressMode.AM_D,AddressMode.AM_N,AddressMode.AM_S,AddressMode.AM_SF,AddressMode.AM_X,AddressMode.AM_SX,AddressMode.AM_SFX)));
+        MnemonValidAddresses.put(Mnemon.M_ANDA, 
+            new ArrayList<AddressMode>(Arrays.asList(AddressMode.AM_I,AddressMode.AM_D,AddressMode.AM_N,AddressMode.AM_S,AddressMode.AM_SF,AddressMode.AM_X,AddressMode.AM_SX,AddressMode.AM_SFX)));
+        MnemonValidAddresses.put(Mnemon.M_ANDX, 
+            new ArrayList<AddressMode>(Arrays.asList(AddressMode.AM_I,AddressMode.AM_D,AddressMode.AM_N,AddressMode.AM_S,AddressMode.AM_SF,AddressMode.AM_X,AddressMode.AM_SX,AddressMode.AM_SFX)));
+        MnemonValidAddresses.put(Mnemon.M_ORA, 
+            new ArrayList<AddressMode>(Arrays.asList(AddressMode.AM_I,AddressMode.AM_D,AddressMode.AM_N,AddressMode.AM_S,AddressMode.AM_SF,AddressMode.AM_X,AddressMode.AM_SX,AddressMode.AM_SFX)));
+        MnemonValidAddresses.put(Mnemon.M_ORX, 
+            new ArrayList<AddressMode>(Arrays.asList(AddressMode.AM_I,AddressMode.AM_D,AddressMode.AM_N,AddressMode.AM_S,AddressMode.AM_SF,AddressMode.AM_X,AddressMode.AM_SX,AddressMode.AM_SFX)));
+
+
         MnemonValidAddresses.put(Mnemon.M_CPWA, 
             new ArrayList<AddressMode>(Arrays.asList(AddressMode.AM_I,AddressMode.AM_D,AddressMode.AM_N,AddressMode.AM_S,AddressMode.AM_SF,AddressMode.AM_X,AddressMode.AM_SX,AddressMode.AM_SFX)));
         MnemonValidAddresses.put(Mnemon.M_LDWA, 
-            new ArrayList<AddressMode>(Arrays.asList(AddressMode.AM_I,AddressMode.AM_D,AddressMode.AM_N,AddressMode.AM_S,AddressMode.AM_SF,AddressMode.AM_X,AddressMode.AM_SX,AddressMode.AM_SFX)));
-        MnemonValidAddresses.put(Mnemon.M_SUBA, 
             new ArrayList<AddressMode>(Arrays.asList(AddressMode.AM_I,AddressMode.AM_D,AddressMode.AM_N,AddressMode.AM_S,AddressMode.AM_SF,AddressMode.AM_X,AddressMode.AM_SX,AddressMode.AM_SFX)));
         MnemonValidAddresses.put(Mnemon.M_STWA, 
             new ArrayList<AddressMode>(Arrays.asList(AddressMode.AM_D,AddressMode.AM_N,AddressMode.AM_S,AddressMode.AM_SF,AddressMode.AM_X,AddressMode.AM_SX,AddressMode.AM_SFX)));

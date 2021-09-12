@@ -306,5 +306,15 @@ public class TranslatorTest {
         assertEquals("51 00 05\n59 00 05\nzz\n", g01.generateObjectCode());
     }
 
+    @Test
+    public void extendedNonUnaryTest01()
+    {
+        InBuffer b1 = new InBuffer("adda 5, i \n addx 5, i \n suba 5, i \nsubx 5, i \n anda 5, i \n andx 5, i \n  ora 5, i \n  orx 5, i \n .end");
+        Translator tr01 = new Translator(b1); 
+        Generator g01 = new Generator(tr01);
+
+        assertTrue(tr01.translate());
+        assertEquals("60 00 05\n68 00 05\n70 00 05\n78 00 05\n80 00 05\n88 00 05\n90 00 05\n98 00 05\nzz\n", g01.generateObjectCode());
+    }
     
 }

@@ -11,5 +11,6 @@ public enum Mnemon {
     M_BR, M_BRLE, M_BRLT, M_BREQ, M_BRNE, M_BRGE, M_BRGT, M_BRV, M_BRC, M_CALL,               // non addressed
     M_DECI, M_DECO, M_HEXO, M_STRO,                                                           // addressed
     M_ADDSP, M_SUBSP,
-    M_CPWA, M_ADDA, M_SUBA, M_STWA, M_LDWA, 
+    M_ADDA, M_ADDX,  M_SUBA, M_SUBX, M_ANDA, M_ANDX, M_ORA, M_ORX,
+    M_CPWA, M_STWA, M_LDWA, 
 }

@@ -61,6 +61,7 @@ public class NonUnaryInstr extends AInstr implements OperandSpecifiedInstr{
             case M_CALL: 
                 hexCode = "24";
                 break;               
+           
             case M_DECI:    // Operand Specifier and Addressing Mode
                 hexCode = "31";
                 break;
@@ -73,23 +74,44 @@ public class NonUnaryInstr extends AInstr implements OperandSpecifiedInstr{
             case M_STRO:    
                 hexCode = "49";
                 break;
-            case M_ADDA:    
-                hexCode = "60";
-                break;
+                
             case M_ADDSP:    
                 hexCode = "50";
                 break;
             case M_SUBSP:    
                 hexCode = "58";
                 break;
+
+            case M_ADDA:    
+                hexCode = "60";
+                break;
+            case M_ADDX:    
+                hexCode = "68";
+                break;
+            case M_SUBA: 
+                hexCode = "70";
+                break;
+            case M_SUBX:    
+                hexCode = "78";
+                break;
+            case M_ANDA:    
+                hexCode = "80";
+                break;
+            case M_ANDX:    
+                hexCode = "88";
+                break;
+            case M_ORA:    
+                hexCode = "90";
+                break;
+            case M_ORX:    
+                hexCode = "98";
+                break;
+
             case M_CPWA:    
                 hexCode = "A0";
                 break;
             case M_LDWA: 
                 hexCode = "C0";
-                break;
-            case M_SUBA: 
-                hexCode = "70";
                 break;
             case M_STWA: 
                 hexCode = "E1";
