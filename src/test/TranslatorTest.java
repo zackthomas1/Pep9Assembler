@@ -298,7 +298,12 @@ public class TranslatorTest {
     @Test
     public void extendedADDSPSUBSPTest()
     {
+        InBuffer b1 = new InBuffer("addsp 5 ,d \n subsp 5 , d \n .end");
+        Translator tr01 = new Translator(b1); 
+        Generator g01 = new Generator(tr01);
 
+        assertTrue(tr01.translate());
+        assertEquals("51 00 05\n59 00 05\nzz\n", g01.generateObjectCode());
     }
 
     

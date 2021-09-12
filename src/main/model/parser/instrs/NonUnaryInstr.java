@@ -76,6 +76,12 @@ public class NonUnaryInstr extends AInstr implements OperandSpecifiedInstr{
             case M_ADDA:    
                 hexCode = "60";
                 break;
+            case M_ADDSP:    
+                hexCode = "50";
+                break;
+            case M_SUBSP:    
+                hexCode = "58";
+                break;
             case M_CPWA:    
                 hexCode = "A0";
                 break;

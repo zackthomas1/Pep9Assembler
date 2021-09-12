@@ -66,6 +66,9 @@ public class Maps {
         nonunaryMnemonTable.put("deco", Mnemon.M_DECO);
         nonunaryMnemonTable.put("hexo", Mnemon.M_HEXO);
         nonunaryMnemonTable.put("stro", Mnemon.M_STRO);
+
+        nonunaryMnemonTable.put("addsp", Mnemon.M_ADDSP);
+        nonunaryMnemonTable.put("subsp", Mnemon.M_SUBSP);
         
         nonunaryMnemonTable.put("cpwa", Mnemon.M_CPWA);    
         nonunaryMnemonTable.put("adda", Mnemon.M_ADDA);
@@ -88,24 +91,24 @@ public class Maps {
         // --------------------------------------------
         mnemonStringTable = new EnumMap<>(Mnemon.class);
         // Unary
-        mnemonStringTable.put(Mnemon.M_ASLA, "asla");  
-        mnemonStringTable.put(Mnemon.M_ASLX, "aslx");  
-        mnemonStringTable.put(Mnemon.M_ASRA, "asra");
-        mnemonStringTable.put(Mnemon.M_ASRX, "asrx");
-        mnemonStringTable.put(Mnemon.M_ROLA, "rola");
-        mnemonStringTable.put(Mnemon.M_ROLX, "rolx");
-        mnemonStringTable.put(Mnemon.M_RORA, "rora");
-        mnemonStringTable.put(Mnemon.M_RORX, "rorx");
-        mnemonStringTable.put(Mnemon.M_NOTA, "nota");
-        mnemonStringTable.put(Mnemon.M_NOTX, "notx");
-        mnemonStringTable.put(Mnemon.M_NEGA, "nega");
-        mnemonStringTable.put(Mnemon.M_NEGX, "negx");
-        mnemonStringTable.put(Mnemon.M_MOVSPA, "movspa");
+        mnemonStringTable.put(Mnemon.M_ASLA,    "asla");  
+        mnemonStringTable.put(Mnemon.M_ASLX,    "aslx");  
+        mnemonStringTable.put(Mnemon.M_ASRA,    "asra");
+        mnemonStringTable.put(Mnemon.M_ASRX,    "asrx");
+        mnemonStringTable.put(Mnemon.M_ROLA,    "rola");
+        mnemonStringTable.put(Mnemon.M_ROLX,    "rolx");
+        mnemonStringTable.put(Mnemon.M_RORA,    "rora");
+        mnemonStringTable.put(Mnemon.M_RORX,    "rorx");
+        mnemonStringTable.put(Mnemon.M_NOTA,    "nota");
+        mnemonStringTable.put(Mnemon.M_NOTX,    "notx");
+        mnemonStringTable.put(Mnemon.M_NEGA,    "nega");
+        mnemonStringTable.put(Mnemon.M_NEGX,    "negx");
+        mnemonStringTable.put(Mnemon.M_MOVSPA,  "movspa");
         mnemonStringTable.put(Mnemon.M_MOVFLGA, "movflga");
         mnemonStringTable.put(Mnemon.M_MOVAFLG, "movaflg");
-        mnemonStringTable.put(Mnemon.M_RETTR, "rettr");
-        mnemonStringTable.put(Mnemon.M_RET, "ret");
-        mnemonStringTable.put(Mnemon.M_STOP, "stop");
+        mnemonStringTable.put(Mnemon.M_RETTR,   "rettr");
+        mnemonStringTable.put(Mnemon.M_RET,     "ret");
+        mnemonStringTable.put(Mnemon.M_STOP,    "stop");
         
         // Dot Commands
         mnemonStringTable.put(Mnemon.M_BLOCK, ".block");  
@@ -128,6 +131,9 @@ public class Maps {
         mnemonStringTable.put(Mnemon.M_DECO, "deco");
         mnemonStringTable.put(Mnemon.M_HEXO, "hexo");
         mnemonStringTable.put(Mnemon.M_STRO, "stro");
+
+        mnemonStringTable.put(Mnemon.M_ADDSP, "addsp");
+        mnemonStringTable.put(Mnemon.M_SUBSP, "subsp");
 
         mnemonStringTable.put(Mnemon.M_ADDA, "adda");       
         mnemonStringTable.put(Mnemon.M_CPWA, "cpwa");   
@@ -177,6 +183,13 @@ public class Maps {
         new ArrayList<AddressMode>(Arrays.asList(AddressMode.AM_I,AddressMode.AM_D,AddressMode.AM_N,AddressMode.AM_S,AddressMode.AM_SF,AddressMode.AM_X,AddressMode.AM_SX,AddressMode.AM_SFX)));
         MnemonValidAddresses.put(Mnemon.M_STRO, 
         new ArrayList<AddressMode>(Arrays.asList(AddressMode.AM_D,AddressMode.AM_N,AddressMode.AM_S,AddressMode.AM_SF,AddressMode.AM_X)));
+
+        MnemonValidAddresses.put(Mnemon.M_ADDSP, 
+        new ArrayList<AddressMode>(Arrays.asList(AddressMode.AM_I,AddressMode.AM_D,AddressMode.AM_N,AddressMode.AM_S,AddressMode.AM_SF,AddressMode.AM_X,AddressMode.AM_SX,AddressMode.AM_SFX)));
+        MnemonValidAddresses.put(Mnemon.M_SUBSP, 
+        new ArrayList<AddressMode>(Arrays.asList(AddressMode.AM_I,AddressMode.AM_D,AddressMode.AM_N,AddressMode.AM_S,AddressMode.AM_SF,AddressMode.AM_X,AddressMode.AM_SX,AddressMode.AM_SFX)));
+
+ 
         MnemonValidAddresses.put(Mnemon.M_ADDA, 
             new ArrayList<AddressMode>(Arrays.asList(AddressMode.AM_I,AddressMode.AM_D,AddressMode.AM_N,AddressMode.AM_S,AddressMode.AM_SF,AddressMode.AM_X,AddressMode.AM_SX,AddressMode.AM_SFX)));
         MnemonValidAddresses.put(Mnemon.M_CPWA, 
@@ -187,7 +200,6 @@ public class Maps {
             new ArrayList<AddressMode>(Arrays.asList(AddressMode.AM_I,AddressMode.AM_D,AddressMode.AM_N,AddressMode.AM_S,AddressMode.AM_SF,AddressMode.AM_X,AddressMode.AM_SX,AddressMode.AM_SFX)));
         MnemonValidAddresses.put(Mnemon.M_STWA, 
             new ArrayList<AddressMode>(Arrays.asList(AddressMode.AM_D,AddressMode.AM_N,AddressMode.AM_S,AddressMode.AM_SF,AddressMode.AM_X,AddressMode.AM_SX,AddressMode.AM_SFX)));
-
     
     
         }
