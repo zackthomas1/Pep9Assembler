@@ -206,8 +206,8 @@ public class Translator {
                             aCode = new Error("Invalid addressing mode.", currentline);
                         }
                     } else if (aToken instanceof TComment) {
-                        if(localMnemon == Mnemon.M_BR || localMnemon == Mnemon.M_BRLT || localMnemon == Mnemon.M_BREQ || 
-                        localMnemon == Mnemon.M_BRLE || localMnemon == Mnemon.M_CALL) 
+                        if(localMnemon == Mnemon.M_BR || localMnemon == Mnemon.M_BRLE || localMnemon == Mnemon.M_BRLT || localMnemon == Mnemon.M_BREQ || localMnemon == Mnemon.M_BRNE ||
+                        localMnemon == Mnemon.M_BRGE || localMnemon == Mnemon.M_BRGT || localMnemon == Mnemon.M_BRV || localMnemon == Mnemon.M_BRC || localMnemon == Mnemon.M_CALL) 
                         {
                             aCode = new NonUnaryInstr(localMnemon, localOperandArg, AddressMode.AM_I);
                             state = ParseState.PS_COMMENT;
@@ -215,8 +215,8 @@ public class Translator {
                             aCode = new Error("Missing addressing mode.", currentline); 
                         }
                     } else if (aToken instanceof TEmpty){
-                        if(localMnemon == Mnemon.M_BR || localMnemon == Mnemon.M_BRLT || localMnemon == Mnemon.M_BREQ || 
-                        localMnemon == Mnemon.M_BRLE || localMnemon == Mnemon.M_CALL) 
+                        if(localMnemon == Mnemon.M_BR || localMnemon == Mnemon.M_BRLE || localMnemon == Mnemon.M_BRLT || localMnemon == Mnemon.M_BREQ || localMnemon == Mnemon.M_BRNE ||
+                        localMnemon == Mnemon.M_BRGE || localMnemon == Mnemon.M_BRGT || localMnemon == Mnemon.M_BRV || localMnemon == Mnemon.M_BRC || localMnemon == Mnemon.M_CALL) 
                         {
                             aCode = new NonUnaryInstr(localMnemon, localOperandArg, AddressMode.AM_I);
                             state = ParseState.PS_FINISH;
